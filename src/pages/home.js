@@ -21,7 +21,7 @@ export default function Home() {
     return (
         <div className={useStyles().root}>
             <div className={useStyles().header}>
-                <a>Título</a>
+                <a>Título aaaaaaaaaaa</a>
                 <a>Imagen? Barra de búsqueda?</a>
                 <a>sidebar button</a>
             </div>
