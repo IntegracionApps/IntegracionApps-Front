@@ -1,0 +1,19 @@
+.navbar{
+    background-color: rgb(253, 137, 87);
+    width: 100%;
+    height: 90px;
+    display: flex;
+}
+
+.HeaderLogo{
+    padding: 10px;
+    margin-left: 25px;
+    color: white;
+}
+
+.HeaderLogo h1{
+    float: right;
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
