@@ -1,5 +1,7 @@
 import { React, useState } from "react"
 import { Drawer, List, ListItem, Divider, ListItemIcon, ListItemText, Button } from '@material-ui/core';
+import "../styles/SideMenu.css"
+import { ChevronLeft, Menu } from "@material-ui/icons";
 
 export default function SideMenu() {
     
@@ -19,8 +21,8 @@ export default function SideMenu() {
     );
 
     return (
-        <div>
-            <Button onClick={() => setDrawerToggle(true)}>Open Menu</Button>
+        <div className="button">
+            <Button className={"button-txt"} startIcon={<Menu/>} onClick={() => setDrawerToggle(true)}>Open Menu</Button>
             <Drawer anchor={"right"} open={drawerToggle} onClose={() => setDrawerToggle(!drawerToggle)}>
                 {list()}
             </Drawer>

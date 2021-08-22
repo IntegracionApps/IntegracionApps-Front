@@ -1,0 +1,12 @@
+.button{
+    align-self: center;
+    margin-right: 10px;
+    background-color: rgb(226, 148, 4);
+    border: thin solid white;
+}
+
+.button-txt{
+    color: white;
+    font-size: medium;
+    font-weight: 1000;
+}

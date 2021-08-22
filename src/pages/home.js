@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Header from "../components/Header"
 import ProductCard from "../components/ProductCard";
 
@@ -8,8 +9,9 @@ export default function Home() {
     return (
         <div>
             <Header/>
-            <div>dsafdsafgds</div>
-            <div><ProductCard/></div>
+            {/* <div>dsafdsafgds</div> */}
+            <ProductCard/>
+            <Link to="/NuevaVenta">Nueva Venta</Link>
         </div>
     )
 }

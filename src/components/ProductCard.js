@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import { React, useState } from 'react';
 import product_data from "../data/product_data";
 import "../styles/ProductCard.css";
@@ -7,17 +7,25 @@ function DialogDetalle(props) {
     const { onClose, elegido, open } = props;
 
     const handleClose = () => {
-        // console.log("Hello");
         onClose();
     };
 
-    // const handleListItemClick = (value) => {
-    //     onClose(value);
-    // };
-
     return (
         <Dialog onClose={handleClose} open={open}>
-            <DialogTitle id="title-card-detalle">{props.elegido}</DialogTitle>
+            <DialogTitle id="title-card-detalle">{props.elegido.product_name}</DialogTitle>
+            <DialogContent dividers>
+                <Typography>{props.elegido.description}</Typography>
+                <Typography>AR$ {props.elegido.price}</Typography>
+                <Typography>Valores nutricionales/Otros datos, depende del tipo de producto</Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cerrar</Button>
+                <Button onClick={()=>{
+                    // CAMBIAR POR LLAMADA A addCarrito o lo que haya
+                    console.log("se ha agregado el producto: "+props.elegido.product_name+ " al carrito");
+                }}>
+                    Agregar</Button>
+            </DialogActions>
         </Dialog>
     )
 
@@ -26,24 +34,26 @@ function DialogDetalle(props) {
 
 const ProductCard = () => {
     const [open, setOpen] = useState(false);
-    const [elegido, setElegido] = useState("");
+    const [idElegido, setElegido] = useState(0);
 
     const handleClose = (value) => {
         setOpen(false);
         // setElegido(value);
     };
 
-    const handleClickOpen = () => {
+    const handleClickOpen = (props) => {
         setOpen(true);
+        // console.log(props);
+        setElegido(props-1);
     };
 
     return (
         <div className="main_content">
             {product_data.map((item) => (
-                <div className="card" key={item.id} onClick={() => handleClickOpen(true)}>
-                    <div className="">
+                <div className="card" key={item.id} onClick={() => handleClickOpen(item.id)}>
+                    {/* <div className="">
                         <img src=""></img>
-                    </div>
+                    </div> */}
                     <div className="card_header">
                         <h2>{item.product_name}</h2>
                         <p>{item.description}</p>
@@ -53,7 +63,7 @@ const ProductCard = () => {
                     </div>
                 </div>
             ))}
-            <DialogDetalle elegido={product_data[0].product_name} open={open} onClose={() => handleClose()} />
+            <DialogDetalle elegido={product_data[idElegido]} open={open} onClose={() => handleClose()} />
         </div>
     )
 

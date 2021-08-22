@@ -1,4 +1,5 @@
 .navbar{
+    justify-content: space-between;
     background-color: rgb(253, 137, 87);
     width: 100%;
     height: 90px;
@@ -6,8 +7,8 @@
 }
 
 .HeaderLogo{
-    padding: 10px;
-    margin-left: 25px;
+    padding: 10px 0 0 10px;
+    /* margin-left: 25px; */
     color: white;
 }
 
