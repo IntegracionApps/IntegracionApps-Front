@@ -57,7 +57,7 @@ const ProductCard = () => {
                     <div className="card_header">
                         <h2>{item.product_name}</h2>
                         <p>{item.description}</p>
-                        <p className="price">{item.price}</p>
+                        <p className="price">AR$ {item.price}</p>
                         <button className="btn">Agregar a carrito</button>
                         {/* {console.log(item.product_name)} */}
                     </div>

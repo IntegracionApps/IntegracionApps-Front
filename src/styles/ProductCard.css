@@ -50,7 +50,7 @@
 
 .card .card_header .price{
     font-size: 25px;
-    color: firebrick;
+    color: rgb(182, 241, 200);
 }
 
 .btn{
@@ -58,7 +58,7 @@
     height: 40px;
     border: orange;
     background: orange;
-    border-radius: 20px;
+    border-radius: 10px;
     
     font-size: 20px;
     margin-bottom: 16px;

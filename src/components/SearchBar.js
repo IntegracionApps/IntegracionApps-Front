@@ -1,6 +1,5 @@
-import { Input } from "@material-ui/core"
-import "../styles/SearchBar.css"
 import Search from "@material-ui/icons/Search"
+import "../styles/SearchBar.css"
 
 export default function SearchBar() {
     return (
