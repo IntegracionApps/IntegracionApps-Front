@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Switch, useHistory } from "react-router
 //import cada pantalla acá
 import Home from "./pages/home.js";
 import NuevaVenta from "./pages/formulario_venta.js";
+import RegistroVentas from "./pages/registro_ventas.js";
+import ControlStock from "./pages/control_stock.js";
+import SideMenu from "./components/SideMenu.js";
 
 //
 
@@ -10,11 +13,13 @@ export default function Routes() {
     // console.log("Hello")
     return (
         <Router history={useHistory}>
-            {/* <NavBar /> */}
+            {/* <SideMenu /> */}
             <Switch>
-                <Route exact path="/NuevaVenta" component={NuevaVenta}/>
-                <Route exact path="/Home" component={Home} />
-                <Route exact path="/" component={Home} />
+                <Route path="/Stock" component={ControlStock} />
+                <Route path="/RegistroVentas" component={RegistroVentas} />
+                <Route path="/NuevaVenta" component={NuevaVenta} />
+                <Route path="/Home" component={Home} />
+                <Route path="/" exact component={Home} />
             </Switch>
         </Router>
     )
