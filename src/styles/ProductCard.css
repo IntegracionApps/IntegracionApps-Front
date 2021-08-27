@@ -19,7 +19,6 @@
 
 
 .card{
-    background: rgb(236, 209, 58);
     width: 30%;
     border-radius: 15px;
     flex-direction: column;
@@ -30,8 +29,9 @@
 }
 
 .card .card_header{
+    background: rgb(236, 209, 58);
     flex-direction: column;
-    color: white;
+    color: rgb(255, 255, 255);
     margin: 25px 0;
 }
 

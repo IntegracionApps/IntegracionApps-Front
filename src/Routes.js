@@ -14,7 +14,8 @@ export default function Routes() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/Home" component={Home} />
-                <Route exact path="/Shopping_cart" component={Shopping_Cart} />
+                <Route strict path="/Shopping_cart/:addedProductId" component={Shopping_Cart} />
+                {/* <Route strict path="/Shopping_cart/Add"/> */}
             </Switch>
         </Router>
     )

@@ -1,11 +1,33 @@
-import React from 'react'
-import "../styles/ProductCard.css"
+import { useHistory } from 'react-router'
+import {React, useState} from 'react'
 import product_data from "../data/product_data"
-import { useCart } from "react-use-cart"
+import "../styles/ProductCard.css"
 
 const ProductCard = () => {
-    console.log(product_data);
-    const { addItem } = useCart();
+    
+    const history = useHistory();
+
+    const [cartProducts] = useState([]);
+
+    function handleAddItem(item) {
+        alert(item);
+        if (cartProducts !== null) {
+            if (cartProducts.some(product => product._id === item._id)) {
+                cartProducts.map((product) => {
+                    if (product._id === item._id) {
+                        history.push({ pathname: `/Shopping_Cart/:${product._id}`, state: product })
+                    }
+                })
+            }
+            else {
+                history.push({ pathname: `/Shopping_Cart/:${item.id}`, state: item })
+            }
+        }
+        else {
+            history.push({ pathname: `/Shopping_Cart/:${item.id}`, state: item })
+        }
+    }    
+    
     const listItems = product_data.map((item) =>
         <div className="card" key={item.id}>
             <div className="">
@@ -15,7 +37,7 @@ const ProductCard = () => {
                 <h2>{item.product_name}</h2>
                 <p>{item.description}</p>
                 <p className="price">{item.price}</p>
-                <button className="btn" onClick={() => addItem(item)}>Agregar a carrito</button>
+                <button className="btn" onClick={() => {handleAddItem(item)}}>Agregar a carrito</button>
             </div>
 
         </div>
