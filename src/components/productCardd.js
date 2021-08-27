@@ -1,18 +1,12 @@
-import React from "react";
-import Header from "../components/Header"
-import ProductCard from "../components/ProductCard";
-import ItemCard from "../components/ItemCard";
-import product_data from "../data/product_data";
+import React from 'react'
+import ItemCard from './ItemCard'
+import product_data from '../data/product_data'
+import { useCart } from "react-use-cart"
 
+const productCardd = () => {
 
-
-
-export default function Home() {
-
-    return (
-        <div>
-            <Header/>
-            <>
+    return(
+        <>
         <h1 className="text-center mt'3">All Items</h1>
         <section className="py-4 container">
             <div className="row justify-content-center">
@@ -24,6 +18,8 @@ export default function Home() {
             </div>
         </section>
         </>
-        </div>
-    )
-}
+    );
+
+};
+
+export default productCardd;

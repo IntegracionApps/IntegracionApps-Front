@@ -10,7 +10,7 @@
     position: relative;
     width: 70%;
     height: 100%;
-    margin:50px auto;
+    margin: auto;
     padding: 50px 0 0;
     box-sizing: border-box;
     justify-content: space-between;
@@ -19,7 +19,7 @@
 
 
 .card{
-    background: green;
+    background: rgb(236, 209, 58);
     width: 30%;
     border-radius: 15px;
     flex-direction: column;
@@ -36,7 +36,7 @@
 }
 
 .card .card_header h2{
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .card .card_header p{
@@ -49,21 +49,25 @@
 
 .card .card_header .price{
     font-size: 25px;
-    color: firebrick;
+    color: white;
 }
 
 .btn{
+    color: white;
     width: 50%;
     height: 40px;
     border: orange;
     background: orange;
     border-radius: 20px;
     
-    font-size: 20px;
+    font-size: 19px;
     margin-bottom: 16px;
+    box-shadow:  inset 0 0 0 0;
+    transition: ease-out 0.3s;
     
 }
 
 .btn:hover{
+    background-color: #d46734;
     transition: 0.5s;
 }

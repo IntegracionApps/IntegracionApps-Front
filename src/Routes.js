@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, useHistory, Switch } from "react-router
 
 //import cada pantalla acá
 import Home from "./pages/home.js";
+import Shopping_Cart from "./pages/shopping_cart.js";
 //
 
 export default function Routes() {
@@ -13,6 +14,7 @@ export default function Routes() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/Home" component={Home} />
+                <Route exact path="/Shopping_cart" component={Shopping_Cart} />
             </Switch>
         </Router>
     )
