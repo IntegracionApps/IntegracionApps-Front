@@ -2,26 +2,31 @@ import React from "react"
 import { useParams } from "react-router-dom";
 import { useCart } from "react-use-cart"
 
+// import product_data from "../data/product_data";
 
-function Cart() {
-    
-    let {addedProdId} = useParams();
-    
+export default function Cart({product_data}) {
+
+    let { addedProdId } = useParams();
+    console.log(addedProdId)
+    console.log(typeof (addedProdId));
+    addedProdId = Number.parseInt(addedProdId);
+    console.log(addedProdId)
+    console.log(typeof(addedProdId));
     const { isEmpty,
-            totalUniqueItems,
-            items,
-            totalItems,
-            cartTotal,
-            setItems,
-            updateItemQuantity,
-            removeItem,
-            emptyCart 
-        } = useCart();
+        totalUniqueItems,
+        items,
+        totalItems,
+        cartTotal,
+        setItems,
+        updateItemQuantity,
+        removeItem,
+        emptyCart
+    } = useCart();
     // if (isEmpty) return <h1>Carrito Vacío</h1>
-    return(
+    return (
         <div>
-            {console.log(addedProdId)}
-            <h1>Id elegido: {addedProdId}</h1>
+            <h1>Producto elegido: {product_data[addedProdId].product_name}</h1>
+            {/* <h1>Hola</h1> */}
         </div>
         // <section className="py-4 container">
         //     <div className="row justify-content-center">
@@ -44,4 +49,3 @@ function Cart() {
     );
 };
 
-export default Cart;

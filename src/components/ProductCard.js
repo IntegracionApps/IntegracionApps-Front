@@ -1,31 +1,33 @@
 import { useHistory } from 'react-router'
 import {React, useState} from 'react'
-import product_data from "../data/product_data"
+// import product_data from "../data/product_data"
 import "../styles/ProductCard.css"
 
-const ProductCard = () => {
+const ProductCard = ({product_data}) => {
     
     const history = useHistory();
 
     const [cartProducts] = useState([]);
 
     function handleAddItem(item) {
-        alert(item);
         if (cartProducts !== null) {
             if (cartProducts.some(product => product._id === item._id)) {
                 cartProducts.map((product) => {
                     if (product._id === item._id) {
-                        history.push({ pathname: `/Shopping_Cart/:${product._id}`, state: product })
+                        history.push({ pathname: `/Shopping_Cart/${product._id}`, state: product })
                     }
                 })
             }
             else {
-                history.push({ pathname: `/Shopping_Cart/:${item.id}`, state: item })
+                history.push({ pathname: `/Shopping_Cart/${item.id}`, state: item })
             }
         }
         else {
-            history.push({ pathname: `/Shopping_Cart/:${item.id}`, state: item })
+            history.push({ pathname: `/Shopping_Cart/${item.id}`, state: item })
         }
+        // alert(item);
+        // history.push("/Shopping_Cart");
+        
     }    
     
     const listItems = product_data.map((item) =>
