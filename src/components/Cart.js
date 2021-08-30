@@ -7,11 +7,7 @@ import { useCart } from "react-use-cart"
 export default function Cart({product_data}) {
 
     let { addedProdId } = useParams();
-    console.log(addedProdId)
-    console.log(typeof (addedProdId));
     addedProdId = Number.parseInt(addedProdId);
-    console.log(addedProdId)
-    console.log(typeof(addedProdId));
     const { isEmpty,
         totalUniqueItems,
         items,
@@ -19,13 +15,14 @@ export default function Cart({product_data}) {
         cartTotal,
         setItems,
         updateItemQuantity,
+        addItem,
         removeItem,
         emptyCart
     } = useCart();
     // if (isEmpty) return <h1>Carrito Vacío</h1>
     return (
         <div>
-            <h1>Producto elegido: {product_data[addedProdId].product_name}</h1>
+            <h1>Producto elegido: {product_data[addedProdId].name}</h1>
             {/* <h1>Hola</h1> */}
         </div>
         // <section className="py-4 container">
@@ -37,7 +34,7 @@ export default function Cart({product_data}) {
         //                     {items.map((item, index)=>{
         //                         return(
         //                             <tr key={index}>
-        //                                 <td>{item.product_name}</td>
+        //                                 <td>{item.name}</td>
         //                             </tr>
         //                         )
         //                     })}
