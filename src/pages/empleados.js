@@ -2,17 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header"
 import ListaEmpleados from "../components/ListaEmpleador";
-import ProductCard from "../components/ProductCard";
 
 
-export default function Home() {
+export default function Empleados() {
 
     return (
         <div>
             <Header/>
-            {/* <div>dsafdsafgds</div> */}
-            <ProductCard/>
-            <Link to="/NuevaVenta">Nueva Venta</Link>
+            <ListaEmpleados/>
         </div>
     )
 }

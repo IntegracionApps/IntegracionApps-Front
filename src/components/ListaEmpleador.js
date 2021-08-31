@@ -1,58 +1,25 @@
 import React, { Component } from "react"
 import employee_data from "../data/employee_data"
-//import "../../node_modules/css/"
+import MaterialTable from "material-table"
 
 
-class ListaEmpleados extends Component{
-    constructor(props){
-        super(props)
+function ListaEmpleados(){
 
-        this.state = {
-
-        }
-    }
-
-
-    render() {
-        return(
-            <div>
-                <h2 className="text-center">Employees List</h2>
-                <div className= "row">
-                    <table className="table table-striped table-bordered">
-                        
-                        
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Mail</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {
-                                employee_data.map((empleado) => (
-                                    <tr key = {empleado.id}>
-                                        <td>{empleado.id}</td>
-                                        <td>{empleado.nombre}</td>
-                                        <td>{empleado.apellido}</td>
-                                        <td>{empleado.mail}</td>
-                                    </tr>
-
-                                ))
-                            }
-                        </tbody>
-
-
-                    </table>
-                </div>
-            </div>
-        )
-    }
-
-
-
+    const columns=[
+        {title:"ID", field:"id"},
+        {title:"Nombre", field:"nombre"},
+        {title:"Apellido", field:"apellido"},
+        {title:"Mail", field:"mail"}
+    ]
+    
+    return(
+        <div>
+            <MaterialTable title="Empleados"
+                columns={columns}
+                data={employee_data}
+            />
+        </div>
+    )
 }
 
 export default ListaEmpleados
