@@ -1,13 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import Header from "../components/Header";
 
 export default function NuevaVenta(){
+    const history= useHistory();
+
+
     return(
         <div>
             <Header/>
             <h1>Nueva Venta</h1>
-            <Link to="/">Volver a la tienda</Link>
+            <a onClick={() =>{history.goBack()}} style={{color:"blue"}}>Volver</a>
         </div>
     )
 }

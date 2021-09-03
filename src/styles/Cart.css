@@ -1,0 +1,11 @@
+.main_content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    margin: auto;
+}
+
+.table_container{
+    min-width: 700;
+}

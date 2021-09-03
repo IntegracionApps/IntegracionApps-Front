@@ -9,7 +9,7 @@ export default function Home(props) {
         <div>
             <Header />
             <CartProvider>
-                <Cart cart={props.location.state} />
+                <Cart cart={props.location.state} where={props.location}/>
             </CartProvider>
         </div>
     )

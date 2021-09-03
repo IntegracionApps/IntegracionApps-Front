@@ -20,12 +20,11 @@ export default function Routes() {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/Home" component={Home} />
-                <Route strict path="/Shopping_cart" component={Shopping_Cart}/>
-                <Route path="/Empleados" component={Empleados}/>
-                <Route path="/Stock" component={ControlStock} />
-                <Route path="/RegistroVentas" component={RegistroVentas} />
-                <Route path="/NuevaVenta" component={NuevaVenta} />
-
+                <Route exact path="/Shopping_cart" component={Shopping_Cart}/>
+                <Route exact path="/Empleados" component={Empleados}/>
+                <Route exact path="/Stock" component={ControlStock} />
+                <Route exact path="/RegistroVentas" component={RegistroVentas} />
+                <Route exact path="/NuevaVenta" component={NuevaVenta} />
             </Switch>
         </Router>
     )
