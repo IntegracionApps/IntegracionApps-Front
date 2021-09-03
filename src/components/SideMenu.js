@@ -27,6 +27,11 @@ export default function SideMenu() {
         },
 
         {
+            name: 'Lista de Empleados',
+            path: "/Empleados"
+        },
+
+        {
             name: 'Cerrar Sesión',
             path: "/LogOut"
         },
@@ -57,6 +62,12 @@ export default function SideMenu() {
             // })
             alert("Se ha cerrado sesión")
           }
+        else if(text==="/Empleados"){
+            setDrawerToggle(false);
+            history.push({
+                pathname:'/Empleados',
+            })
+        }
     }
    
 

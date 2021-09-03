@@ -1,9 +1,6 @@
 import React from "react";
 import { CartProvider } from "react-use-cart";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
-import Header from "../components/Header"
-import ListaEmpleados from "../components/ListaEmpleador";
 import ProductCard from "../components/ProductCard";
 import product_data from "../data/product_data";
 
