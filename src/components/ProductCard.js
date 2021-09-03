@@ -1,72 +1,115 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
-import { React, useState } from 'react';
-import product_data from "../data/product_data";
+import { React, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useCart } from 'react-use-cart';
+// import product_data from "../data/product_data"
 import "../styles/ProductCard.css";
 
-function DialogDetalle(props) {
-    const { onClose, elegido, open } = props;
+
+function AddedItemDialog(props) {
+    const { itemsToSend, open, history, onClose } = props;
 
     const handleClose = () => {
         onClose();
-    };
+    }
 
+    const handleGoTo = () => {
+        history.push({
+            pathname: '/Shopping_Cart',
+            state: (itemsToSend)
+        });
+    }
+
+    if (itemsToSend === undefined) return null
     return (
-        <Dialog onClose={handleClose} open={open}>
-            <DialogTitle id="title-card-detalle">{props.elegido.product_name}</DialogTitle>
-            <DialogContent dividers>
-                <Typography>{props.elegido.description}</Typography>
-                <Typography>AR$ {props.elegido.price}</Typography>
-                <Typography>Valores nutricionales/Otros datos, depende del tipo de producto</Typography>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>Cerrar</Button>
-                <Button onClick={()=>{
-                    // CAMBIAR POR LLAMADA A addCarrito o lo que haya
-                    console.log("se ha agregado el producto: "+props.elegido.product_name+ " al carrito");
-                }}>
-                    Agregar</Button>
-            </DialogActions>
-        </Dialog>
-    )
-
+        <div>
+            <Dialog onClose={handleClose} open={open}>
+                <DialogTitle>¡Éxito!</DialogTitle>
+                <DialogContent dividers>
+                    <Typography>Se ha agregado {itemsToSend.name} al carrito. ¿Quiere ver su carrito o quiere permanecer aquí y seguir comprando?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">Seguir Comprando</Button>
+                    <Button onClick={handleGoTo} color="secondary">Ver mi Carrito</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 }
 
 
-const ProductCard = () => {
+
+export default function ProductCard({ product_data }) {
+
     const [open, setOpen] = useState(false);
-    const [idElegido, setElegido] = useState(0);
+    const [itemsToSend, setAdded] = useState();
+
+    const history = useHistory();
+
+    const {
+        items,
+        isEmpty,
+        setItems,
+        addItem,
+        emptyCart,
+        getItem,
+    } = useCart();
+
+
+    useEffect(() => {
+        setItems([]);
+    }, []);
+
 
     const handleClose = (value) => {
         setOpen(false);
-        // setElegido(value);
     };
 
-    const handleClickOpen = (props) => {
+
+    function handleAddItem(item) {
+        setAdded(item);
+        if (!isEmpty) {
+            console.log(items.filter(product => item.id === product.id));
+            if (items.filter(product => item.id === product.id)) {
+                items.map((product) => {
+                    if (item.id === product.id) {
+                        addItem(product, 1);
+                    }
+                })
+            }
+        }
+        addItem(item)
+
         setOpen(true);
-        // console.log(props);
-        setElegido(props-1);
-    };
+    }
 
     return (
         <div className="main_content">
-            {product_data.map((item) => (
-                <div className="card" key={item.id} onClick={() => handleClickOpen(item.id)}>
-                    {/* <div className="">
-                        <img src=""></img>
-                    </div> */}
-                    <div className="card_header">
-                        <h2>{item.product_name}</h2>
-                        <p>{item.description}</p>
-                        <p className="price">AR$ {item.price}</p>
-                        <button className="btn">Agregar a carrito</button>
-                        {/* {console.log(item.product_name)} */}
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                {product_data.map((item) =>
+                    <div className="card" key={item.id}>
+                        <div className="">
+                            <img src=""></img>
+                        </div>
+                        <div className="card_header">
+                            <h2>{item.name}</h2>
+                            <p>{item.description}</p>
+                            <p className="price">{item.price}</p>
+                            <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
+                        </div>
+
                     </div>
-                </div>
-            ))}
-            <DialogDetalle elegido={product_data[idElegido]} open={open} onClose={() => handleClose()} />
+                )}
+            </div>
+
+            <AddedItemDialog itemsToSend={items} open={open} history={history} onClose={() => handleClose()} />
+
+            <button onClick={() => {
+                emptyCart();
+                setAdded();
+            }}>Vaciar Carrito</button>
+
+            <p>{items.length}</p>
         </div>
-    )
-
+    );
 }
-
-export default ProductCard
