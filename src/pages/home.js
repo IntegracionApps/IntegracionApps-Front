@@ -1,12 +1,10 @@
 import React from "react";
-import Header from "../components/Header"
-import ProductCard from "../components/ProductCard";
-import ItemCard from "../components/ItemCard";
-// import product_data from "../data/product_data";
-import { Link } from "@material-ui/core";
 import { CartProvider } from "react-use-cart";
+import Header from "../components/Header";
+import ProductCard from "../components/ProductCard";
+import product_data from "../data/product_data";
 
-export default function Home({ product_data }) {
+export default function Home() {
     // console.log(product_data);
     return (
         <div>

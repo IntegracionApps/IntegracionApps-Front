@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Route, useHistory, Switch } from "react-router-dom";
-
-import product_data from "./data/product_data.js";
+import { BrowserRouter as Router, Route, Switch, useHistory } from "react-router-dom";
 
 //import cada pantalla acá
 import Home from "./pages/home.js";
 import Shopping_Cart from "./pages/shopping_cart.js";
+
+
 //
 
 export default function Routes() {
@@ -13,15 +13,9 @@ export default function Routes() {
         <Router history={useHistory}>
             {/* <NavBar /> */}
             <Switch>
-                <Route exact path="/">
-                    <Home product_data={product_data}/>        
-                </Route>
-                <Route exact path="/Home" >
-                    <Home product_data={product_data}/>        
-                </Route>
-                <Route strict path="/Shopping_cart/:addedProdId">
-                    <Shopping_Cart product_data={product_data}/>        
-                </Route>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/Home" component={Home} />
+                <Route strict path="/Shopping_cart" component={Shopping_Cart}/>
                 {/* <Route strict path="/Shopping_cart/Add"/> */}
             </Switch>
         </Router>

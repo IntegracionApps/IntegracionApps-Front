@@ -1,18 +1,15 @@
 import React from "react";
-import Header from "../components/Header"
-import ProductCard from "../components/ProductCard";
-import Cart from "../components/Cart"
 import { CartProvider } from "react-use-cart";
+import Cart from "../components/Cart";
+import Header from "../components/Header";
 
 
-export default function Home({product_data}) {
-
+export default function Home(props) {
     return (
         <div>
             <Header />
-            {/* <h1>Hola</h1> */}
             <CartProvider>
-                <Cart product_data={product_data}/>
+                <Cart cart={props.location.state} />
             </CartProvider>
         </div>
     )
