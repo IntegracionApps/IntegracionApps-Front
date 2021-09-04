@@ -55,57 +55,61 @@ export default function Cart({ cart, where }) {
     if (isEmpty) return <h1>Carrito Vacío</h1>
     return (
         <div className="main_content" >
-            <TableContainer component={Paper}>
-                <Table className="table_container" aria-label="spanning table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="start" colSpan={3}>
-                                Ítems
-                            </TableCell>
-                            <TableCell align="right">Importes</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Descripción</TableCell>
-                            <TableCell align="right">Cantidad</TableCell>
-                            <TableCell align="right">Precio unit.</TableCell>
-                            <TableCell align="right">Importe</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {items.map((item, index) => {
-                            return (
-                                <TableRow>
-                                    <TableCell>{item.name}</TableCell>
-                                    {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
-                                    <TableCell align="right">{item.quantity} [un]</TableCell>
-                                    <TableCell align="right">AR$ {item.price}</TableCell>
-                                    <TableCell align="right">AR$ {priceRow(item.price, item.quantity)}</TableCell>
-                                </TableRow>
-                            )
-                        })}
-                        <TableRow>
-                            <TableCell rowSpan={4} colSpan={1} />
-                            <TableCell style={{ fontWeight: "bolder" }}>Subtotal</TableCell>
-                            <TableCell colSpan={2} align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
-                            <TableCell colSpan={2} align="right" style={{ padding: "0 16px 0 16px" }}>
-                                <TextField fullWidth id="discount" variant="filled" label="Ingrese un cupón de descuento." />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell style={{ fontWeight: "bolder" }}>Descuento:</TableCell>
-                            <TableCell align="right">{`${(DISCOUNT_RATE * 100).toFixed(0)} %`}</TableCell>
-                            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
-                            <TableCell colSpan={2} align="right">{ccyFormat(invoiceTotal)}</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <div className="table_container">
+
+                <TableContainer  component={Paper}>
+                    <Table style={{fontSize:"1.25rem"}} aria-label="spanning table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="start" colSpan={3}>
+                                    Ítems
+                                </TableCell>
+                                <TableCell align="right">Importes</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Descripción</TableCell>
+                                <TableCell align="right">Cantidad</TableCell>
+                                <TableCell align="right">Precio unit.</TableCell>
+                                <TableCell align="right">Importe</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {items.map((item, index) => {
+                                return (
+                                    <TableRow>
+                                        <TableCell>{item.name}</TableCell>
+                                        {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
+                                        <TableCell align="right">{item.quantity} [un]</TableCell>
+                                        <TableCell align="right">AR$ {item.price}</TableCell>
+                                        <TableCell align="right">AR$ {priceRow(item.price, item.quantity)}</TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                            <TableRow>
+                                <TableCell rowSpan={4} colSpan={1} />
+                                <TableCell style={{ fontWeight: "bolder" }}>Subtotal</TableCell>
+                                <TableCell colSpan={2} align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
+                                <TableCell colSpan={2} align="right" style={{ padding: "0 16px 0 16px" }}>
+                                    <TextField fullWidth id="discount" variant="filled" label="Ingrese un cupón de descuento." />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{ fontWeight: "bolder" }}>Descuento:</TableCell>
+                                <TableCell align="right">{`${(DISCOUNT_RATE * 100).toFixed(0)} %`}</TableCell>
+                                <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
+                                <TableCell colSpan={2} align="right">{ccyFormat(invoiceTotal)}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+            </div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2.5%" }}>
 
                 <Button onClick={() => { confirmSale() }}>Confirmar Carrito</Button>

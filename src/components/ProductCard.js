@@ -1,10 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
+import { Add, Remove } from '@material-ui/icons';
 import { React, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useCart } from 'react-use-cart';
 // import product_data from "../data/product_data"
 import "../styles/ProductCard.css";
-
 
 function AddedItemDialog(props) {
     const { itemsToSend, open, history, onClose } = props;
@@ -52,7 +52,9 @@ export default function ProductCard({ product_data }) {
         setItems,
         addItem,
         emptyCart,
+        updateItemQuantity,
         getItem,
+        inCart,
     } = useCart();
 
 
@@ -69,7 +71,7 @@ export default function ProductCard({ product_data }) {
     function handleAddItem(item) {
         setAdded(item);
         if (!isEmpty) {
-            console.log(items.filter(product => item.id === product.id));
+            // console.log(items.filter(product => item.id === product.id));
             if (items.filter(product => item.id === product.id)) {
                 items.map((product) => {
                     if (item.id === product.id) {
@@ -79,27 +81,51 @@ export default function ProductCard({ product_data }) {
             }
         }
         addItem(item)
-
         setOpen(true);
+        // console.log(items);
     }
 
+    function testGetItem(item) {
+        console.log(items);
+        // console.log(items[item.id-1]);
+        const test = getItem(item.id);
+        console.log(test);
+    }
     return (
         <div className="main_content">
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                {product_data.map((item) =>
-                    <div className="card" key={item.id}>
-                        <div className="">
-                            <img src=""></img>
-                        </div>
-                        <div className="card_header">
-                            <h2>{item.name}</h2>
-                            <p>{item.description}</p>
-                            <p className="price">{item.price}</p>
-                            <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
-                        </div>
-
-                    </div>
+                {product_data.map((item) => {
+                    const isThere = inCart(item.id)
+                    return (
+                        <div className="card" key={item.id}>
+                            <div className="">
+                                <img src=""></img>
+                            </div>
+                            <div className="card_header">
+                                <h2>{item.name}</h2>
+                                <p>{item.description}</p>
+                                <p className="price">{item.price}</p>
+                                <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                                    <IconButton onClick={() => {
+                                        updateItemQuantity(item.id, getItem(item.id).quantity - 1);
+                                        // console.log(getItem(item.id))
+                                    }} color="primary">
+                                        <Remove />
+                                    </IconButton>
+                                    <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
+                                    <IconButton onClick={() => {
+                                        updateItemQuantity(item.id, getItem(item.id).quantity + 1);
+                                        // console.log(getItem(item.id))
+                                    }} color="primary">
+                                        <Add />
+                                    </IconButton>
+                                </div>
+                            </div>
+                                {isThere? <p>{getItem(item.id).quantity}</p> : "Nada"}
+                        </div>)
+                }
                 )}
+
             </div>
 
             <AddedItemDialog itemsToSend={items} open={open} history={history} onClose={() => handleClose()} />
@@ -109,7 +135,7 @@ export default function ProductCard({ product_data }) {
                 setAdded();
             }}>Vaciar Carrito</button>
 
-            <p>{items.length}</p>
+            <button onClick={() => { testGetItem(itemsToSend) }}>Test</button>
         </div>
     );
 }
