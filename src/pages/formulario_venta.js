@@ -1,7 +1,10 @@
-import { TextField, FormControl, Input, InputLabel, FormHelperText } from "@material-ui/core";
+import { TextField, FormControl, Input, InputLabel, FormHelperText, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
+
+
+
 
 export default function NuevaVenta() {
     const history = useHistory();
@@ -14,6 +17,13 @@ export default function NuevaVenta() {
         mail: '',
         phone: null,
     })
+
+    // const classes = makeStyles()({
+    //     formContent: {
+    //         minWidth: '20%',
+    //     },
+    // });
+
 
     const handleName = (event) => {
         event.preventDefault();
@@ -80,44 +90,44 @@ export default function NuevaVenta() {
             <Header />
             <h1>Nueva Venta</h1>
             <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "auto" }}>
-                    <FormControl autoComplete="off" required="true">
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: "20%" }}>
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" required="true">
                         <InputLabel htmlFor="name">Nombre(s)</InputLabel>
                         <Input id="name" value={values.name} onChange={handleName} />
                         {/* <TextField required onChange={} id="names" label="Nombre(s)" value="" placeholder="p.ej. Juan Andrés" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" required="true">
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" required="true">
                         <InputLabel htmlFor="lastName">Apellido(s)</InputLabel>
                         <Input id="lastName" value={values.lastName} onChange={handleLastName} />
                         {/* <TextField required onChange={handleLastName(event)} id="last-name" label="Apellido" placeholder="p.ej. Pérez de Villar" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" required="true">
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" required="true">
                         <InputLabel htmlFor="address">Dirección</InputLabel>
                         <Input id="address" value={values.address} onChange={handleAddress} />
                         {/* <TextField required onChange={handleAddress(event)} id="address" label="Dirección" placeholder="p.ej Pueyrredón 2048" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" >
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" >
                         <InputLabel htmlFor="floor">Piso</InputLabel>
                         <Input id="floor" value={values.floor} onChange={handleFloor} />
                         {/* <TextField onChange={handleFloor(event)} id="floor" label="Piso" placeholder="14A" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" required="true">
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" required="true">
                         <InputLabel htmlFor="dni">DNI</InputLabel>
                         <Input id="dni" value={values.dni} onChange={handleDni} />
                         {/* <TextField required onChange={handleDni(event)} id="dni" label="DNI" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" required="true">
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" required="true">
                         <InputLabel htmlFor="mail">E-Mail</InputLabel>
                         <Input id="mail" value={values.mail} onChange={handleMail} type="email" />
                         {/* <TextField required onChange={handleMail(event)} id="mail" label="E-Mail" placeholder="ejemplo.example@email.com" /> */}
                     </FormControl>
-                    <FormControl autoComplete="off" >
+                    <FormControl style={{minWidth: "20%"}} autoComplete="off" >
                         <InputLabel htmlFor="phone">Teléfono</InputLabel>
                         <Input id="phone" value={values.phone} onChange={handlePhone} type="phone" />
                         <FormHelperText>¡Incluir código de área también!</FormHelperText>
                         {/* <TextField onChange={handlePhone(event)} id="phone" label="Teléfono" helperText="¡Incluir código de área!" /> */}
                     </FormControl>
-                    <FormControl >
+                    <FormControl style={{minWidth: "20%"}} >
                         <Input type="submit" value="Confirmar Compra" />
                     </FormControl>
                 </div>
