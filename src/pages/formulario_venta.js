@@ -1,4 +1,4 @@
-import { TextField, FormControl, Input, InputLabel, FormHelperText, } from "@material-ui/core";
+import { TextField, FormControl, Input, InputLabel, FormHelperText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
@@ -96,7 +96,7 @@ export default function NuevaVenta() {
 
                 <form className="form" autoComplete="off" noValidate onSubmit={handleSubmit}>
                     {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> */}
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }}>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                         <FormControl className={classes.input} autoComplete="off" required="true">
                             <InputLabel htmlFor="name">Nombre(s)</InputLabel>
                             <Input id="name" value={values.name} onChange={handleName} />
@@ -108,7 +108,7 @@ export default function NuevaVenta() {
                             {/* <TextField required onChange={handleLastName(event)} id="last-name" label="Apellido" placeholder="p.ej. Pérez de Villar" /> */}
                         </FormControl>
                     </div>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }}>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                         <FormControl className={classes.input} autoComplete="off" required="true">
                             <InputLabel htmlFor="address">Dirección</InputLabel>
                             <Input id="address" value={values.address} onChange={handleAddress} />
@@ -120,13 +120,13 @@ export default function NuevaVenta() {
                             {/* <TextField onChange={handleFloor(event)} id="floor" label="Piso" placeholder="14A" /> */}
                         </FormControl>
                     </div>
-                    <FormControl className={classes.input} style={{maxWidth: "45%"}} autoComplete="off" required="true">
+                    <FormControl className={classes.input} style={{ maxWidth: "45%" }} autoComplete="off" required="true">
                         <InputLabel htmlFor="dni">DNI</InputLabel>
                         <Input id="dni" value={values.dni} onChange={handleDni} />
                         {/* <TextField required onChange={handleDni(event)} id="dni" label="DNI" /> */}
                     </FormControl>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-between" }}>
-                        <FormControl className={classes.input} style={{width: "100%"}} autoComplete="off" required="true">
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        <FormControl className={classes.input} style={{ width: "100%" }} autoComplete="off" required="true">
                             <InputLabel htmlFor="mail">E-Mail</InputLabel>
                             <Input id="mail" value={values.mail} onChange={handleMail} type="email" />
                             {/* <TextField required onChange={handleMail(event)} id="mail" label="E-Mail" placeholder="ejemplo.example@email.com" /> */}
@@ -137,10 +137,10 @@ export default function NuevaVenta() {
                             <FormHelperText>¡Incluir código de área, sin símbolos!</FormHelperText>
                             {/* <TextField onChange={handlePhone(event)} id="phone" label="Teléfono" helperText="¡Incluir código de área!" /> */}
                         </FormControl>
-                        </div>
-                        <FormControl className={classes.input} >
-                            <Input type="submit" value="Confirmar Compra" />
-                        </FormControl>
+                    </div>
+                    <FormControl className={classes.input} >
+                        <Input type="submit" value="Confirmar Compra" />
+                    </FormControl>
                     {/* </div>
                      */}
                 </form>
