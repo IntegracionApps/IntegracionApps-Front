@@ -1,0 +1,6 @@
+.main_content{
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+    align-items: center;
+}

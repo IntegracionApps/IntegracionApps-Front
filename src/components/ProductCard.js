@@ -85,12 +85,6 @@ export default function ProductCard({ product_data }) {
         // console.log(items);
     }
 
-    function testGetItem(item) {
-        console.log(items);
-        // console.log(items[item.id-1]);
-        const test = getItem(item.id);
-        console.log(test);
-    }
     return (
         <div className="main_content">
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
@@ -121,7 +115,7 @@ export default function ProductCard({ product_data }) {
                                     </IconButton>
                                 </div>
                             </div>
-                                {isThere? <p>{getItem(item.id).quantity}</p> : "Nada"}
+                            {isThere ? <p>{getItem(item.id).quantity}</p> : "Nada"}
                         </div>)
                 }
                 )}
@@ -135,7 +129,6 @@ export default function ProductCard({ product_data }) {
                 setAdded();
             }}>Vaciar Carrito</button>
 
-            <button onClick={() => { testGetItem(itemsToSend) }}>Test</button>
         </div>
     );
 }

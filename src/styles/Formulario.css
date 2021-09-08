@@ -1,0 +1,19 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 70%;
+    margin: auto;
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: inherit;
+}
+
+.form input{
+    margin: 0 5% 5% 0;
+}

@@ -93,7 +93,7 @@ export default function Cart({ cart, where }) {
                             <TableRow>
                                 <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
                                 <TableCell colSpan={2} align="right" style={{ padding: "0 16px 0 16px" }}>
-                                    <TextField fullWidth id="discount" variant="filled" label="Ingrese un cupón de descuento." />
+                                    <TextField fullWidth id="discount" label="Ingrese un cupón de descuento." />
                                 </TableCell>
                             </TableRow>
                             <TableRow>
