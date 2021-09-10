@@ -87,7 +87,7 @@ export default function ProductCard({ product_data }) {
 
     return (
         <div className="main_content">
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
                 {product_data.map((item) => {
                     const isThere = inCart(item.id)
                     return (
@@ -96,9 +96,9 @@ export default function ProductCard({ product_data }) {
                                 <img src=""></img>
                             </div>
                             <div className="card_header">
-                                <h2>{item.name}</h2>
-                                <p>{item.description}</p>
-                                <p className="price">{item.price}</p>
+                                <h2>{item.nombre}</h2>
+                                <p>{item.descrip}</p>
+                                <p className="price">AR$ {item.precioUnidad}</p>
                                 <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                                     <IconButton onClick={() => {
                                         updateItemQuantity(item.id, getItem(item.id).quantity - 1);

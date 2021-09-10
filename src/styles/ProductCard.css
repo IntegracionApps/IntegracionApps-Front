@@ -8,6 +8,7 @@
 .main_content{
     display: flex;
     position: relative;
+    flex-wrap: wrap;
     width: 70%;
     height: 100%;
     margin: auto;
