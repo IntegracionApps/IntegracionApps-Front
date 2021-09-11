@@ -1,7 +1,7 @@
-import { Button } from "@material-ui/core";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { useCart } from "react-use-cart";
 import "../styles/Cart.css";
 
@@ -13,7 +13,6 @@ export default function Cart({ cart, where }) {
         setItems(cart);
     }, []);
 
-    const DISCOUNT_RATE = -0.07;
 
     const { isEmpty,
         totalUniqueItems,
@@ -24,9 +23,24 @@ export default function Cart({ cart, where }) {
         updateItemQuantity,
         addItem,
         removeItem,
-        emptyCart
     } = useCart();
 
+    function getImporte(quantity, price) {
+        var res = quantity * price;
+        return res;
+    }
+
+    function getSubtotal() {
+        var res = 0;
+        items.forEach(item => {
+            res = res + (item.quantity * item.price);
+        });
+        return res;
+    }
+
+    function getTotal() {
+        return getSubtotal() - (getSubtotal() * -0.07);
+    }
 
     function confirmSale() {
         history.push({
@@ -34,31 +48,18 @@ export default function Cart({ cart, where }) {
         })
     }
 
-    function ccyFormat(num) {
-        return `${num.toFixed(2)}`;
-    }
-
-    function priceRow(qty, unit) {
-        const num = qty * unit;
-        return `${num.toFixed(2)}`;
-    }
-
-    function subtotal(items) {
-        return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-    }
-
-    const invoiceSubtotal = subtotal(items);
-    const invoiceTaxes = DISCOUNT_RATE * invoiceSubtotal;
-    const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-
-    if (isEmpty) return <h1>Carrito Vacío</h1>
+    if (isEmpty) return (
+        <div>
+            <h1>Carrito Vacío</h1>
+            <Link to='/'></Link>
+        </div>
+    )
     return (
         <div className="main_content" >
             <div className="table_container">
 
-                <TableContainer  component={Paper}>
-                    <Table style={{fontSize:"1.25rem"}} aria-label="spanning table">
+                <TableContainer component={Paper}>
+                    <Table style={{ fontSize: "1.25rem" }} aria-label="spanning table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="start" colSpan={3}>
@@ -77,18 +78,18 @@ export default function Cart({ cart, where }) {
                             {items.map((item, index) => {
                                 return (
                                     <TableRow>
-                                        <TableCell>{item.name}</TableCell>
+                                        <TableCell>{item.descrip}</TableCell>
                                         {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
                                         <TableCell align="right">{item.quantity} [un]</TableCell>
                                         <TableCell align="right">AR$ {item.price}</TableCell>
-                                        <TableCell align="right">AR$ {priceRow(item.price, item.quantity)}</TableCell>
+                                        <TableCell align="right">AR$ {getImporte(item.quantity, item.price).toFixed(2)}</TableCell>
                                     </TableRow>
                                 )
                             })}
                             <TableRow>
                                 <TableCell rowSpan={4} colSpan={1} />
                                 <TableCell style={{ fontWeight: "bolder" }}>Subtotal</TableCell>
-                                <TableCell colSpan={2} align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
+                                <TableCell colSpan={2} align="right">AR$ {getSubtotal().toFixed(2)}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
@@ -98,12 +99,12 @@ export default function Cart({ cart, where }) {
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Descuento:</TableCell>
-                                <TableCell align="right">{`${(DISCOUNT_RATE * 100).toFixed(0)} %`}</TableCell>
-                                <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+                                <TableCell align="right">{ } %</TableCell>
+                                <TableCell align="right">AR$ { }</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
-                                <TableCell colSpan={2} align="right">{ccyFormat(invoiceTotal)}</TableCell>
+                                <TableCell colSpan={2} align="right">AR$ {getTotal().toFixed(2)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

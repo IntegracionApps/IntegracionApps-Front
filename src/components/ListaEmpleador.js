@@ -1,22 +1,24 @@
 import React, { Component } from "react"
-import employee_data from "../data/employee_data"
+// import employee_data from "../data/employee_data"
 import MaterialTable from "material-table"
 
 
-function ListaEmpleados(){
+function ListaEmpleados(props) {
 
-    const columns=[
-        {title:"ID", field:"id"},
-        {title:"Nombre", field:"nombre"},
-        {title:"Apellido", field:"apellido"},
-        {title:"Mail", field:"mail"}
+    const columns = [
+        { title: "Nombre", field: "nombre" },
+        { title: "Apellido", field: "apellido" },
+        { title: "Rol", field: "rol" },
+        { title: "Mail", field: "email" },
     ]
-    
-    return(
+
+    console.log(props.employee_data);
+
+    return (
         <div>
             <MaterialTable title="Empleados"
                 columns={columns}
-                data={employee_data}
+                data={props.employee_data}
             />
         </div>
     )

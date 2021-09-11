@@ -9,6 +9,7 @@ import RegistroVentas from "./pages/registro_ventas.js";
 import ControlStock from "./pages/control_stock.js";
 import Empleados from "./pages/empleados.js";
 import SideMenu from "./components/SideMenu.js";
+import { CartProvider } from "react-use-cart";
 
 //
 
@@ -18,13 +19,15 @@ export default function Routes() {
         <Router history={useHistory}>
             {/* <SideMenu /> */}
             <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/Home" component={Home} />
-                <Route exact path="/Shopping_cart" component={Shopping_Cart}/>
-                <Route exact path="/Empleados" component={Empleados}/>
-                <Route exact path="/Stock" component={ControlStock} />
-                <Route exact path="/RegistroVentas" component={RegistroVentas} />
-                <Route exact path="/NuevaVenta" component={NuevaVenta} />
+                <CartProvider>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/Home" component={Home} />
+                    <Route exact path="/Shopping_cart" component={Shopping_Cart} />
+                    <Route exact path="/Empleados" component={Empleados} />
+                    <Route exact path="/Stock" component={ControlStock} />
+                    <Route exact path="/RegistroVentas" component={RegistroVentas} />
+                    <Route exact path="/NuevaVenta" component={NuevaVenta} />
+                </CartProvider>
             </Switch>
         </Router>
     )
