@@ -1,0 +1,190 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    background-image: url("./../img/mercado.jpg");
+    background-size: cover;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.forms-container{
+    display: grid;
+    border-radius: 40px;
+    margin: auto;
+    position: relative;    
+    width: 30%;
+    height: 50%;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,0.04);
+    box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
+}
+
+form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.title{
+    margin-top: 45px;
+    font-size: 2.2rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.input-field{
+    width: 80%;
+    height: 55px;
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    border-radius: 55px;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    padding: 0 .4rem;
+}
+
+.input-field input{
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.input-field .loginIcons{
+    line-height: 55px;
+    color: #acacac;
+    align-items: center;
+    display: flex;
+    font-size: 1.1rem;
+    margin-left: 15px;
+}
+
+.btnLogin{
+    width: 80%;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 49px;
+    cursor: pointer;
+    background-color: orange;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 10px 0;
+    transition: .5s;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.btnLogin:hover{
+    background-color: orangered;
+}
+
+
+@media screen and (max-width: 1120px){
+    .forms-container{
+      width: 40%;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .forms-container{
+      width: 45%;
+    }
+}
+
+@media screen and (max-width: 850px){
+    .forms-container{
+      width: 45%;
+    }
+}
+
+@media screen and (max-width: 800px){
+    .forms-container{
+      width: 50%;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .forms-container{
+      width: 55%;
+    }
+}
+
+
+@media screen and (max-width: 600px){
+    .forms-container{
+      width: 65%;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .forms-container{
+      width: 70%;
+    }
+}
+
+@media screen and (max-width: 450px){
+    .forms-container{
+      width: 80%;
+    }
+
+    .input-field .loginIcons{
+        margin-left: 5px;
+    }
+
+}
+
+@media screen and (max-width: 400px){
+    .forms-container{
+      width: 80%;
+    }
+
+    .input-field .loginIcons{
+        margin-left: 5px;
+    }
+
+}
+
+@media screen and (max-width: 300px){
+
+    .title{
+        font-size: 1.5rem;
+    }
+
+    .forms-container{
+      width: 80%;
+    }
+
+    .input-field{
+        width: 210px;
+        height: 55px;
+        background-color: #f0f0f0;
+        margin: 10px 0;
+        border-radius: 55px;
+        display: grid;
+        grid-template-columns: 15% 85%;
+        
+    }
+
+    .input-field .loginIcons{
+        margin-left: 5px;
+    }
+
+    .input-field input{
+        font-size: 0.9rem;
+        margin-left: 15px;
+    }
+
+}
