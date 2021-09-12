@@ -3,14 +3,21 @@ import { Grid,Paper, Avatar, TextField, FormControlLabel, Checkbox, Button } fro
 import Mail from "@material-ui/icons/Mail"
 import Lock from "@material-ui/icons/Lock";
 import "../styles/Login.css"
+import { useHistory } from "react-router";
+
 
 const Login=()=>{
+    const history = useHistory();
+    const handleSubmit= (event) => {
+        event.preventDefault();
+        history.push("/Home");
+    }
     return(
         <body>
             <div className="container">
                 <div className="forms-container">
-                        <form action="" className="sign-in-form">
-                            <h2 className="title">Iniciar Sesion</h2>
+                        <form action="" className="sign-in-form" onSubmit={handleSubmit}>
+                            <h2 className="title">Iniciar Sesión</h2>
 
                             <div className="input-field">
                                 <div className="loginIcons">
