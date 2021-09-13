@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useCart } from "react-use-cart";
@@ -25,8 +25,18 @@ export default function Cart({ cart, where }) {
         removeItem,
     } = useCart();
 
+    const [toSend, setToSend] = useState({
+        items: items,
+        importe: [],
+        subtotal: cartTotal,
+        total: getTotal(),
+    })
+
+    const aux= [];
+
     function getImporte(quantity, price) {
         var res = quantity * price;
+        aux.push(res);
         return res;
     }
 
@@ -39,12 +49,21 @@ export default function Cart({ cart, where }) {
     }
 
     function getTotal() {
-        return getSubtotal() - (getSubtotal() * -0.07);
+        return cartTotal + (cartTotal * -0.07);
     }
 
     function confirmSale() {
+        setToSend((toSend)=>({
+            ...toSend,
+            importe: aux,
+        }));
+
+        // console.log(toSend);
         history.push({
-            pathname: '/NuevaVenta',
+            pathname: '/NuevaVenta', state: {
+                toSend: toSend,
+
+            }
         })
     }
 
@@ -89,7 +108,7 @@ export default function Cart({ cart, where }) {
                             <TableRow>
                                 <TableCell rowSpan={4} colSpan={1} />
                                 <TableCell style={{ fontWeight: "bolder" }}>Subtotal</TableCell>
-                                <TableCell colSpan={2} align="right">AR$ {getSubtotal().toFixed(2)}</TableCell>
+                                <TableCell colSpan={2} align="right">AR$ {cartTotal.toFixed(2)}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
