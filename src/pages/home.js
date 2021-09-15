@@ -1,10 +1,11 @@
 import { Badge, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, Typography } from "@material-ui/core";
 import { Add, Remove, ShoppingCart } from "@material-ui/icons";
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router';
 import { CartProvider, useCart } from "react-use-cart";
 import Header from "../components/Header";
 import '../styles/ProductCard.css'
+import axios from "axios";
 
 
 // import product_data from "../data/product_data.js";
@@ -45,7 +46,7 @@ export default function Home() {
     // console.log(product_data);
 
     const [product_data, setData] = useState([]);
-    const axios = require('axios');
+
     useEffect(() => {
         axios.get('http://localhost:5000/Products/get/all')
             .then(function (response) {
@@ -141,7 +142,7 @@ export default function Home() {
             {isEmpty ? null :
                 <button onClick={() => {
                     emptyCart();
-                    setAdded();
+                    setAdded(null);
                 }}>Vaciar Carrito</button>
             }
 
@@ -151,20 +152,20 @@ export default function Home() {
                         const isThere = inCart(item.id)
                         return (
                             <div className="card" key={item.id}>
-                                <div className="">
-                                    <img src=""></img>
-                                </div>
-                                <div className="card_header">
-                                    <h2>{item.nombre}</h2>
-                                    <p>{item.descrip}</p>
-                                    <p className="price">AR$ {item.price}</p>
-                                    {!inCart(item.id) ?
-                                        <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                            <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
-                                        </div>
-                                        :
-                                        <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                            <Badge badgeContent={item.quantity}>
+                                <Badge badgeContent={item.quantity}>
+                                    <div className="">
+                                        <img src=""></img>
+                                    </div>
+                                    <div className="card_header">
+                                        <h2>{item.nombre}</h2>
+                                        <p>{item.descrip}</p>
+                                        <p className="price">AR$ {item.price}</p>
+                                        {!inCart(item.id) ?
+                                            <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                                                <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
+                                            </div>
+                                            :
+                                            <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                                                 <IconButton onClick={() => {
                                                     handleItemUpdate(item, -1);
                                                     // updateItemQuantity(item.id, getItem(item.id).quantity - 1);
@@ -180,11 +181,11 @@ export default function Home() {
                                                 }} color="primary">
                                                     <Add />
                                                 </IconButton>
-                                            </Badge>
-                                        </div>
-                                    }
-                                </div>
-                                {isThere ? <p>{getItem(item.id).quantity}</p> : "Nada"}
+                                            </div>
+                                        }
+                                    </div>
+                                    {isThere && <p>{getItem(item.id).quantity}</p>}
+                                </Badge>
                             </div>)
                     }
                     )}

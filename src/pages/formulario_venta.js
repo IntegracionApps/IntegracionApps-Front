@@ -1,10 +1,9 @@
-import { TextField, FormControl, Input, InputLabel, FormHelperText, Select, MenuItem } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import '../styles/Formulario.css'
+import '../styles/Formulario.css';
 
 const useStyles = makeStyles({
     input: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function NuevaVenta(props) {
     const history = useHistory();
-    const [receive, setReceive] = useState(props.location.state);
+    const [receive, setReceive] = useState(props.location.state.toSend);
 
     //REVISAR
     const [values, setValues] = useState({
@@ -32,19 +31,45 @@ export default function NuevaVenta(props) {
             disponible: '',
         },
         fechaEmision: new Date(),
-        items: receive.toSend.items,
-        subTotal: receive.toSend.subtotal,
-        total: receive.toSend.total,
-        descuentoTotal: (receive.toSend.subtotal - receive.toSend.total).toFixed(2),
+        items: receive.items,
+        subTotal: receive.subtotal,
+        total: receive.total,
+        descuentoTotal: receive.subtotal - receive.total,
         medioPago: '',
         pagoRealizado: null,
         vuelto: null,
         estado: 'Emitido',
     })
+
     const classes = useStyles();
     var refresh = false;
+
     useEffect(() => {
-        refresh = false;
+        setValues({
+            cliente: {
+                name: '',
+                lastName: '',
+                address: '',
+                floor: '',
+                dni: null,
+                mail: '',
+                phone: null,
+                disponible: '',
+            },
+            fechaEmision: new Date(),
+            items: receive.items,
+            subTotal: receive.subtotal,
+            total: receive.total,
+            descuentoTotal: receive.subtotal - receive.total,
+            medioPago: '',
+            pagoRealizado: null,
+            vuelto: null,
+            estado: 'Emitido',
+        });
+
+
+        refresh = true;
+        console.log(values);
     }, [refresh])
 
     const handleName = (event) => {
@@ -115,17 +140,19 @@ export default function NuevaVenta(props) {
 
     const handlePhone = (event) => {
         event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                phone: event.target.value,
-            }
-        }));
+        values.cliente.phone = event.target.value;
+        // setValues((values) => ({
+        //     ...values,
+        //     cliente: {
+        //         ...values.cliente,
+        //         phone: event.target.value,
+        //     }
+        // }));
     };
 
     const handlePayment = (event) => {
         event.preventDefault();
+        // values.medioPago = event.target.value;
         setValues((values) => ({
             ...values,
             medioPago: event.target.value,
@@ -134,68 +161,56 @@ export default function NuevaVenta(props) {
 
     const handleMoney = (event) => {
         event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            pagoRealizado: new Number(event.target.value),
-        }));
+        values.pagoRealizado = event.target.value;
+        // setValues((values) => ({
+        //     ...values,
+        //     pagoRealizado: (event.target.value),
+        // }));
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        console.log(values.medioPago);
         if (values.medioPago == 'Crédito' || values.medioPago == 'Débito') {
             console.log("IN");
-            setValues((values) => ({
-                ...values,
-                pagoRealizado: values.total,
-            }));
-            setValues((values) => ({
-                ...values,
-                vuelto: 0,
-            }));
+            values.pagoRealizado = values.total;
+            values.vuelto = 0;
+            // setValues((values) => ({
+            //     ...values,
+            //     pagoRealizado: values.total,
+            //     vuelto: 0,
+            // }));
         }
-        else {
-            setValues((values) => ({
-                ...values,
-                vuelto: values.pagoRealizado - values.total,
-            }));
+        if (values.medioPago == 'Efectivo') {
+            // console.log("Pago: " + typeof (values.pagoRealizado));
+            values.vuelto = values.pagoRealizado - receive.total;
+            // setValues((values) => ({
+            //     ...values,
+            //     vuelto: values.pagoRealizado - receive.total,
+            // }));
+        }
+        // console.log("Total: "+values.total);
+        // console.log("SubTotal: "+values.subTotal);
+        // console.log("Descuento: "+values.descuentoTotal);
+        // console.log("Vuelto: "+typeof(values.vuelto));
 
-        }
-        // console.log(values);
         axios.post("http://localhost:5000/add", {
             values: values,
         })
             .then(function (response) {
                 console.log(response.status + " " + response.statusText);
+                if (response.status >= 200) {
+                    alert(response.status + " " + response.statusText);
+                    history.push('/Home');
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
 
-        
-            setValues({
-            cliente: {
-                name: '',
-                lastName: '',
-                address: '',
-                floor: '',
-                dni: null,
-                mail: '',
-                phone: null,
-                disponible: '',
-            },
-            fechaEmision: new Date(),
-            items: receive.toSend.items,
-            subTotal: receive.toSend.subtotal,
-            total: receive.toSend.total,
-            descuentoTotal: (receive.toSend.subtotal - receive.toSend.total).toFixed(2),
-            medioPago: '',
-            pagoRealizado: null,
-            vuelto: null,
-            estado: 'Emitido',
-        });
 
-        refresh = true;
+
     }
 
     return (
@@ -212,6 +227,7 @@ export default function NuevaVenta(props) {
                             <Input id="name" value={values.cliente.name} onChange={handleName} />
                             {/* <TextField required onChange={} id="names" label="Nombre(s)" value="" placeholder="p.ej. Juan Andrés" /> */}
                         </FormControl>
+
                         <FormControl className={classes.input} autoComplete="off" required="true">
                             <InputLabel htmlFor="lastName">Apellido(s)</InputLabel>
                             <Input id="lastName" value={values.cliente.lastName} onChange={handleLastName} />

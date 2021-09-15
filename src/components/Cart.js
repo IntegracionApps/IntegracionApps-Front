@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useCart } from "react-use-cart";
@@ -32,7 +32,7 @@ export default function Cart({ cart, where }) {
         total: getTotal(),
     })
 
-    const aux= [];
+    const aux = [];
 
     function getImporte(quantity, price) {
         var res = quantity * price;
@@ -53,7 +53,7 @@ export default function Cart({ cart, where }) {
     }
 
     function confirmSale() {
-        setToSend((toSend)=>({
+        setToSend((toSend) => ({
             ...toSend,
             importe: aux,
         }));
@@ -62,7 +62,6 @@ export default function Cart({ cart, where }) {
         history.push({
             pathname: '/NuevaVenta', state: {
                 toSend: toSend,
-
             }
         })
     }
@@ -81,7 +80,7 @@ export default function Cart({ cart, where }) {
                     <Table style={{ fontSize: "1.25rem" }} aria-label="spanning table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="start" colSpan={3}>
+                                <TableCell align="left" colSpan={3}>
                                     Ítems
                                 </TableCell>
                                 <TableCell align="right">Importes</TableCell>
