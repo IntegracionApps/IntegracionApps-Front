@@ -45,7 +45,7 @@ const Login = () => {
     }
     return (
         <body>
-            <div className="container">
+            <div className="container_login">
                 <div className="forms-container">
                     <form action="" className="sign-in-form" onSubmit={handleSubmit}>
                         <h2 className="title">Iniciar Sesión</h2>

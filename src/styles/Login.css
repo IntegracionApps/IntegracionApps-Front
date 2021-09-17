@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-.container{
+.container_login{
+    display: flex;
     background-image: url("./../img/mercado.jpg");
     background-size: cover;
     position: relative;
