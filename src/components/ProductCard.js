@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
 import { Add, Remove } from '@material-ui/icons';
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, Fragment } from 'react';
 import { useHistory } from 'react-router';
 import { useCart } from 'react-use-cart';
 // import product_data from "../data/product_data"
@@ -22,7 +22,7 @@ function AddedItemDialog(props) {
 
     if (itemsToSend === undefined) return null
     return (
-        <div>
+        <React.Fragment>
             <Dialog onClose={handleClose} open={open}>
                 <DialogTitle>¡Éxito!</DialogTitle>
                 <DialogContent dividers>
@@ -33,7 +33,7 @@ function AddedItemDialog(props) {
                     <Button onClick={handleGoTo} color="secondary">Ver mi Carrito</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </React.Fragment>
     );
 }
 
@@ -106,7 +106,7 @@ export default function ProductCard({ product_data }) {
                                     }} color="primary">
                                         <Remove />
                                     </IconButton>
-                                    <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
+                                    <button className="btn" onClick={() => handleAddItem(item)}>Agregar al carrito</button>
                                     <IconButton onClick={() => {
                                         updateItemQuantity(item.id, getItem(item.id).quantity + 1);
                                         // console.log(getItem(item.id))

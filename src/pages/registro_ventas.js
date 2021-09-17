@@ -30,14 +30,24 @@ function Row(props) {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
+                            <Typography variant="h4" gutterBottom component="div">
                                 Detalle
                             </Typography>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-evenly"}}>
+                                <Typography variant="h6" gutterBottom >
+                                    Fecha de Venta : {row.fechaEmision}
+                                </Typography>
+                                <Typography variant="h6" gutterBottom >
+                                    Cliente : {row.cliente.name} {row.cliente.lastName}
+                                </Typography>
+                            </div>
                             <Table size="small" aria-label="purchases">
+                                {/* <TableRow>
+                                    <TableCell>Fecha de Venta</TableCell>
+                                    <TableCell>Cliente</TableCell>
+                                </TableRow> */}
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Fecha de Venta</TableCell>
-                                        <TableCell>Cliente</TableCell>
                                         <TableCell>Descripción</TableCell>
                                         <TableCell >Precio Unitario</TableCell>
                                         <TableCell>Cantidad</TableCell>
@@ -47,8 +57,8 @@ function Row(props) {
                                 <TableBody>
                                     {row.items.map((itemDetailRow) => (
                                         <TableRow key={itemDetailRow.id}>
-                                            <TableCell component="th" scope="row">{row.fechaEmision}</TableCell>
-                                            <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell>
+                                            {/* <TableCell component="th" scope="row">{row.fechaEmision}</TableCell>
+                                            <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                             <TableCell align="left">{itemDetailRow.descrip}</TableCell>
                                             <TableCell>AR$ {itemDetailRow.price}</TableCell>
                                             <TableCell align="left">{itemDetailRow.quantity} [un]</TableCell>
