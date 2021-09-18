@@ -8,6 +8,10 @@ import '../styles/ProductCard.css'
 import axios from "axios";
 
 
+
+import Pic from "@material-ui/icons/PhotoSizeSelectActualRounded";
+
+
 // import product_data from "../data/product_data.js";
 
 function AddedItemDialog(props) {
@@ -157,6 +161,9 @@ export default function Home() {
                                         <img src=""></img>
                                     </div>
                                     <div className="card_header">
+                                        <div class="ProductIcon">
+                                            <Pic style={{ fontSize: 160 }}/>
+                                        </div>
                                         <h2>{item.nombre}</h2>
                                         <p>{item.descrip}</p>
                                         <p className="price">AR$ {item.price}</p>
