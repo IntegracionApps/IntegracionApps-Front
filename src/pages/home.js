@@ -9,6 +9,10 @@ import axios from "axios";
 import ProductCard from "../components/ProductCard";
 
 
+
+import Pic from "@material-ui/icons/PhotoSizeSelectActualRounded";
+
+
 // import product_data from "../data/product_data.js";
 
 function AddedItemDialog(props) {
