@@ -35,7 +35,7 @@ function Row(props) {
                             </Typography>
                             <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-evenly"}}>
                                 <Typography variant="h6" gutterBottom >
-                                    Fecha de Venta : {row.fechaEmision}
+                                    Fecha de Venta : {new Date(row.fechaEmision).toLocaleString()}
                                 </Typography>
                                 <Typography variant="h6" gutterBottom >
                                     Cliente : {row.cliente.name} {row.cliente.lastName}
@@ -61,9 +61,9 @@ function Row(props) {
                                             <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                             <TableCell align="left">{itemDetailRow.descrip}</TableCell>
                                             <TableCell>AR$ {itemDetailRow.price}</TableCell>
-                                            <TableCell align="left">{itemDetailRow.quantity} [un]</TableCell>
+                                            <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.tipoUnidad}]</TableCell>
                                             <TableCell align="left">
-                                                AR$ {itemDetailRow.itemTotal}
+                                                AR$ {itemDetailRow.itemTotal.toFixed(2)}
                                             </TableCell>
                                         </TableRow>
                                     ))}
