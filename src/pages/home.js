@@ -54,6 +54,8 @@ export default function Home() {
 
     const [open, setOpen] = useState(false);
 
+    const finished = localStorage.getItem("finished");
+
     const history = useHistory();
 
     const {
@@ -80,9 +82,15 @@ export default function Home() {
             .catch(function (error) {
                 console.log(error);
             });
-        setItems(items);
+        console.log(finished);
+        if (finished === "true") {
+            setItems([]);
+            localStorage.setItem("finished", false);
+        }
+        else setItems(items);
         // console.log("hipótesis");
     }, []);
+
 
 
     const handleClose = (value) => {
@@ -108,15 +116,21 @@ export default function Home() {
         if (!filterFlag) setOpen(true);
     }
 
-    function handleItemUpdate(item, qtty) {
-        switch (qtty) {
-            case -1:
-                if (getItem(item.id).quantity - 1 === 0) removeItem(item.id);
-                else updateItemQuantity(item.id, getItem(item.id).quantity + qtty);
-                break;
-            case 1:
-                updateItemQuantity(item.id, getItem(item.id).quantity + qtty);
-
+    function handleItemUpdate(item, qtty, exceeds) {
+        if (item.stock > 0) {
+            switch (qtty) {
+                case -1:
+                    if (getItem(item.id).quantity - 1 === 0) removeItem(item.id);
+                    else {
+                        updateItemQuantity(item.id, getItem(item.id).quantity + qtty);
+                        // setWillDisable(false);
+                    }
+                    break;
+                case 1:
+                    // if (getItem(item.id).quantity + 1 >= item.stock) setWillDisable(true);
+                    updateItemQuantity(item.id, getItem(item.id).quantity + qtty);
+                    break;
+            }
         }
     }
 
@@ -162,8 +176,9 @@ export default function Home() {
                                         <Badge badgeContent={getItem(item.id).quantity}>
                                             <ProductCard
                                                 item={getItem(item.id)}
-                                                handleAddItem={(item) => { handleAddItem(item) }}
-                                                handleItemUpdate={(item, qtty) => { handleItemUpdate(item, qtty) }} />
+                                                handleAddFather={(item) => { handleAddItem(item) }}
+                                                handleFatherItemUpdate={(item, qtty) => { handleItemUpdate(item, qtty) }}
+                                            />
                                         </Badge>
                                     }
                                 </div>

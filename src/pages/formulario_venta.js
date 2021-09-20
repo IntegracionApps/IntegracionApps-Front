@@ -202,6 +202,7 @@ export default function NuevaVenta(props) {
                 console.log(response.status + " " + response.statusText);
                 if (response.status >= 200) {
                     alert(response.status + " " + response.statusText);
+                    localStorage.setItem("finished", true);
                     history.push('/Home');
                 }
             })

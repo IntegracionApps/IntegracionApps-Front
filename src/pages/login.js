@@ -14,6 +14,7 @@ const Login = () => {
 
     const history = useHistory();
 
+    localStorage.setItem("finished", false);
 
     const handleMail = (event) => {
         event.preventDefault();

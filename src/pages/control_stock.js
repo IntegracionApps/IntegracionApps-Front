@@ -12,39 +12,41 @@ export default function ControlStock() {
     useEffect(() => {
         axios.get('http://localhost:5000/Products/get/all')
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
                 setData(response.data);
             })
             .catch(function (error) {
                 console.log(error);
-            })
-            .then(function () {
-                console.log("default");
             });
+        setRefresh(false)
     }, [refresh])
 
 
 
     function handleUpdate(item, num) {
+        console.log(item);
         let newQuantity = item.stock + num;
-        switch (num) {
-            case -1:
-                axios.post("http://localhost:5000/Products/update/" + item.id, {
-                    newQuantity: newQuantity
-                })
-                    .then((res) => { console.log(res.statusText) });
-                console.log("Se ha quitado una unidad de " + item.descrip);
-                break;
-            case 1:
-                axios.post("http://localhost:5000/Products/update/" + item.id, {
-                    newQuantity: newQuantity
-                })
-                    .then((res) => { console.log(res.statusText) });
-                console.log("Se ha agregado una unidad de " + item.descrip);
-                break;
+        axios.post("http://localhost:5000/Products/update/" + item.id, {
+            newQuantity: newQuantity
+        })
+            .then((res) => { console.log(res.statusText) });
+        // switch (num) {
+        //     case -1:
+        //         axios.post("http://localhost:5000/Products/update/" + item.id, {
+        //             newQuantity: newQuantity
+        //         })
+        //             .then((res) => { console.log(res.statusText) });
+        //         // console.log("Se ha quitado una unidad de " + item.descrip);
+        //         break;
+        //     case 1:
+        //         axios.post("http://localhost:5000/Products/update/" + item.id, {
+        //             newQuantity: newQuantity
+        //         })
+        //             .then((res) => { console.log(res.statusText) });
+        //         console.log("Se ha agregado una unidad de " + item.descrip);
+        //         break;
 
-        }
-        setRefresh(!refresh);
+        setRefresh(true);
     }
 
     return (
