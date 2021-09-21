@@ -78,7 +78,7 @@ form{
     outline: none;
     border-radius: 49px;
     cursor: pointer;
-    background-color: orange;
+    background-color: rgb(226, 148, 2);
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;
@@ -89,7 +89,7 @@ form{
 }
 
 .btnLogin:hover{
-    background-color: orangered;
+    background-color: rgb(12, 133, 163);
 }
 
 
