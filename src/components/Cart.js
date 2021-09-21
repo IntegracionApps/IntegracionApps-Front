@@ -98,7 +98,7 @@ export default function Cart({ cart, where }) {
                                     <TableRow>
                                         <TableCell>{item.descrip}</TableCell>
                                         {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
-                                        <TableCell align="right">{item.quantity} [un]</TableCell>
+                                        <TableCell align="right">{item.quantity} [{item.tipoUnidad}]</TableCell>
                                         <TableCell align="right">AR$ {item.price}</TableCell>
                                         <TableCell align="right">AR$ {getImporte(item.quantity, item.price).toFixed(2)}</TableCell>
                                     </TableRow>
