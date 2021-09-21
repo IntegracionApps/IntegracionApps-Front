@@ -51,6 +51,8 @@ export default function Home() {
     // console.log(product_data);
 
     const [product_data, setData] = useState([]);
+    const [products_copy, setProductsCopy] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
 
     const [open, setOpen] = useState(false);
 
@@ -61,8 +63,6 @@ export default function Home() {
     const {
         items,
         isEmpty,
-        totalUniqueItems,
-        totalItems,
         setItems,
         addItem,
         removeItem,
@@ -78,6 +78,7 @@ export default function Home() {
             .then(function (response) {
                 // console.log(response);
                 setData(response.data);
+                setProductsCopy(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -141,10 +142,23 @@ export default function Home() {
         });
     }
 
+    const handleSearchChange = (event) => {
+        setSearchValue(event.target.value);
+        if (searchValue !== "") {
+            setData(
+                products_copy.filter((item) => (
+                    item.nombre.toLowerCase().match(event.target.value.toLowerCase()) || item.categoria.toLowerCase().match(event.target.value.toLowerCase()))
+                )
+            );
+            // console.log(searchValue.toL);
+        }
+        if (searchValue === "") setData(products_copy);
+    }
+
 
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
-            <Header />
+            <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} />
             <CartProvider>
                 <Fab variant="extended" style={{ alignSelf: "end", margin: "1.5% 2% 0 0" }} onClick={() => handleGoTo(items, history)}>
                     <ShoppingCart />
