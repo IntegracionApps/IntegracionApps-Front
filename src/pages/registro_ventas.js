@@ -20,7 +20,7 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
 
-                <TableCell component="th" scope="row">{row._id}</TableCell>
+                <TableCell component="th" scope="row">{row.id.toString().padStart(10,"0")}</TableCell>
                 <TableCell align="right">{row.items.length} Ítems vendidos</TableCell>
                 <TableCell align="right">{row.total}</TableCell>
                 <TableCell align="right">{row.medioPago}</TableCell>
@@ -42,10 +42,6 @@ function Row(props) {
                                 </Typography>
                             </div>
                             <Table size="small" aria-label="purchases">
-                                {/* <TableRow>
-                                    <TableCell>Fecha de Venta</TableCell>
-                                    <TableCell>Cliente</TableCell>
-                                </TableRow> */}
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Descripción</TableCell>
@@ -61,9 +57,9 @@ function Row(props) {
                                             <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                             <TableCell align="left">{itemDetailRow.descrip}</TableCell>
                                             <TableCell>AR$ {itemDetailRow.price}</TableCell>
-                                            <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.tipoUnidad}]</TableCell>
+                                            <TableCell align="left">{itemDetailRow.cantidad} [{itemDetailRow.tipoUnidad}]</TableCell>
                                             <TableCell align="left">
-                                                AR$ {itemDetailRow.itemTotal.toFixed(2)}
+                                                AR$ {itemDetailRow.importe}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -85,7 +81,7 @@ export default function RegistroVentas() {
         axios.get("http://localhost:5000/Sales/get/all")
             .then(function (response) {
                 // handle success
-                console.log(response);
+                // console.log(response);
                 setVentas(response.data);
             })
             .catch(function (error) {

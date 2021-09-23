@@ -2,5 +2,9 @@
     display: flex;
     flex-direction: column;
     max-width: 70%;
+}
+
+.main_content .root{
+    width: 100%;
     align-items: center;
 }

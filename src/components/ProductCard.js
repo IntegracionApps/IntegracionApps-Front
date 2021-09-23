@@ -27,8 +27,9 @@ export default function ProductCard(props) {
 
 
     useEffect(() => {
-        setItems([item]);
-        // console.log(items);
+        // console.log(item);
+        setItems([]);
+        addItem(item);
     }, []);
 
 
@@ -59,34 +60,34 @@ export default function ProductCard(props) {
 
 
     return (
-        <div className="card_header">
-            <h2>{item.nombre}</h2>
-            <p>{item.descrip}</p>
-            <p className="price">AR$ {item.price}</p>
-            <React.Fragment>
-                {/* <Badge className="card_header" badgeContent={getItem(item.id).quantity}> */}
-                <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                    <IconButton onClick={() => {
-                        handleItemUpdate(item, -1);
-                        handleFatherItemUpdate(item, -1);
-                        // updateItemQuantity(item.id, getItem(item.id).quantity - 1);
-                        // console.log(getItem(item.id))
-                    }} color="primary">
-                        <Remove />
-                    </IconButton>
-                    <button className="btn" onClick={() => handleItemUpdate(item, 1)}>Agregar otro</button>
-                    <IconButton disabled={willDisable} onClick={() => {
-                        
-                        handleItemUpdate(item, 1);
-                        handleFatherItemUpdate(item, 1);
-                        // updateItemQuantity(item.id, getItem(item.id).quantity + 1);
-                        console.log(getItem(item.id).quantity);
-                        // console.log(getItem(item.id))
-                    }} color="primary">
-                        <Add />
-                    </IconButton>
-                </div>
-                {/* </Badge> */}
-            </React.Fragment>
-        </div>)
+        <React.Fragment >
+                <h2>{item.nombre}</h2>
+                <p>{item.descrip}</p>
+                <p className="price">AR$ {item.price}</p>
+                <React.Fragment>
+                    {/* <Badge className="card_header" badgeContent={getItem(item.id).quantity}> */}
+                    <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                        <IconButton onClick={() => {
+                            handleItemUpdate(item, -1);
+                            handleFatherItemUpdate(item, -1);
+                            // updateItemQuantity(item.id, getItem(item.id).quantity - 1);
+                            // console.log(getItem(item.id))
+                        }} color="primary">
+                            <Remove />
+                        </IconButton>
+                        <button className="btn" onClick={() => handleItemUpdate(item, 1)}>Agregar otro</button>
+                        <IconButton disabled={willDisable} onClick={() => {
+
+                            handleItemUpdate(item, 1);
+                            handleFatherItemUpdate(item, 1);
+                            // updateItemQuantity(item.id, getItem(item.id).quantity + 1);
+                            console.log(getItem(item.id).quantity);
+                            // console.log(getItem(item.id))
+                        }} color="primary">
+                            <Add />
+                        </IconButton>
+                    </div>
+                    {/* </Badge> */}
+                </React.Fragment>
+        </React.Fragment>)
 }
