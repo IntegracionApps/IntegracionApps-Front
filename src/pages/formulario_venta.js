@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button, Typography } from "@material-ui/core";
 import axios from "axios";
 import { Field, Form, useFormik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -241,24 +241,27 @@ export default function NuevaVenta(props) {
                             />
                         </div>
 
-                        <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
+                        <Select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
                             <option value=''>Seleccione un medio de pago</option>
                             <option value="Efectivo">Efectivo</option>
                             <option value="Crédito">Crédito</option>
                             <option value="Débito">Débito</option>
-                        </select>
+                        </Select>
                         {formik.errors.medioPago && <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>}
 
                         {formik.values.medioPago != "Efectivo" ? null :
-                            <TextField
-                                name="pagoRealizado"
-                                label="¿Cuánto efectivo se entregó?"
-                                value={formik.values.pagoRealizado}
-                                onChange={formik.handleChange}
-                                error={formik.touched.phone && Boolean(formik.errors.pagoRealizado)}
-                                helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
-                            />
-
+                            <div>
+                                <TextField
+                                    fullWidth
+                                    name="pagoRealizado"
+                                    label="¿Cuánto efectivo se entregó?"
+                                    value={formik.values.pagoRealizado}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.phone && Boolean(formik.errors.pagoRealizado)}
+                                    helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
+                                />
+                                <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
+                            </div>
                         }
 
                         <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Confirmar Compra</Button>
