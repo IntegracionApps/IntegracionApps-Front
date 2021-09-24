@@ -86,9 +86,10 @@ export default function Home() {
                 console.log(error);
             });
         // console.log(finished);
-        if (finished === "true") {
+        if (finished === "true" ||  window.localStorage.getItem("loggedOut") === "true") {
             setItems([]);
             localStorage.setItem("finished", false);
+            localStorage.setItem("loggedOut", false);
         }
         else setItems(items);
         // console.log("hipótesis");
@@ -164,7 +165,7 @@ export default function Home() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
-            <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} onQuit={() => emptyCart()} />
+            <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} />
             <CartProvider>
                 <div className="fab">
                     <Fab className="button" variant="extended" onClick={() => handleGoTo(items, history)} disabled={isEmpty}>
@@ -177,7 +178,7 @@ export default function Home() {
                         }>
                     </Chip>
                     {isEmpty ? null :
-                        <Chip style={{marginTop: "5%", backgroundColor: "red", color:"white"}} label="Vaciar Carrito" onClick={() => {emptyCart();}}/>
+                        <Chip style={{ marginTop: "5%", backgroundColor: "red", color: "white" }} label="Vaciar Carrito" onClick={() => { emptyCart(); }} />
                     }
                 </div>
                 <div className="container_home">

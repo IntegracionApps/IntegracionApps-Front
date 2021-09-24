@@ -101,7 +101,7 @@ export default function SideMenu(props) {
             //     pathname: '/LogOut', 
             // })
             if(window.confirm("¿Está seguro que quiere cerrar sesión?")){
-                props.onQuit();
+                window.localStorage.setItem("loggedOut", true);
                 history.push("/");
             }
         }

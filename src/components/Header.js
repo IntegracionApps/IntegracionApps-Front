@@ -11,7 +11,7 @@ import "../styles/SearchBar.css";
 
 
 export default function Header(props) {
-    const { onSearchBarChange, searchValue, onQuit } = props;
+    const { onSearchBarChange, searchValue  } = props;
 
 
     return (
@@ -28,7 +28,7 @@ export default function Header(props) {
                 <input value={searchValue} onChange={onSearchBarChange} className="search-txt" type="text" placeholder="Buscar por marca o categoría..." />
                 <btn className="search-btn" ><Search /></btn>
             </div>
-            <SideMenu onQuit={onQuit}/>
+            <SideMenu />
 
         </div>
     )
