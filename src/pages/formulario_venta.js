@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button, Typography } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@material-ui/core";
 import axios from "axios";
 import { Field, Form, useFormik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -74,6 +74,7 @@ export default function NuevaVenta(props) {
     const history = useHistory();
     const [receive, setReceive] = useState(props.location.state.toSend);
 
+    const [successOpen, setSuccessOpen] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -116,9 +117,7 @@ export default function NuevaVenta(props) {
                 .then(function (response) {
                     console.log(response.status + " " + response.statusText);
                     if (response.status >= 200) {
-                        alert(response.status + " " + response.statusText);
-                        localStorage.setItem("finished", true);
-                        history.push('/Home');
+                        setSuccessOpen(true);
                     }
                 })
                 .catch(function (error) {
@@ -145,6 +144,11 @@ export default function NuevaVenta(props) {
         // console.log(formik.values);
     }, [])
 
+
+    function handleGoTo() {
+        localStorage.setItem("finished", true);
+        history.push('/Home');
+}
 
     return (
         <div>
@@ -271,6 +275,16 @@ export default function NuevaVenta(props) {
                     </form>
                 </div>
             </div>
+            <Dialog open={successOpen} onClose={() => {setSuccessOpen(false)}}>
+                    <DialogTitle>¡Éxito!</DialogTitle>
+                    <DialogContent>
+                        <Typography>La operación se realizó con éxito</Typography>
+                        <Typography>¡Gracias por elegirnos!</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {handleGoTo()}}>Al Menú Principal</Button>
+                    </DialogActions>
+            </Dialog>
         </div >
     )
 }
