@@ -1,75 +1,118 @@
 import { Button, Divider, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
 import { Menu, SystemUpdate } from "@material-ui/icons";
-import { React, useState } from "react";
+import axios from 'axios';
+import { React, useEffect, useState } from "react";
 import { useHistory } from 'react-router';
 import "../styles/SideMenu.css";
 
-export default function SideMenu() {
+export default function SideMenu(props) {
 
-    const history= useHistory();
+    // const { roleValue } = props;
+    let side_menu_buttons = []
 
     const [drawerToggle, setDrawerToggle] = useState(false);
+    
+    const history = useHistory();
+    // console.log(roleValue + " "+ typeof(roleValue));
+    switch (parseInt(window.localStorage.getItem("rol"))) {
+        case 0:
+            side_menu_buttons = [
+                {
+                    name: 'Principal',
+                    path: "/",
+                },
 
-    const side_menu_buttons = [
-        {
-            name: 'Principal',
-            path: "/",
-        },
+                {
+                    name: 'Registro de Ventas',
+                    path: "/RegistroVentas",
+                },
 
-        {
-            name: 'Registro de Ventas',
-            path: "/RegistroVentas",
-        },
+                {
+                    name: 'Control de Stock',
+                    path: "/Stock",
+                },
 
-        {
-            name: 'Control de Stock',
-            path: "/Stock",
-        },
+                {
+                    name: 'Lista de Empleados',
+                    path: "/Empleados"
+                },
 
-        {
-            name: 'Lista de Empleados',
-            path: "/Empleados"
-        },
+                {
+                    name: 'Cerrar Sesión',
+                    path: "/LogOut"
+                },
+            ];
+            break;
+        case 1:
+            side_menu_buttons = [
+                {
+                    name: 'Principal',
+                    path: "/",
+                },
 
-        {
-            name: 'Cerrar Sesión',
-            path: "/LogOut"
-        },
-    ];
+                {
+                    name: 'Registro de Ventas',
+                    path: "/RegistroVentas",
+                },
 
-    const Redirect = (text) =>{
-        console.log("te vas a la página: "+ text)
-        if(text==="/"){
-          setDrawerToggle(false);
-          history.push({
-              pathname: '/Home',
-          })
-        }else if(text==="/RegistroVentas"){
-          setDrawerToggle(false);
-          history.push({
-              pathname: '/RegistroVentas',
-          })
-        }else if(text==="/Stock"){
-          setDrawerToggle(false);
-          history.push({
-              pathname: '/Stock', 
-          })
+                {
+                    name: 'Cerrar Sesión',
+                    path: "/LogOut"
+                },
+            ];
+            break;
+        case 2:
+            side_menu_buttons = [
+                {
+                    name: 'Principal',
+                    path: "/",
+                },
+
+                {
+                    name: 'Cerrar Sesión',
+                    path: "/LogOut"
+                },
+            ];
+            break;
+
+    }
+
+    const Redirect = (text) => {
+        // console.log("te vas a la página: " + text)
+        if (text === "/") {
+            setDrawerToggle(false);
+            history.push({
+                pathname: '/Home',
+            })
+        } else if (text === "/RegistroVentas") {
+            setDrawerToggle(false);
+            history.push({
+                pathname: '/RegistroVentas',
+            })
+        } else if (text === "/Stock") {
+            setDrawerToggle(false);
+            history.push({
+                pathname: '/Stock',
+            })
         }
-        else if(text==="/LogOut"){
+        else if (text === "/LogOut") {
             setDrawerToggle(false);
             // history.push({
             //     pathname: '/LogOut', 
             // })
-            alert("Se ha cerrado sesión")
-          }
-        else if(text==="/Empleados"){
+            if(window.confirm("¿Está seguro que quiere cerrar sesión?")){
+                props.onQuit();
+                history.push("/");
+            }
+        }
+        else if (text === "/Empleados") {
             setDrawerToggle(false);
             history.push({
-                pathname:'/Empleados',
+                pathname: '/Empleados',
             })
         }
     }
-   
+
 
     const list = () => (
         <div className={"container"}>
@@ -80,7 +123,7 @@ export default function SideMenu() {
             <List>
                 {side_menu_buttons.map((item, index) => (
                     <div>
-                        <ListItem button key={index} onClick= {() => {Redirect(item.path)}}>
+                        <ListItem button key={index} onClick={() => { Redirect(item.path) }}>
                             {/* <Link to={item.path}>{item.name}</Link> */}
                             {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
                             <ListItemText primary={item.name} />
