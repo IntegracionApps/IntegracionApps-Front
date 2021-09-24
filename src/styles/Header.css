@@ -2,19 +2,47 @@
     justify-content: space-between;
     background-color: #fd8957;
     width: 100%;
-    height: 90px;
+    height: 100px;
     display: flex;
 }
 
 .HeaderLogo{
-    padding: 10px 0 0 10px;
+    margin: auto;
+    margin-left: 15px;
+    margin-right: 15px;
     /* margin-left: 25px; */
     color: white;
 }
 
-.HeaderLogo h1{
-    float: right;
-    font-size: 32px;
-    font-family: Arial, Helvetica, sans-serif;
+.titulo{
+    margin: auto;
+    margin-left: 0px;
+    font-size: 14px;
+    font-family: cursive;
     color: white;
 }
+
+
+@media screen and (max-width: 900px){
+    .titulo{
+        display: none;
+    }
+
+}
+
+
+@media screen and (max-width: 700px){
+    .HeaderLogo{
+        display: none;
+    }
+}
+
+
+
+
+
+@media screen and (max-width: 1000px){
+    .search-box{
+     width: 40%;
+    }
+ }

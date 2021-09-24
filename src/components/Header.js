@@ -19,6 +19,8 @@ export default function Header(props) {
 
             <div className="HeaderLogo">
                 <ShoppingCart style={{ fontSize: 64 }} />
+            </div>
+            <div className="titulo">
                 <h1>El Changuito</h1>
             </div>
 
