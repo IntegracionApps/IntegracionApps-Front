@@ -94,6 +94,8 @@ export default function NuevaVenta(props) {
             pagoRealizado: '',
             vuelto: null,
             estado: 'Emitido',
+            otros1: 'IVA RESPONSABLE INSCRIPTO',
+            otros2: 'A RESPONSABLE FINAL',
             sucursal: null,
         },
         validationSchema: validationSchema,
@@ -241,12 +243,12 @@ export default function NuevaVenta(props) {
                             />
                         </div>
 
-                        <Select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
+                        <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
                             <option value=''>Seleccione un medio de pago</option>
                             <option value="Efectivo">Efectivo</option>
                             <option value="Crédito">Crédito</option>
                             <option value="Débito">Débito</option>
-                        </Select>
+                        </select>
                         {formik.errors.medioPago && <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>}
 
                         {formik.values.medioPago != "Efectivo" ? null :
