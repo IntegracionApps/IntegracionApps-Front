@@ -119,8 +119,8 @@ export default function Cart({ cart, where }) {
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Descuento:</TableCell>
-                                <TableCell align="right">{ } %</TableCell>
-                                <TableCell align="right">AR$ { }</TableCell>
+                                <TableCell align="right">-7%</TableCell>
+                                <TableCell align="right">AR$ {(cartTotal * -0.07).toFixed(2)}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
