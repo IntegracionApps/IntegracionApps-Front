@@ -166,24 +166,21 @@ export default function Home() {
         <div style={{ display: "flex", flexDirection: "column" }}>
             <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} onQuit={() => emptyCart()} />
             <CartProvider>
-                <div style={{ display: "flex", flexDirection: "column", alignSelf: "end", margin: "7.5% 2% 0 0", position: "fixed" }}>
-                    <Fab aria-aria-describedby={id} variant="extended" onClick={() => handleGoTo(items, history)} disabled={isEmpty}>
+                <div className="fab">
+                    <Fab className="button" variant="extended" onClick={() => handleGoTo(items, history)} disabled={isEmpty}>
                         <ShoppingCart />
                         Carrito
                     </Fab>
-                    <Chip style={{ marginTop: "10%" }}
+                    <Chip style={{ marginTop: "10%", backgroundColor: "orange", color: "black" }}
                         label={
                             isEmpty ? "¡Sin productos!" : totalUniqueItems + " Ítem(s)"
                         }>
                     </Chip>
+                    {isEmpty ? null :
+                        <Chip style={{marginTop: "5%", backgroundColor: "red", color:"white"}} label="Vaciar Carrito" onClick={() => {emptyCart();}}/>
+                    }
                 </div>
-                {isEmpty ? null :
-                    <button onClick={() => {
-                        emptyCart();
-                    }}>Vaciar Carrito</button>
-                }
-
-                <div className="main_content">
+                <div className="container_home">
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
                         {product_data.map((item) => {
                             const isThere = inCart(item.id)
@@ -199,7 +196,7 @@ export default function Home() {
                                             </div>
                                         </div>
                                         :
-                                        <Badge className="card_header" badgeContent={getItem(item.id).quantity} color="primary">
+                                        <Badge className="card_header" badgeContent={getItem(item.id).quantity} color="primary" anchorOrigin={{ vertical: "top", horizontal: "left" }}>
                                             <ProductCard
                                                 item={getItem(item.id)}
                                                 handleAddFather={(item) => { handleAddItem(item) }}

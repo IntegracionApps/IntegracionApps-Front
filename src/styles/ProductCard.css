@@ -5,7 +5,7 @@
 }
 
 
-.main_content{
+.container_home{
     display: flex;
     position: relative;
     flex-wrap: wrap;
@@ -15,6 +15,23 @@
     box-sizing: border-box;
     justify-content: space-between;
     flex-wrap: wrap;
+}
+
+.fab{
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    margin: 7.5% 2% 0 0;
+    position: fixed;
+    /* fled: "column", alignSelf: "end", margin: "7.5% 2% 0 0", position: "fixed"  */
+}
+
+.fab .button{
+    background-color: yellow;
+}
+
+.fab .button:disabled{
+    background-color: lightgoldenrodyellow;
 }
 
 
@@ -39,7 +56,7 @@
     margin: 25px 0;
     padding: 10px 0 0 0;
     box-shadow: -1px 4px 28px 0px rgba(0,0,0,0.75);
-
+    
 }
 
 .card .card_header h2{
@@ -94,4 +111,21 @@
     /* display: flex; */
     font-size: 20px;
     margin-top: 15px;
+}
+
+@media screen and (max-width: 900px){
+    .container_home{
+        display: flex;
+        position: relative;
+        flex-wrap: wrap;
+        margin: auto;
+        justify-content: space-between;
+    }
+
+    .fab{
+        margin: 30% 2% 0 0;
+        z-index: 100;
+    }
+
+
 }
