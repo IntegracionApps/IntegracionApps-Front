@@ -40,16 +40,16 @@ const Login = () => {
             password: values.pass,
         })
             .then((res) => {
-                console.log(res.status);
                 switch (res.status) {
                     case 200:
-                        if (res.data !== {}) {
+                        console.log(res.data);
+                        if (res.data !== false) {
                             if (res.data.rol === "Administrador") window.localStorage.setItem("rol", 0);
                             if (res.data.rol === "Cajero") window.localStorage.setItem("rol", 1);
                             if (res.data.rol === "Cliente") window.localStorage.setItem("rol", 2);
                             history.push("/Home");
                         }
-                        if (res.data === false) alert("Datos ingresados incorrectos");
+                        else alert("Datos ingresados incorrectos");
                         break;
 
                 }
