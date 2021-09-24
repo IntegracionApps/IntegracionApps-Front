@@ -60,7 +60,7 @@ export default function ControlStock() {
                     return (
                         <div>
                             {item.stock > item.puntoRepo &&
-                                <Alert className={"root"} severity="success" icon={false} variant="outlined"
+                                <Alert className={"root_stock"} severity="success" icon={false} variant="outlined"
                                     action={
                                         <div color="primary" aria-label="outlined primary button group">
                                             <IconButton onClick={() => handleUpdate(item, -1)}>
@@ -76,7 +76,7 @@ export default function ControlStock() {
                                 </Alert>
                             }
                             {(0 < item.stock && item.stock <= item.puntoRepo) &&
-                                <Alert className={"root"} severity="warning" variant="filled"
+                                <Alert className={"root_stock"} severity="warning" variant="filled"
                                     action={
                                         <div color="primary" aria-label="outlined primary button group">
                                             <IconButton onClick={() => handleUpdate(item, -1)}>
@@ -92,7 +92,7 @@ export default function ControlStock() {
                                 </Alert>
                             }
                             {item.stock === 0 &&
-                                <Alert className={"root"} severity="error" variant="filled"
+                                <Alert className={"root_stock"} severity="error" variant="filled"
                                     action={
                                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} aria-label="outlined primary button group">
                                             <IconButton  disabled={true} >

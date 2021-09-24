@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     max-width: 70%;
+    margin-top: 2%;
 }
 
-.main_content .root{
+.main_content .root_stock{
     width: 100%;
     align-items: center;
 }
