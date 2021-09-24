@@ -6,7 +6,29 @@
     margin: auto;
 }
 
-.table_container{
+.main_content .table_container{
     min-width: 700;
     font-size: 2rem;
+    margin-top: 2.5%;
 }
+
+.main_content .root{
+    background-color: royalblue;
+    color: seashell;
+    margin-top: 2.5%; 
+}
+
+.main_content .root:hover{
+    background-color: darkblue;
+    color: seashell;
+    margin-top: 2.5%; 
+}
+
+
+
+@media screen and (max-width: 900px){
+    .main_content{
+        align-items: center;
+        }
+ }
+ 

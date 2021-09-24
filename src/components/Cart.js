@@ -74,7 +74,8 @@ export default function Cart({ cart, where }) {
         </div>
     )
     return (
-        <div className="main_content" >
+        <React.Fragment>
+
             <div className="table_container">
 
                 <TableContainer component={Paper}>
@@ -130,11 +131,10 @@ export default function Cart({ cart, where }) {
                 </TableContainer>
 
             </div>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2.5%" }}>
 
-                <Button onClick={() => { confirmSale() }}>Confirmar Carrito</Button>
-            </div>
-        </div>
+            <Button className="root" onClick={() => { confirmSale() }}>Confirmar Carrito</Button>
+
+        </React.Fragment>
     );
 };
 
