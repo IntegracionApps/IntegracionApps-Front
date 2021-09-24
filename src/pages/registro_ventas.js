@@ -20,7 +20,7 @@ function Row(props) {
                     </IconButton>
                 </TableCell>
 
-                <TableCell component="th" scope="row">{row.id.toString().padStart(10,"0")}</TableCell>
+                <TableCell component="th" scope="row">{row.id.toString().padStart(10, "0")}</TableCell>
                 <TableCell align="right">{row.items.length} Ítems vendidos</TableCell>
                 <TableCell align="right">{row.total}</TableCell>
                 <TableCell align="right">{row.medioPago}</TableCell>
@@ -33,12 +33,28 @@ function Row(props) {
                             <Typography variant="h4" gutterBottom component="div">
                                 Detalle
                             </Typography>
-                            <div style={{ display: "flex", flexDirection: "row", justifyContent:"space-evenly"}}>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
+                                <Typography variant="h6" gutterBottom style={{marginRight:"2.5%"}}>
+                                    {row.sucursal.nombre}
+                                </Typography>
                                 <Typography variant="h6" gutterBottom >
+                                    Franquicia : {row.sucursal.direccion}
+                                </Typography>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
+                                <Typography variant="h6" gutterBottom style={{marginRight:"2.5%"}}>
                                     Fecha de Venta : {new Date(row.fechaEmision).toLocaleString()}
                                 </Typography>
                                 <Typography variant="h6" gutterBottom >
-                                    Cliente : {row.cliente.name} {row.cliente.lastName}
+                                    Cliente : {row.cliente.nombre} {row.cliente.apellido}
+                                </Typography>
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
+                                <Typography variant="h6" gutterBottom style={{marginRight:"2.5%"}}>
+                                    {row.otros1}
+                                </Typography>
+                                <Typography variant="h6" gutterBottom >
+                                    {row.otros2}
                                 </Typography>
                             </div>
                             <Table size="small" aria-label="purchases">
