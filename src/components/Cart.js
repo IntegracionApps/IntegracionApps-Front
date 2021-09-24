@@ -11,6 +11,7 @@ export default function Cart({ cart, where }) {
     const history = useHistory();
     useEffect(() => {
         setItems(cart);
+        console.log(cart);
     }, []);
 
 
@@ -58,7 +59,7 @@ export default function Cart({ cart, where }) {
             importe: aux,
         }));
 
-        // console.log(toSend);
+        console.log(toSend);
         history.push({
             pathname: '/NuevaVenta', state: {
                 toSend: toSend,

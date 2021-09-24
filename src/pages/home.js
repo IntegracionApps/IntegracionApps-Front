@@ -1,4 +1,4 @@
-import { Badge, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, Typography } from "@material-ui/core";
+import { Badge, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, Popover, Typography } from "@material-ui/core";
 import { Add, Remove, ShoppingCart } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router';
@@ -10,7 +10,7 @@ import ProductCard from "../components/ProductCard";
 
 
 
-import Pic from "@material-ui/icons/PhotoSizeSelectActualRounded";
+// import Pic from "@material-ui/icons/PhotoSizeSelectActualRounded";
 
 
 // import product_data from "../data/product_data.js";
@@ -53,6 +53,7 @@ export default function Home() {
     const [product_data, setData] = useState([]);
     const [products_copy, setProductsCopy] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    const [popoverOpen, setPopoverOpen] = useState(false)
 
     const [open, setOpen] = useState(false);
 
@@ -63,6 +64,7 @@ export default function Home() {
     const {
         items,
         isEmpty,
+        totalUniqueItems,
         setItems,
         addItem,
         removeItem,
@@ -74,7 +76,7 @@ export default function Home() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5000/Products/get/all')
+        axios.get('http://localhost:5000/Products/get/withStock')
             .then(function (response) {
                 // console.log(response);
                 setData(response.data);
@@ -83,7 +85,7 @@ export default function Home() {
             .catch(function (error) {
                 console.log(error);
             });
-        console.log(finished);
+        // console.log(finished);
         if (finished === "true") {
             setItems([]);
             localStorage.setItem("finished", false);
@@ -93,6 +95,9 @@ export default function Home() {
     }, []);
 
 
+    const popOpen = Boolean(popoverOpen);
+    const id = popOpen ? 'simple-popover' : undefined;
+
 
     const handleClose = (value) => {
         setOpen(false);
@@ -100,7 +105,7 @@ export default function Home() {
 
 
     function handleAddItem(item) {
-        // console.log(item);
+        console.log(item);
         var filterFlag = false;
         if (!isEmpty) {
             console.log(items.filter(product => item.id === product.id));
@@ -114,6 +119,7 @@ export default function Home() {
             }
         }
         addItem(item);
+        console.log(getItem(item.id));
         if (!filterFlag) setOpen(true);
     }
 
@@ -136,7 +142,7 @@ export default function Home() {
     }
 
     function handleGoTo(itemsToSend, history) {
-        history.push({
+        if (!isEmpty) history.push({
             pathname: '/Shopping_Cart',
             state: (itemsToSend)
         });
@@ -158,13 +164,19 @@ export default function Home() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
-            <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} />
+            <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} onQuit={() => emptyCart()} />
             <CartProvider>
-                <Fab variant="extended" style={{ alignSelf: "end", margin: "1.5% 2% 0 0" }} onClick={() => handleGoTo(items, history)}>
-                    <ShoppingCart />
-                    Carrito
-                </Fab>
-
+                <div style={{ display: "flex", flexDirection: "column", alignSelf: "end", margin: "7.5% 2% 0 0", position: "fixed" }}>
+                    <Fab aria-aria-describedby={id} variant="extended" onClick={() => handleGoTo(items, history)} disabled={isEmpty}>
+                        <ShoppingCart />
+                        Carrito
+                    </Fab>
+                    <Chip style={{ marginTop: "10%" }}
+                        label={
+                            isEmpty ? "¡Sin productos!" : totalUniqueItems + " Ítem(s)"
+                        }>
+                    </Chip>
+                </div>
                 {isEmpty ? null :
                     <button onClick={() => {
                         emptyCart();
@@ -181,13 +193,13 @@ export default function Home() {
                                         <div className="card_header">
                                             <h2>{item.nombre}</h2>
                                             <p>{item.descrip}</p>
-                                            <p className="price">AR$ {item.price}</p>
+                                            <p className="price">AR$ {item.price} x[{item.tipoUnidad}]</p>
                                             <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                                                 <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
                                             </div>
                                         </div>
                                         :
-                                        <Badge badgeContent={getItem(item.id).quantity}>
+                                        <Badge className="card_header" badgeContent={getItem(item.id).quantity} color="primary">
                                             <ProductCard
                                                 item={getItem(item.id)}
                                                 handleAddFather={(item) => { handleAddItem(item) }}
@@ -204,7 +216,7 @@ export default function Home() {
 
                 <AddedItemDialog itemsToSend={items} open={open} history={history} onClose={() => handleClose()} />
 
-            </CartProvider>
-        </div>
+            </CartProvider >
+        </div >
     )
 }
