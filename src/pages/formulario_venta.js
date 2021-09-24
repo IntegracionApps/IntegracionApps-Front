@@ -1,292 +1,271 @@
-import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button } from "@material-ui/core";
 import axios from "axios";
+import { Field, Form, useFormik, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
 import '../styles/Formulario.css';
 
-const useStyles = makeStyles({
-    input: {
-        margin: "0 5% 5% 0",
-        // minWidth: '50%',
-    },
-});
+// const useStyles = makeStyles({
+//     input: {
+//         margin: "5% 0 5% 0",
+//         // minWidth: '50%',
+//     },
+// });
 
+const Number = /^[0-9]+$/;
+
+const validationSchema = yup.object({
+
+    name: yup
+        .string()
+        .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
+        .required('¡Este campo es obligatorio!'),
+
+    lastName: yup
+        .string()
+        .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
+        .required('¡Este campo es obligatorio!'),
+
+    address: yup
+        .string()
+        //.matches(/^[A-Za-z]$/,'Ingrese únicamente letras')
+        .required('¡Este campo es obligatorio!'),
+
+    height: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números")
+        .required('¡Este campo es obligatorio!'),
+
+    floor: yup
+        .string()
+        .optional(),
+
+    dni: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números")
+        .required('¡Este campo es obligatorio!')
+        .min(7, 'El DNI ingresado no es correcto')
+        .max(8, 'El DNI ingresado no es correcto'),
+
+    email: yup
+        .string()
+        .email('Ingrese un e-mail válido')
+        .required('¡Este campo es obligatorio!'),
+
+    phone: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números")
+        .required('¡Este campo es obligatorio!')
+        .min(11, 'El número ingresado es muy corto'),
+
+    medioPago: yup
+        .string()
+        .required('¡Este campo es obligatorio!'),
+
+    pagoRealizado: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números"),
+});
 
 
 export default function NuevaVenta(props) {
     const history = useHistory();
     const [receive, setReceive] = useState(props.location.state.toSend);
 
-    //REVISAR
-    const [values, setValues] = useState({
-        cliente: {
+
+    const formik = useFormik({
+        initialValues: {
             name: '',
             lastName: '',
             address: '',
+            height: '',
             floor: '',
-            dni: null,
-            mail: '',
-            phone: null,
-            disponible: '',
-        },
-        fechaEmision: new Date(),
-        items: receive.items,
-        subTotal: receive.subtotal,
-        total: receive.total,
-        descuentoTotal: receive.subtotal - receive.total,
-        medioPago: '',
-        pagoRealizado: null,
-        vuelto: null,
-        estado: 'Emitido',
-    })
-
-    const classes = useStyles();
-    var refresh = false;
-
-    useEffect(() => {
-        setValues({
-            cliente: {
-                name: '',
-                lastName: '',
-                address: '',
-                floor: '',
-                dni: null,
-                mail: '',
-                phone: null,
-                disponible: '',
-            },
+            dni: '',
+            email: '',
+            phone: '',
             fechaEmision: new Date(),
             items: receive.items,
             subTotal: receive.subtotal,
             total: receive.total,
             descuentoTotal: receive.subtotal - receive.total,
             medioPago: '',
-            pagoRealizado: null,
+            pagoRealizado: '',
             vuelto: null,
             estado: 'Emitido',
-        });
-
-
-        refresh = true;
-        console.log(values);
-    }, [refresh])
-
-    const handleName = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                name: event.target.value,
-            },
-        }));
-    };
-
-    const handleLastName = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                lastName: event.target.value,
+            sucursal: null,
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            if (values.medioPago == 'Crédito' || values.medioPago == 'Débito') {
+                console.log("IN");
+                values.pagoRealizado = values.total;
+                values.vuelto = 0;
             }
-        }));
-    };
-
-    const handleAddress = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                address: event.target.value,
+            if (values.medioPago == 'Efectivo') {
+                values.vuelto = values.pagoRealizado - receive.total;
             }
-        }));
-    };
 
-    const handleFloor = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                floor: event.target.value,
-            }
-        }));
-    };
-
-    const handleDni = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                dni: event.target.value,
-            }
-        }));
-    };
-
-    const handleMail = (event) => {
-        event.preventDefault();
-        setValues((values) => ({
-            ...values,
-            cliente: {
-                ...values.cliente,
-                mail: event.target.value,
-            }
-        }));
-    };
-
-    const handlePhone = (event) => {
-        event.preventDefault();
-        values.cliente.phone = event.target.value;
-        // setValues((values) => ({
-        //     ...values,
-        //     cliente: {
-        //         ...values.cliente,
-        //         phone: event.target.value,
-        //     }
-        // }));
-    };
-
-    const handlePayment = (event) => {
-        event.preventDefault();
-        // values.medioPago = event.target.value;
-        setValues((values) => ({
-            ...values,
-            medioPago: event.target.value,
-        }));
-    };
-
-    const handleMoney = (event) => {
-        event.preventDefault();
-        values.pagoRealizado = event.target.value;
-        // setValues((values) => ({
-        //     ...values,
-        //     pagoRealizado: (event.target.value),
-        // }));
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        console.log(values.medioPago);
-        if (values.medioPago == 'Crédito' || values.medioPago == 'Débito') {
-            console.log("IN");
-            values.pagoRealizado = values.total;
-            values.vuelto = 0;
-            // setValues((values) => ({
-            //     ...values,
-            //     pagoRealizado: values.total,
-            //     vuelto: 0,
-            // }));
-        }
-        if (values.medioPago == 'Efectivo') {
-            // console.log("Pago: " + typeof (values.pagoRealizado));
-            values.vuelto = values.pagoRealizado - receive.total;
-            // setValues((values) => ({
-            //     ...values,
-            //     vuelto: values.pagoRealizado - receive.total,
-            // }));
-        }
-        // console.log("Total: "+values.total);
-        // console.log("SubTotal: "+values.subTotal);
-        // console.log("Descuento: "+values.descuentoTotal);
-        // console.log("Vuelto: "+typeof(values.vuelto));
-
-        axios.post("http://localhost:5000/add", {
-            values: values,
-        })
-            .then(function (response) {
-                console.log(response.status + " " + response.statusText);
-                if (response.status >= 200) {
-                    alert(response.status + " " + response.statusText);
-                    localStorage.setItem("finished", true);
-                    history.push('/Home');
-                }
+            console.log(JSON.stringify(values, null, 2));
+            axios.post("http://localhost:5000/add", {
+                values: values,
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response.status + " " + response.statusText);
+                    if (response.status >= 200) {
+                        alert(response.status + " " + response.statusText);
+                        localStorage.setItem("finished", true);
+                        history.push('/Home');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
+        },
+    });
 
+    // const classes = useStyles();
+    // var refresh = false;
 
-    }
+    useEffect(() => {
+
+        axios.get("http://localhost:5000/Markets/get/all")
+            .then((res) => {
+                formik.values.sucursal = res.data;
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        // refresh = true;
+        // console.log(formik.values);
+    }, [])
+
 
     return (
         <div>
             <Header />
             <h1>Nueva Venta</h1>
             <div className="content">
+                <div>
+                    <form onSubmit={formik.handleSubmit} className="form">
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 
-                <form className="form" autoComplete="off" noValidate onSubmit={handleSubmit}>
-                    {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> */}
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                        <FormControl className={classes.input} autoComplete="off" required="true">
-                            <InputLabel htmlFor="name">Nombre(s)</InputLabel>
-                            <Input id="name" value={values.cliente.name} onChange={handleName} />
-                            {/* <TextField required onChange={} id="names" label="Nombre(s)" value="" placeholder="p.ej. Juan Andrés" /> */}
-                        </FormControl>
+                            <TextField
+                                name="name"
+                                label="Nombre *"
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                helperText={formik.touched.name && formik.errors.name}
+                            />
+                            <TextField
+                                name="lastName"
+                                label="Apellido *"
+                                value={formik.values.lastName}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                                helperText={formik.touched.lastName && formik.errors.lastName}
+                            />
 
-                        <FormControl className={classes.input} autoComplete="off" required="true">
-                            <InputLabel htmlFor="lastName">Apellido(s)</InputLabel>
-                            <Input id="lastName" value={values.cliente.lastName} onChange={handleLastName} />
-                            {/* <TextField required onChange={handleLastName(event)} id="last-name" label="Apellido" placeholder="p.ej. Pérez de Villar" /> */}
-                        </FormControl>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                        <FormControl className={classes.input} autoComplete="off" required="true">
-                            <InputLabel htmlFor="address">Dirección</InputLabel>
-                            <Input id="address" value={values.cliente.address} onChange={handleAddress} />
-                            {/* <TextField required onChange={handleAddress(event)} id="address" label="Dirección" placeholder="p.ej Pueyrredón 2048" /> */}
-                        </FormControl>
-                        <FormControl className={classes.input} autoComplete="off" >
-                            <InputLabel htmlFor="floor">Piso</InputLabel>
-                            <Input id="floor" value={values.cliente.floor} onChange={handleFloor} />
-                            {/* <TextField onChange={handleFloor(event)} id="floor" label="Piso" placeholder="14A" /> */}
-                        </FormControl>
-                    </div>
-                    <FormControl className={classes.input} style={{ maxWidth: "45%" }} autoComplete="off" required="true">
-                        <InputLabel htmlFor="dni">DNI</InputLabel>
-                        <Input id="dni" value={values.cliente.dni} onChange={handleDni} type="number" />
-                        {/* <TextField required onChange={handleDni(event)} id="dni" label="DNI" /> */}
-                    </FormControl>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                        <FormControl className={classes.input} style={{ width: "100%" }} autoComplete="off" required="true">
-                            <InputLabel htmlFor="mail">E-Mail</InputLabel>
-                            <Input id="mail" value={values.cliente.mail} onChange={handleMail} type="email" />
-                            {/* <TextField required onChange={handleMail(event)} id="mail" label="E-Mail" placeholder="ejemplo.example@email.com" /> */}
-                        </FormControl>
-                        <FormControl className={classes.input} autoComplete="off" >
-                            <InputLabel htmlFor="phone">Teléfono</InputLabel>
-                            <Input id="phone" value={values.cliente.phone} onChange={handlePhone} type="phone" />
-                            <FormHelperText>¡Incluir código de área, sin símbolos!</FormHelperText>
-                            {/* <TextField onChange={handlePhone(event)} id="phone" label="Teléfono" helperText="¡Incluir código de área!" /> */}
-                        </FormControl>
-                    </div>
-                    <FormControl className={classes.input} autoComplete="off">
-                        <InputLabel id="payment-dropdown-label">Elija un medio de pago</InputLabel>
-                        <Select labelId="payment-dropdown-label" value={values.medioPago} onChange={handlePayment}>
-                            <MenuItem value={"Efectivo"}>Efectivo</MenuItem>
-                            <MenuItem value={"Crédito"}>Crédito</MenuItem>
-                            <MenuItem value={"Débito"}>Débito</MenuItem>
-                        </Select>
-                    </FormControl>
-                    {values.medioPago != "Efectivo" ? null :
-                        <FormControl className={classes.input} autoComplete="off">
-                            <InputLabel htmlFor="cash">¿Cuánto dinero se entregó?</InputLabel>
-                            <Input id="cash" value={values.pagoRealizado} onChange={handleMoney} type="number" />
-                        </FormControl>
-                    }
-                    <FormControl className={classes.input} >
-                        <Input type="submit" value="Confirmar Compra" />
-                    </FormControl>
-                    {/* </div>
-                     */}
-                </form>
-                <a onClick={() => { history.goBack() }} style={{ color: "blue" }}>Volver</a>
+                        </div>
+                        <TextField
+                            name="address"
+                            label="Dirección *"
+                            value={formik.values.address}
+                            onChange={formik.handleChange}
+                            className={"root"}
+                            error={formik.touched.address && Boolean(formik.errors.address)}
+                            helperText={formik.touched.address && formik.errors.address}
+                        />
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+
+                            <TextField
+                                name="height"
+                                label="Altura *"
+                                value={formik.values.height}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.height && Boolean(formik.errors.height)}
+                                helperText={formik.touched.height && formik.errors.height}
+                            />
+
+                            <TextField
+                                name="floor"
+                                label="Piso"
+                                value={formik.values.floor}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.floor && Boolean(formik.errors.floor)}
+                                helperText={formik.touched.floor && formik.errors.floor}
+                            />
+                        </div>
+
+                        <TextField
+                            className={"root"}
+                            id="email"
+                            name="email"
+                            label="E-mail *"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            className={"root"}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                        />
+
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+
+                            <TextField
+                                name="dni"
+                                label="DNI *"
+                                value={formik.values.dni}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.dni && Boolean(formik.errors.dni)}
+                                helperText={formik.touched.dni && formik.errors.dni}
+                            />
+
+
+                            <TextField
+                                name="phone"
+                                label="Teléfono *"
+                                value={formik.values.phone}
+                                onChange={formik.handleChange}
+                                className={"root"}
+                                error={formik.touched.phone && Boolean(formik.errors.phone)}
+                                helperText={formik.touched.phone && formik.errors.phone}
+                            />
+                        </div>
+
+                        <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
+                            <option value=''>Seleccione un medio de pago</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Crédito">Crédito</option>
+                            <option value="Débito">Débito</option>
+                        </select>
+                        {formik.errors.medioPago && <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>}
+
+                        {formik.values.medioPago != "Efectivo" ? null :
+                            <TextField
+                                name="pagoRealizado"
+                                label="¿Cuánto efectivo se entregó?"
+                                value={formik.values.pagoRealizado}
+                                onChange={formik.handleChange}
+                                error={formik.touched.phone && Boolean(formik.errors.pagoRealizado)}
+                                helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
+                            />
+
+                        }
+
+                        <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Confirmar Compra</Button>
+                        <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", marginTop: "7.5%" }}>Volver</Button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </div >
     )
 }

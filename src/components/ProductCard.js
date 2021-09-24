@@ -28,8 +28,7 @@ export default function ProductCard(props) {
 
     useEffect(() => {
         // console.log(item);
-        setItems([]);
-        addItem(item);
+        setItems([item]);
     }, []);
 
 
