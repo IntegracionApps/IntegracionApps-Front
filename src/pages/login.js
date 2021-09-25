@@ -103,10 +103,18 @@ const Login = () => {
                                         case 200:
                                             console.log(res.data);
                                             if (res.data !== false) {
-                                                if (res.data.rol === "Administrador") window.localStorage.setItem("rol", 0);
-                                                if (res.data.rol === "Cajero") window.localStorage.setItem("rol", 1);
-                                                if (res.data.rol === "Cliente") window.localStorage.setItem("rol", 2);
-                                                history.push("/Home");
+                                                if (res.data.rol === "Administrador") {
+                                                    window.localStorage.setItem("rol", 0);
+                                                    history.push("/HomeAdmin");
+                                                }
+                                                if (res.data.rol === "Cajero") {
+                                                    window.localStorage.setItem("rol", 1);
+                                                    history.push("/Home");
+                                                }
+                                                if (res.data.rol === "Cliente") {
+                                                    window.localStorage.setItem("rol", 2);
+                                                    history.push("/Home");
+                                                }
                                             }
                                             else alert("Datos ingresados incorrectos");
                                             break;

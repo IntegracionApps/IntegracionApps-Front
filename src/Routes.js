@@ -5,6 +5,7 @@ import SideMenu from "./components/SideMenu.js";
 
 //import cada pantalla acá
 import Home from "./pages/home.js";
+import HomeAdmin from "./pages/homeAdmin.js";
 import Shopping_Cart from "./pages/shopping_cart.js";
 import NuevaVenta from "./pages/formulario_venta.js";
 import RegistroVentas from "./pages/registro_ventas.js";
@@ -25,6 +26,7 @@ export default function Routes() {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/Home" component={Home} />
+                    <Route exact path="/HomeAdmin" component={HomeAdmin} />
                     <Route exact path="/Shopping_cart" component={Shopping_Cart} />
                     <Route exact path="/Empleados" component={Empleados} />
                     <Route exact path="/Stock" component={ControlStock} />
