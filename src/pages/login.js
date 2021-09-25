@@ -133,12 +133,11 @@ const Login = () => {
                                 ) : null}
 
 
-                                <button type="submit">Submit</button>
+                                <button className="btnLogin solid" type="submit">Submit</button>
+                                <Button class="btnLogin solid" onClick={() => { history.push('/Register') }}>Registrarse</Button>
                             </Form>
                         )}
-
                     </Formik>
-                    <Button class="btnLogin solid" onClick={() => { history.push('/Register') }}>Registrarse</Button>
                 </div>
             </div>
         </body>
