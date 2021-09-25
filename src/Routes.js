@@ -11,6 +11,7 @@ import RegistroVentas from "./pages/registro_ventas.js";
 import ControlStock from "./pages/control_stock.js";
 import Empleados from "./pages/empleados.js";
 import Login from "./pages/login.js"
+import Register from "./pages/register.js";
 
 //
 
@@ -22,6 +23,7 @@ export default function Routes() {
             <Switch>
                 <CartProvider>
                     <Route exact path="/" component={Login} />
+                    <Route exact path="/Register" component={Register} />
                     <Route exact path="/Home" component={Home} />
                     <Route exact path="/Shopping_cart" component={Shopping_Cart} />
                     <Route exact path="/Empleados" component={Empleados} />
