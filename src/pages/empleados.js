@@ -51,6 +51,22 @@ export default function Empleados() {
         { title: "Mail", field: "email" },
     ]
 
+    function handleDelete(empleado) {
+        console.log(empleado.id);
+        if (window.confirm("¿Seguro que quiere borrar a " + empleado.nombre + " " + empleado.apellido + "?")) {
+            axios.delete('http://localhost:5000/Users/delete/' + empleado.id)
+                .then(function (response) {
+                    console.log(response.status + " " + response.statusText);
+                    if (response.status >= 200) alert("¡Borrado exitoso!")
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        }
+    }
+
+
     return (
         <div>
             <Header />
@@ -58,6 +74,13 @@ export default function Empleados() {
                 columns={columns}
                 data={data}
                 actions={[
+                    rowData => ({
+                        icon: 'delete',
+                        tooltip: 'Eliminar Empleado',
+                        position: 'row',
+                        onClick: (event, rowData) => { handleDelete(rowData) }
+                    }),
+
                     {
                         icon: "add",
                         tooltip: "Crear Empleado",
@@ -65,9 +88,23 @@ export default function Empleados() {
                         onClick: () => setVisible(true),
                     }
                 ]}
+                options={{
+                    actionsColumnIndex: -1
+                }}
+                cellEditable={{
+                    cellStyle: {},
+                    onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
+                        return new Promise((resolve, reject) => {
+                            console.log('newValue: ' + newValue);
+                            setTimeout(resolve, 4000);
+                        });
+                    }
+                }}
+
+
             />
-            {/* <ListaEmpleados employee_data={data} visible={visible} onChange={handleChange} /> */}
-            <DialogAdd open={visible} onClose={() => {setVisible(false)}} />
+            {/* <ListaEmpleados employee_data={data} visible={visible} /> */}
+            <DialogAdd open={visible} onClose={() => { setVisible(false) }} />
         </div>
     )
 }

@@ -71,7 +71,7 @@ const validationSchema = yup.object({
 });
 
 const Register = () => {
-
+    const history = useHistory();
 
     return (
         <body>
@@ -162,6 +162,8 @@ const Register = () => {
                         )}
 
                     </Formik>
+
+                    <Button className="btnLogin" onClick={() => { history.goBack() }}>Volver</Button>
                 </div>
             </div>
         </body>

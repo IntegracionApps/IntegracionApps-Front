@@ -112,7 +112,7 @@ const Login = () => {
                                             break;
 
                                     }
-                                })
+                                    })
                                 .catch((err) => {
                                     alert(JSON.stringify(err));
                                 })
