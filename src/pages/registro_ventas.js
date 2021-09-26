@@ -74,10 +74,8 @@ function Row(props) {
                                             <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                             <TableCell align="left">{itemDetailRow.descrip}</TableCell>
                                             <TableCell>AR$ {itemDetailRow.price}</TableCell>
-                                            <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.tipoUnidad}]</TableCell>
-                                            <TableCell align="left">
-                                                AR$ {itemDetailRow.importe}
-                                            </TableCell>
+                                            <TableCell align="left">{itemDetailRow.cantidad} [ {itemDetailRow.tipoUnidad} ]</TableCell>
+                                            <TableCell align="left">AR$ {itemDetailRow.importe}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
