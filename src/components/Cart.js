@@ -100,7 +100,7 @@ export default function Cart({ cart, where }) {
                                     <TableRow>
                                         <TableCell>{item.descrip}</TableCell>
                                         {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
-                                        <TableCell align="right">{item.quantity} [{item.tipoUnidad}]</TableCell>
+                                        <TableCell align="right">{item.quantity} [{item.quantity > 1 ?  item.tipoUnidad+"s" : item.tipoUnidad}]</TableCell>
                                         <TableCell align="right">AR$ {item.price}</TableCell>
                                         <TableCell align="right">AR$ {getImporte(item.quantity, item.price).toFixed(2)}</TableCell>
                                     </TableRow>
@@ -118,9 +118,8 @@ export default function Cart({ cart, where }) {
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: "bolder" }}>Descuento:</TableCell>
-                                <TableCell align="right">-7%</TableCell>
-                                <TableCell align="right">AR$ {(cartTotal * -0.07).toFixed(2)}</TableCell>
+                                <TableCell style={{ fontWeight: "bolder" }}>Cargos por envío a domicilio:</TableCell>
+                                <TableCell align="right">AR$ 00,0</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>

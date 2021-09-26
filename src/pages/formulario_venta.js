@@ -73,7 +73,7 @@ const validationSchema = yup.object({
 export default function NuevaVenta(props) {
     const history = useHistory();
     const [receive, setReceive] = useState(props.location.state.toSend);
-
+    console.log(receive);
     const [successOpen, setSuccessOpen] = useState(false)
 
     const formik = useFormik({
@@ -148,7 +148,7 @@ export default function NuevaVenta(props) {
     function handleGoTo() {
         localStorage.setItem("finished", true);
         history.push('/Home');
-}
+    }
 
     return (
         <div>
@@ -249,13 +249,14 @@ export default function NuevaVenta(props) {
 
                         <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
                             <option value=''>Seleccione un medio de pago</option>
-                            <option value="Efectivo">Efectivo</option>
+                            {/* <option value="Efectivo">Efectivo</option> */}
                             <option value="Crédito">Crédito</option>
                             <option value="Débito">Débito</option>
                         </select>
                         {formik.errors.medioPago && <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>}
 
-                        {formik.values.medioPago != "Efectivo" ? null :
+                        <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
+                        {/* {formik.values.medioPago != "Efectivo" ? null :
                             <div>
                                 <TextField
                                     fullWidth
@@ -266,24 +267,23 @@ export default function NuevaVenta(props) {
                                     error={formik.touched.pagoRealizado && Boolean(formik.errors.pagoRealizado)}
                                     helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
                                 />
-                                <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
                             </div>
-                        }
+                        } */}
 
                         <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Confirmar Compra</Button>
                         <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", marginTop: "7.5%" }}>Volver</Button>
                     </form>
                 </div>
             </div>
-            <Dialog open={successOpen} onClose={() => {setSuccessOpen(false)}}>
-                    <DialogTitle>¡Éxito!</DialogTitle>
-                    <DialogContent>
-                        <Typography>La operación se realizó con éxito</Typography>
-                        <Typography>¡Gracias por elegirnos!</Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => {handleGoTo()}}>Al Menú Principal</Button>
-                    </DialogActions>
+            <Dialog open={successOpen} onClose={() => { setSuccessOpen(false) }}>
+                <DialogTitle>¡Éxito!</DialogTitle>
+                <DialogContent>
+                    <Typography>La operación se realizó con éxito</Typography>
+                    <Typography>¡Gracias por elegirnos!</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => { handleGoTo() }}>Al Menú Principal</Button>
+                </DialogActions>
             </Dialog>
         </div >
     )
