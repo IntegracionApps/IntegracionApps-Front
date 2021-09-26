@@ -15,27 +15,27 @@ const Number = /^[0-9]+$/;
 
 const validationSchema = yup.object({
 
-    name: yup
+    nombre: yup
         .string()
         .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    lastName: yup
+    apellido: yup
         .string()
         .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    address: yup
+    direccion: yup
         .string()
         //.matches(/^[A-Za-z]$/,'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    height: yup
+    altura: yup
         .string()
         .matches(Number, "Ingrese únicamente números")
         .required('¡Este campo es obligatorio!'),
 
-    floor: yup
+    piso: yup
         .string()
         .optional(),
 
@@ -56,7 +56,7 @@ const validationSchema = yup.object({
         .email('Ingrese un e-mail válido')
         .required('¡Este campo es obligatorio!'),
 
-    phone: yup
+    telefono: yup
         .string()
         .matches(Number, "Ingrese únicamente números")
         .required('¡Este campo es obligatorio!')
@@ -96,13 +96,13 @@ export default function DialogAdd(props) {
                         initialValues={{
                             dni: '',
                             cuil: '',
-                            name: '',
-                            lastName: '',
+                            nombre: '',
+                            apellido: '',
                             email: '',
-                            address: '',
-                            height: '',
-                            floor: '',
-                            phone: '',
+                            direccion: '',
+                            altura: '',
+                            piso: '',
+                            telefono: '',
                             password: '',
                             rol: '',
                             salario: '',
@@ -135,14 +135,14 @@ export default function DialogAdd(props) {
                                     <div>{errors.lastName}</div>
                                 ) : null}
 
-                                <Field placeholder="Nombre(s)" id="name" name="name" className='input-field' />
-                                {errors.name && touched.name ? (
-                                    <div>{errors.name}</div>
+                                <Field placeholder="Nombre(s)" id="nombre" nombre="nombre" className='input-field' />
+                                {errors.nombre && touched.nombre ? (
+                                    <div>{errors.nombre}</div>
                                 ) : null}
 
-                                <Field placeholder="Apellido(s) " id="lastName" name="lastName" className='input-field' />
-                                {errors.lastName && touched.lastName ? (
-                                    <div>{errors.lastName}</div>
+                                <Field placeholder="Apellido(s) " id="apellido" name="apellido" className='input-field' />
+                                {errors.apellido && touched.apellido ? (
+                                    <div>{errors.apellido}</div>
                                 ) : null}
 
                                 <Field placeholder="E-Mail" id="email" name="email" className='input-field' />
@@ -150,24 +150,24 @@ export default function DialogAdd(props) {
                                     <div>{errors.email}</div>
                                 ) : null}
 
-                                <Field placeholder="Dirección" id="address" name="address" className='input-field' />
-                                {errors.address && touched.address ? (
-                                    <div>{errors.address}</div>
+                                <Field placeholder="Dirección" id="direccion" name="direccion" className='input-field' />
+                                {errors.direccion && touched.direccion ? (
+                                    <div>{errors.direccion}</div>
                                 ) : null}
 
-                                <Field placeholder="Altura" id="height" name="height" className='input-field' />
-                                {errors.height && touched.height ? (
-                                    <div>{errors.height}</div>
+                                <Field placeholder="Altura" id="altura" name="altura" className='input-field' />
+                                {errors.altura && touched.altura ? (
+                                    <div>{errors.altura}</div>
                                 ) : null}
 
-                                <Field placeholder="Piso" id="floor" name="floor" className='input-field' />
-                                {errors.floor && touched.floor ? (
-                                    <div>{errors.floor}</div>
+                                <Field placeholder="Piso" id="piso" name="piso" className='input-field' />
+                                {errors.piso && touched.piso ? (
+                                    <div>{errors.piso}</div>
                                 ) : null}
 
-                                <Field placeholder="Teléfono" id="phone" name="phone" className='input-field' />
-                                {errors.phone && touched.phone ? (
-                                    <div>{errors.phone}</div>
+                                <Field placeholder="Teléfono" id="telefono" name="telefono" className='input-field' />
+                                {errors.telefono && touched.telefono ? (
+                                    <div>{errors.telefono}</div>
                                 ) : null}
 
                                 <Field placeholder="Contraseña" id="password" name="password" className='input-field' />

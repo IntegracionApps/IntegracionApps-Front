@@ -18,27 +18,27 @@ const Number = /^[0-9]+$/;
 
 const validationSchema = yup.object({
 
-    name: yup
+    nombre: yup
         .string()
         .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    lastName: yup
+    apellido: yup
         .string()
         .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    address: yup
+    direccion: yup
         .string()
         //.matches(/^[A-Za-z]$/,'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
-    height: yup
+    altura: yup
         .string()
         .matches(Number, "Ingrese únicamente números")
         .required('¡Este campo es obligatorio!'),
 
-    floor: yup
+    piso: yup
         .string()
         .optional(),
 
@@ -54,7 +54,7 @@ const validationSchema = yup.object({
         .email('Ingrese un e-mail válido')
         .required('¡Este campo es obligatorio!'),
 
-    phone: yup
+    telefono: yup
         .string()
         .matches(Number, "Ingrese únicamente números")
         .required('¡Este campo es obligatorio!')
@@ -78,14 +78,14 @@ export default function NuevaVenta(props) {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            lastName: '',
-            address: '',
-            height: '',
-            floor: '',
+            nombre: '',
+            apellido: '',
+            direccion: '',
+            altura: '',
+            piso: '',
             dni: '',
             email: '',
-            phone: '',
+            telefono: '',
             fechaEmision: new Date(),
             items: receive.items,
             subTotal: receive.subtotal,
@@ -160,54 +160,54 @@ export default function NuevaVenta(props) {
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 
                             <TextField
-                                name="name"
+                                name="nombre"
                                 label="Nombre *"
-                                value={formik.values.name}
+                                value={formik.values.nombre}
                                 onChange={formik.handleChange}
                                 className={"root"}
-                                error={formik.touched.name && Boolean(formik.errors.name)}
-                                helperText={formik.touched.name && formik.errors.name}
+                                error={formik.touched.nombre && Boolean(formik.errors.nombre)}
+                                helperText={formik.touched.nombre && formik.errors.nombre}
                             />
                             <TextField
-                                name="lastName"
+                                name="apellido"
                                 label="Apellido *"
-                                value={formik.values.lastName}
+                                value={formik.values.apellido}
                                 onChange={formik.handleChange}
                                 className={"root"}
-                                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                                helperText={formik.touched.lastName && formik.errors.lastName}
+                                error={formik.touched.apellido && Boolean(formik.errors.apellido)}
+                                helperText={formik.touched.apellido && formik.errors.apellido}
                             />
 
                         </div>
                         <TextField
-                            name="address"
+                            name="direccion"
                             label="Dirección *"
-                            value={formik.values.address}
+                            value={formik.values.direccion}
                             onChange={formik.handleChange}
                             className={"root"}
-                            error={formik.touched.address && Boolean(formik.errors.address)}
-                            helperText={formik.touched.address && formik.errors.address}
+                            error={formik.touched.direccion && Boolean(formik.errors.direccion)}
+                            helperText={formik.touched.direccion && formik.errors.direccion}
                         />
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 
                             <TextField
-                                name="height"
+                                name="altura"
                                 label="Altura *"
-                                value={formik.values.height}
+                                value={formik.values.altura}
                                 onChange={formik.handleChange}
                                 className={"root"}
-                                error={formik.touched.height && Boolean(formik.errors.height)}
-                                helperText={formik.touched.height && formik.errors.height}
+                                error={formik.touched.altura && Boolean(formik.errors.altura)}
+                                helperText={formik.touched.altura && formik.errors.altura}
                             />
 
                             <TextField
-                                name="floor"
+                                name="piso"
                                 label="Piso"
-                                value={formik.values.floor}
+                                value={formik.values.piso}
                                 onChange={formik.handleChange}
                                 className={"root"}
-                                error={formik.touched.floor && Boolean(formik.errors.floor)}
-                                helperText={formik.touched.floor && formik.errors.floor}
+                                error={formik.touched.piso && Boolean(formik.errors.piso)}
+                                helperText={formik.touched.piso && formik.errors.piso}
                             />
                         </div>
 
@@ -237,13 +237,13 @@ export default function NuevaVenta(props) {
 
 
                             <TextField
-                                name="phone"
+                                name="telefono"
                                 label="Teléfono *"
-                                value={formik.values.phone}
+                                value={formik.values.telefono}
                                 onChange={formik.handleChange}
                                 className={"root"}
-                                error={formik.touched.phone && Boolean(formik.errors.phone)}
-                                helperText={formik.touched.phone && formik.errors.phone}
+                                error={formik.touched.telefono && Boolean(formik.errors.telefono)}
+                                helperText={formik.touched.telefono && formik.errors.telefono}
                             />
                         </div>
 
@@ -263,7 +263,7 @@ export default function NuevaVenta(props) {
                                     label="¿Cuánto efectivo se entregó?"
                                     value={formik.values.pagoRealizado}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.phone && Boolean(formik.errors.pagoRealizado)}
+                                    error={formik.touched.pagoRealizado && Boolean(formik.errors.pagoRealizado)}
                                     helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
                                 />
                                 <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
