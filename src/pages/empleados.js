@@ -45,10 +45,16 @@ export default function Empleados() {
     }
 
     const columns = [
-        { title: "Nombre", field: "nombre" },
-        { title: "Apellido", field: "apellido" },
+        { title: "Nombre", field: "nombre", editable: "never" },
+        { title: "Apellido", field: "apellido", editable: "never" },
         { title: "Rol", field: "rol" },
         { title: "Mail", field: "email" },
+        { title: "Dirección", field: "ubicacion.direccion" },
+        { title: "Altura", field: "ubicacion.altura" },
+        { title: "Piso", field: "ubicacion.piso" },
+        { title: "Teléfono", field: "telefono" },
+        { title: "Salario (AR$)", field: "salario" },
+
     ]
 
     function handleDelete(empleado) {
@@ -74,12 +80,12 @@ export default function Empleados() {
                 columns={columns}
                 data={data}
                 actions={[
-                    rowData => ({
-                        icon: 'delete',
-                        tooltip: 'Eliminar Empleado',
-                        position: 'row',
-                        onClick: (event, rowData) => { handleDelete(rowData) }
-                    }),
+                    // rowData => ({
+                    //     icon: 'delete',
+                    //     tooltip: 'Eliminar Empleado',
+                    //     position: 'row',
+                    //     onClick: (event, rowData) => { handleDelete(rowData) }
+                    // }),
 
                     {
                         icon: "add",
@@ -91,14 +97,53 @@ export default function Empleados() {
                 options={{
                     actionsColumnIndex: -1
                 }}
-                cellEditable={{
-                    cellStyle: {},
-                    onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-                        return new Promise((resolve, reject) => {
-                            console.log('newValue: ' + newValue);
-                            setTimeout(resolve, 4000);
-                        });
-                    }
+                editable={{
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                const dataUpdate = [...data];
+                                const index = oldData.tableData.id;
+                                dataUpdate[index] = newData;
+                                setData([...dataUpdate]);
+
+                                console.log(dataUpdate[index]);
+                                axios.post("http://localhost:5000/Users/edit/employee", {
+                                    empleado: dataUpdate[index],
+                                })
+                                    .then((res) => {
+                                        console.log(res.data);
+                                        console.log(res.status + ": " + res.statusText);
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                    })
+
+
+                                resolve();
+                            }, 1000)
+                        }),
+                        onRowDelete: oldData =>
+                        new Promise((resolve, reject) => {
+                          setTimeout(() => {
+                            const dataDelete = [...data];
+                            const index = oldData.tableData.id;
+                            console.log(typeof(oldData.id));
+                            dataDelete.splice(index, 1);
+                            setData([...dataDelete]);
+                            axios.post("http://localhost:5000/Users/delete/" + oldData.id)
+                                .then((res) => {
+                                    console.log(res.data);
+                                    console.log(res.status + ": " + res.statusText);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                })
+
+
+                            resolve();
+                          }, 1000)
+                        }),
+              
                 }}
 
 
