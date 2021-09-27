@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import '../styles/ProductCard.css'
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 
@@ -124,6 +125,25 @@ export default function HomeAdmin() {
         if (!filterFlag) setOpen(true);
     }
 
+    function handleRemoveItem(item) {
+        console.log(item);
+        var filterFlag = false;
+        if (!isEmpty) {
+            console.log(items.filter(product => item.id === product.id));
+            if (items.filter(product => item.id === product.id)) {
+                items.map((product) => {
+                    if (item.id === product.id) {
+                        removeItem(product.id);
+                        filterFlag = true;
+                    }
+                })
+            }
+        }
+        removeItem(item);
+        console.log(removeItem(item.id));
+        if (!filterFlag) setOpen(true);
+    }
+
     function handleItemUpdate(item, qtty, exceeds) {
         if (item.stock > 0) {
             switch (qtty) {
@@ -192,9 +212,10 @@ export default function HomeAdmin() {
                                         <div className="card_header">
                                             <h2>{item.nombre}</h2>
                                             <p>{item.descrip}</p>
-                                            <p className="price">AR$ {item.price} x[{item.tipoUnidad}]</p>
+                                            <p className="price">AR$ {item.price} x [ {item.tipoUnidad} ]</p>
                                             <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                                <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
+                                                <button className="btn" onClick={() => handleAddItem(item)}>Editar Producto</button>
+                                                <DeleteIcon fontSize="large" color="secondary" onClick={() => handleRemoveItem(item)} />
                                             </div>
                                         </div>
                                         :
