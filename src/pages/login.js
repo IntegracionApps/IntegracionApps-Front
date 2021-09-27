@@ -128,17 +128,18 @@ const Login = () => {
                     >
                         {({ errors, touched }) => (
                             <Form>
+                                <div className="inputContainer">
+                                    <Field placeholder="E-Mail" id="email" name="email" className='input-field' />
+                                    {errors.email && touched.email ? (
+                                        <div className="erroresCampos">{errors.email}</div>
+                                    ) : null}
 
-                                <Field placeholder="E-Mail" id="email" name="email" className='input-field' />
-                                {errors.email && touched.email ? (
-                                    <div>{errors.email}</div>
-                                ) : null}
 
-
-                                <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
-                                {errors.password && touched.password ? (
-                                    <div>{errors.password}</div>
-                                ) : null}
+                                    <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                    {errors.password && touched.password ? (
+                                        <div className="erroresCampos">{errors.password}</div>
+                                    ) : null}
+                                </div>
 
 
                                 <button className="btnLogin solid" type="submit">Submit</button>

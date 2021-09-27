@@ -106,64 +106,67 @@ const Register = () => {
                     >
                         {({ errors, touched }) => (
                             <Form>
-                                <Field placeholder="DNI" id="dni" name="dni" className='input-field' />
-                                {errors.dni && touched.dni ? (
-                                    <div>{errors.dni}</div>
-                                ) : null}
+                                <div className="inputContainer">
+                                    <Field placeholder="DNI" id="dni" name="dni" className='input-field' />
+                                    {errors.dni && touched.dni ? (
+                                        <div className="erroresCampos">{errors.dni}</div>
+                                    ) : null}
 
-                                <Field placeholder="CUIL" id="cuil" name="cuil" className='input-field' />
-                                {errors.cuil && touched.cuil ? (
-                                    <div>{errors.cuil}</div>
-                                ) : null}
+                                    <Field placeholder="CUIL" id="cuil" name="cuil" className='input-field' />
+                                    {errors.cuil && touched.cuil ? (
+                                        <div className="erroresCampos">{errors.cuil}</div>
+                                    ) : null}
 
-                                <Field placeholder="Nombre(s)" id="nombre" name="nombre" className='input-field' />
-                                {errors.nombre && touched.nombre ? (
-                                    <div>{errors.nombre}</div>
-                                ) : null}
+                                    <Field placeholder="Nombre(s)" id="nombre" name="nombre" className='input-field' />
+                                    {errors.nombre && touched.nombre ? (
+                                        <div className="erroresCampos">{errors.nombre}</div>
+                                    ) : null}
 
-                                <Field placeholder="Apellido(s) " id="apellido" name="apellido" className='input-field' />
-                                {errors.apellido && touched.apellido ? (
-                                    <div>{errors.apellido}</div>
-                                ) : null}
+                                    <Field placeholder="Apellido(s) " id="apellido" name="apellido" className='input-field' />
+                                    {errors.apellido && touched.apellido ? (
+                                        <div className="erroresCampos">{errors.apellido}</div>
+                                    ) : null}
 
-                                <Field placeholder="E-Mail" id="email" name="email" className='input-field' />
-                                {errors.email && touched.email ? (
-                                    <div>{errors.email}</div>
-                                ) : null}
+                                    <Field placeholder="E-Mail" id="email" name="email" className='input-field' />
+                                    {errors.email && touched.email ? (
+                                        <div className="erroresCampos">{errors.email}</div>
+                                    ) : null}
 
-                                <Field placeholder="Dirección" id="direccion" name="direccion" className='input-field' />
-                                {errors.direccion && touched.direccion ? (
-                                    <div>{errors.direccion}</div>
-                                ) : null}
+                                    <Field placeholder="Dirección" id="direccion" name="direccion" className='input-field' />
+                                    {errors.direccion && touched.direccion ? (
+                                        <div className="erroresCampos">{errors.direccion}</div>
+                                    ) : null}
 
-                                <Field placeholder="Altura" id="altura" name="altura" className='input-field' />
-                                {errors.altura && touched.altura ? (
-                                    <div>{errors.altura}</div>
-                                ) : null}
+                                    <Field placeholder="Altura" id="altura" name="altura" className='input-field' />
+                                    {errors.altura && touched.altura ? (
+                                        <div className="erroresCampos">{errors.altura}</div>
+                                    ) : null}
 
-                                <Field placeholder="Piso" id="piso" name="piso" className='input-field' />
-                                {errors.piso && touched.piso ? (
-                                    <div>{errors.piso}</div>
-                                ) : null}
+                                    <Field placeholder="Piso" id="piso" name="piso" className='input-field' />
+                                    {errors.piso && touched.piso ? (
+                                        <div className="erroresCampos">{errors.piso}</div>
+                                    ) : null}
 
-                                <Field placeholder="Teléfono" id="telefono" name="telefono" className='input-field' />
-                                {errors.telefono && touched.telefono ? (
-                                    <div>{errors.telefono}</div>
-                                ) : null}
+                                    <Field placeholder="Teléfono" id="telefono" name="telefono" className='input-field' />
+                                    {errors.telefono && touched.telefono ? (
+                                        <div className="erroresCampos">{errors.telefono}</div>
+                                    ) : null}
 
-                                <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
-                                {errors.password && touched.password ? (
-                                    <div>{errors.password}</div>
-                                ) : null}
+                                    <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                    {errors.password && touched.password ? (
+                                        <div className="erroresCampos">{errors.password}</div>
+                                    ) : null}
+                                </div>
+                                
 
 
-                                <button type="submit">Submit</button>
+                                <button className="btnLogin solid" type="submit">Submit</button>
                             </Form>
                         )}
 
                     </Formik>
 
-                    <Button className="btnLogin" onClick={() => { history.goBack() }}>Volver</Button>
+                    <Button className="btnVolver" onClick={() => { history.goBack() }}>Volver</Button>
                 </div>
             </div>
         </body>
