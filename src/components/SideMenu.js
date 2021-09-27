@@ -69,6 +69,11 @@ export default function SideMenu(props) {
                 },
 
                 {
+                    name: 'Historial de Ventas',
+                    path: "/RegistroVentas",
+                },
+
+                {
                     name: 'Cerrar Sesión',
                     path: "/LogOut"
                 },
