@@ -11,7 +11,7 @@ export default function SideMenu(props) {
     let side_menu_buttons = []
 
     const [drawerToggle, setDrawerToggle] = useState(false);
-    
+
     const history = useHistory();
     // console.log(roleValue + " "+ typeof(roleValue));
     switch (parseInt(window.localStorage.getItem("rol"))) {
@@ -81,9 +81,25 @@ export default function SideMenu(props) {
         // console.log("te vas a la página: " + text)
         if (text === "/") {
             setDrawerToggle(false);
-            history.push({
-                pathname: '/Home',
-            })
+            switch (parseInt(window.localStorage.getItem("rol"))) {
+                case 0:
+                    history.push({
+                        pathname: '/HomeAdmin',
+                    });
+                    break;
+                case 1:
+                    history.push({
+                        pathname: '/HomeAdmin',
+                    });
+                    break;
+                case 2:
+                    history.push({
+                        pathname: '/Home',
+                    });
+                    break;
+
+
+            }
         } else if (text === "/RegistroVentas") {
             setDrawerToggle(false);
             history.push({
@@ -100,7 +116,7 @@ export default function SideMenu(props) {
             // history.push({
             //     pathname: '/LogOut', 
             // })
-            if(window.confirm("¿Está seguro que quiere cerrar sesión?")){
+            if (window.confirm("¿Está seguro que quiere cerrar sesión?")) {
                 window.localStorage.setItem("loggedOut", true);
                 history.push("/");
             }
