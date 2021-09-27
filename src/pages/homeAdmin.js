@@ -1,13 +1,15 @@
-import { Badge, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, Popover, Typography } from "@material-ui/core";
-import { Add, Remove, ShoppingCart } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import { Badge, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Tooltip } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
+import DeleteIcon from '@material-ui/icons/Delete';
+import axios from "axios";
+import { Field, Form, Formik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from 'react-router';
 import { CartProvider, useCart } from "react-use-cart";
 import Header from "../components/Header";
-import '../styles/ProductCard.css'
-import axios from "axios";
 import ProductCard from "../components/ProductCard";
-import DeleteIcon from '@material-ui/icons/Delete';
+import '../styles/ProductCard.css';
+import * as yup from 'yup';
 
 
 
@@ -15,35 +17,142 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 
 // import product_data from "../data/product_data.js";
+const Number = /^[0-9]+$/;
 
-function AddedItemDialog(props) {
-    const { itemsToSend, open, history, onClose } = props;
+const validationSchema = yup.object({
+
+    nombre: yup
+        .string()
+        .required('¡Este campo es obligatorio!'),
+
+    descripcion: yup
+        .string()
+        .required('¡Este campo es obligatorio!'),
+
+    tipoUnidad: yup
+        .string()
+        .matches(/^[a-zA-Z_]+$/, 'Ingrese una sola palabra')
+        .required('¡Este campo es obligatorio!'),
+
+    price: yup
+        .string()
+        .matches(/[0-9.,]/, "Ingrese un número decimal")
+        .required('¡Este campo es obligatorio!'),
+
+    stock: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números")
+        .required('¡Este campo es obligatorio!'),
+
+
+    puntoRepo: yup
+        .string()
+        .matches(Number, "Ingrese únicamente números")
+        .required('¡Este campo es obligatorio!')
+});
+
+function CreateItemDialog(props) {
+    const { setRefresh, open, onClose } = props;
 
     const handleClose = () => {
         onClose();
     }
 
-    const handleGoTo = () => {
-        history.push({
-            pathname: '/Shopping_Cart',
-            state: (itemsToSend)
-        });
+    const formRef = useRef();
+
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
-    if (itemsToSend === undefined) return null
     return (
-        <div>
+        <React.Fragment>
             <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>¡Éxito!</DialogTitle>
+                <DialogTitle>Nuevo Producto</DialogTitle>
                 <DialogContent dividers>
-                    <Typography>Se ha agregado {itemsToSend.name} al carrito. ¿Quiere ver su carrito o quiere permanecer aquí y seguir comprando?</Typography>
+                    <Formik
+                        initialValues={{
+                            nombre: '',
+                            descripcion: '',
+                            categoria: '',
+                            tipoUnidad: '',
+                            price: '',
+                            stock: '',
+                            puntoRepo: '',
+                        }}
+                        validationSchema={validationSchema}
+                        onSubmit={(values) => {
+                            console.log("IN");
+                            axios.post('http://localhost:5000/Products/add/', {
+                                producto: values,
+                            })
+                                .then((res) => {
+                                    alert(res.data + " " + res.status + ": " + res.statusText);
+                                    if (res.status === 200) {
+                                        handleClose();
+                                        setRefresh();
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(JSON.stringify(err));
+                                })
+                        }}
+
+                        innerRef={formRef}
+                    >
+                        {({ errors, touched }) => (
+                            <Form>
+
+                                <Field placeholder="Nombre" id="nombre" name="nombre" className='input-field' />
+                                {errors.nombre && touched.nombre ? (
+                                    <div>{errors.nombre}</div>
+                                ) : null}
+
+                                <Field placeholder="Descripción" id="descripcion" name="descripcion" className='input-field' />
+                                {errors.descripcion && touched.descripcion ? (
+                                    <div>{errors.descripcion}</div>
+                                ) : null}
+
+                                <Field placeholder="Categoría" id="categoria" name="categoria" className='input-field' />
+                                {errors.categoria && touched.categoria ? (
+                                    <div>{errors.categoria}</div>
+                                ) : null}
+
+                                <Field placeholder="Tipo de Unidad" id="tipoUnidad" name="tipoUnidad" className='input-field' />
+                                {errors.tipoUnidad && touched.tipoUnidad ? (
+                                    <div>{errors.tipoUnidad}</div>
+                                ) : null}
+
+                                <Field placeholder="Precio Unitario" id="price" name="price" className='input-field' />
+                                {errors.price && touched.price ? (
+                                    <div>{errors.price}</div>
+                                ) : null}
+
+                                <Field placeholder="Stock" id="stock" name="stock" className='input-field' />
+                                {errors.stock && touched.stock ? (
+                                    <div>{errors.stock}</div>
+                                ) : null}
+
+                                <Field placeholder="Punto de Reposición" id="puntoRepo" name="puntoRepo" className='input-field' />
+                                {errors.puntoRepo && touched.puntoRepo ? (
+                                    <div>{errors.puntoRepo}</div>
+                                ) : null}
+
+                                {/* <button type="submit">Submit</button> */}
+                            </Form>
+                        )}
+
+                    </Formik>
+
+
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">Seguir Comprando</Button>
-                    <Button onClick={handleGoTo} color="secondary">Ver mi Carrito</Button>
+                    <Button onClick={handleClose} color="primary">Cancelar</Button>
+                    <Button onClick={handleSubmit} color="secondary">Confirmar Alta</Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </React.Fragment>
     );
 }
 
@@ -56,6 +165,7 @@ export default function HomeAdmin() {
     const [searchValue, setSearchValue] = useState("");
     const [popoverOpen, setPopoverOpen] = useState(false)
 
+    const [refresh, setRefresh]=useState(false);
     const [open, setOpen] = useState(false);
 
     const finished = localStorage.getItem("finished");
@@ -82,19 +192,20 @@ export default function HomeAdmin() {
                 // console.log(response);
                 setData(response.data);
                 setProductsCopy(response.data);
+                setRefresh(false)
             })
             .catch(function (error) {
                 console.log(error);
             });
         // console.log(finished);
-        if (finished === "true" ||  window.localStorage.getItem("loggedOut") === "true") {
+        if (finished === "true" || window.localStorage.getItem("loggedOut") === "true") {
             setItems([]);
             localStorage.setItem("finished", false);
             localStorage.setItem("loggedOut", false);
         }
         else setItems(items);
         // console.log("hipótesis");
-    }, []);
+    }, [refresh]);
 
 
     const popOpen = Boolean(popoverOpen);
@@ -188,18 +299,20 @@ export default function HomeAdmin() {
             <Header onSearchBarChange={handleSearchChange} searchValue={searchValue} />
             <CartProvider>
                 <div className="fab">
-                    <Fab className="button" variant="extended" onClick={() => handleGoTo(items, history)} disabled={isEmpty}>
-                        <ShoppingCart />
-                        Carrito
-                    </Fab>
-                    <Chip style={{ marginTop: "10%", backgroundColor: "orange", color: "black" }}
+                    <Tooltip title="Alta de Producto">
+                        <Fab className="button" variant="extended" onClick={() => setOpen(true)}>
+                            <Add />
+                            Crear
+                        </Fab>
+                    </Tooltip>
+                    {/* <Chip style={{ marginTop: "10%", backgroundColor: "orange", color: "black" }}
                         label={
                             isEmpty ? "¡Sin productos!" : totalUniqueItems + " Ítem(s)"
                         }>
                     </Chip>
                     {isEmpty ? null :
                         <Chip style={{ marginTop: "5%", backgroundColor: "red", color: "white" }} label="Vaciar Carrito" onClick={() => { emptyCart(); }} />
-                    }
+                    } */}
                 </div>
                 <div className="container_home">
                     <p>HOME ADMIN</p>
@@ -234,7 +347,7 @@ export default function HomeAdmin() {
                     </div>
                 </div>
 
-                <AddedItemDialog itemsToSend={items} open={open} history={history} onClose={() => handleClose()} />
+                <CreateItemDialog setRefresh={() => setRefresh(true)} open={open} history={history} onClose={() => handleClose()} />
 
             </CartProvider >
         </div >
