@@ -94,7 +94,7 @@ const Login = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            console.log("IN");
+                            console.log(values.password);
                             axios.post('http://localhost:5000/Users/get/', {
                                 cliente: values,
                             })
@@ -136,7 +136,15 @@ const Login = () => {
                                     ) : null}
 
 
-                                    <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                    <Field placeholder="Contraseña" id="password" name="password">
+                                        
+                                        {({ field, form, meta }) => (
+                                            <React.Fragment>
+                                                <input type="password" {...field} placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                            </React.Fragment>
+                                        )}
+
+                                    </Field>
                                     {errors.password && touched.password ? (
                                         <div className="erroresCampos">{errors.password}</div>
                                     ) : null}
