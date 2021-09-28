@@ -112,6 +112,7 @@ const Login = () => {
                                                     history.push("/Home");
                                                 }
                                                 if (res.data.rol === "Cliente") {
+                                                    window.localStorage.setItem("dni", res.data.dni);
                                                     window.localStorage.setItem("rol", 2);
                                                     history.push("/Home");
                                                 }
@@ -120,7 +121,7 @@ const Login = () => {
                                             break;
 
                                     }
-                                    })
+                                })
                                 .catch((err) => {
                                     alert(JSON.stringify(err));
                                 })
