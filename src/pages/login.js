@@ -101,7 +101,7 @@ const Login = () => {
                                 .then((res) => {
                                     switch (res.status) {
                                         case 200:
-                                            console.log(res.data);
+                                            // console.log(res.data);
                                             if (res.data !== false) {
                                                 if (res.data.rol === "Administrador") {
                                                     window.localStorage.setItem("rol", 0);
@@ -112,7 +112,7 @@ const Login = () => {
                                                     history.push("/Home");
                                                 }
                                                 if (res.data.rol === "Cliente") {
-                                                    window.localStorage.setItem("dni", res.data.dni);
+                                                    window.localStorage.setItem("user", JSON.stringify(res.data));
                                                     window.localStorage.setItem("rol", 2);
                                                     history.push("/Home");
                                                 }

@@ -73,19 +73,26 @@ const validationSchema = yup.object({
 export default function NuevaVenta(props) {
     const history = useHistory();
     const [receive, setReceive] = useState(props.location.state.toSend);
+   
+    const user = JSON.parse(window.localStorage.getItem("user"));
     console.log(receive);
+    console.log(user);
     const [successOpen, setSuccessOpen] = useState(false)
+
+    if(user.ubicacion.piso.length === 0){
+        user.ubicacion.piso = '-';
+    }
 
     const formik = useFormik({
         initialValues: {
-            nombre: '',
-            apellido: '',
-            direccion: '',
-            altura: '',
-            piso: '',
-            dni: '',
-            email: '',
-            telefono: '',
+            nombre: user.nombre,
+            apellido: user.apellido,
+            direccion: user.ubicacion.direccion,
+            altura: user.ubicacion.altura,
+            piso: user.ubicacion.piso,
+            dni: user.dni,
+            email: user.email,
+            telefono: user.telefono,
             fechaEmision: new Date(),
             items: receive.items,
             subTotal: receive.subtotal,
