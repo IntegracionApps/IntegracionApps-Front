@@ -53,7 +53,7 @@ export default function Empleados() {
         { title: "Altura", field: "ubicacion.altura" },
         { title: "Piso", field: "ubicacion.piso" },
         { title: "Teléfono", field: "telefono" },
-        { title: "Salario (AR$)", field: "salario" },
+        { title: "Salario ($)", field: "salario" },
 
     ]
 

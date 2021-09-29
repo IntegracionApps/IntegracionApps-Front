@@ -11,7 +11,7 @@ const columns = [
     { title: "N° de Venta", field: "id", editable: "never" },
     { title: "Cantidad de ítems vendidos", field: "items.length", editable: "never", render: rowData => <div>{rowData.items.length} {rowData.items.length > 1 ? "ítems Vendidos" : "ítem vendido"}</div> },
     {
-        title: "Total de la Venta", field: "total", render: rowData => <div>AR$ {rowData.total.toFixed(2)}</div>
+        title: "Total de la Venta", field: "total", render: rowData => <div>$ {rowData.total.toFixed(2)}</div>
     },
     { title: "Medio de Pago", field: "medioPago" },
     { title: "Estado", field: "estado" },
@@ -129,14 +129,14 @@ export default function RegistroVentas() {
                                                         {/* <TableCell component="th" scope="row">{row.fechaEmision}</TableCell>
                                             <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                                         <TableCell align="left">{itemDetailRow.descrip}</TableCell>
-                                                        <TableCell>AR$ {itemDetailRow.price}</TableCell>
+                                                        <TableCell>$ {itemDetailRow.price}</TableCell>
                                                         {itemDetailRow.tipoUnidad !== "Porron" ?
                                                             <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.quantity > 1 ? itemDetailRow.tipoUnidad + "s" : itemDetailRow.tipoUnidad}]</TableCell>
                                                             :
                                                             <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.quantity > 1 ? itemDetailRow.tipoUnidad + "es" : itemDetailRow.tipoUnidad}]</TableCell>
                                                         }
                                                         <TableCell align="left">
-                                                            AR$ {itemDetailRow.price * itemDetailRow.quantity}
+                                                            $ {itemDetailRow.price * itemDetailRow.quantity}
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}
@@ -248,14 +248,14 @@ export default function RegistroVentas() {
                                                         {/* <TableCell component="th" scope="row">{row.fechaEmision}</TableCell>
                                                     <TableCell align="left">{row.cliente.name} {row.cliente.lastName}</TableCell> */}
                                                         <TableCell align="left">{itemDetailRow.descrip}</TableCell>
-                                                        <TableCell>AR$ {itemDetailRow.price}</TableCell>
+                                                        <TableCell>$ {itemDetailRow.price}</TableCell>
                                                         {itemDetailRow.tipoUnidad !== "Porron" ?
                                                             <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.quantity > 1 ? itemDetailRow.tipoUnidad + "s" : itemDetailRow.tipoUnidad}]</TableCell>
                                                             :
                                                             <TableCell align="left">{itemDetailRow.quantity} [{itemDetailRow.quantity > 1 ? itemDetailRow.tipoUnidad + "es" : itemDetailRow.tipoUnidad}]</TableCell>
                                                         }
                                                         <TableCell align="left">
-                                                            AR$ {itemDetailRow.price * itemDetailRow.quantity}
+                                                            $ {itemDetailRow.price * itemDetailRow.quantity}
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}

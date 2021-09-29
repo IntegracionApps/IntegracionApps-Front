@@ -128,14 +128,14 @@ export default function DialogAdd(props) {
                                 <Field placeholder="DNI" id="dni" name="dni" className='input-field' />
                                 {errors.dni && touched.dni ? (
                                     <div>{errors.dni}</div>
-                                ) : null}dni
+                                ) : null}
 
                                 <Field placeholder="CUIL" id="cuil" name="cuil" className='input-field' />
                                 {errors.lastName && touched.lastName ? (
                                     <div>{errors.lastName}</div>
                                 ) : null}
 
-                                <Field placeholder="Nombre(s)" id="nombre" nombre="nombre" className='input-field' />
+                                <Field placeholder="Nombre(s)" id="nombre" name="nombre" className='input-field' />
                                 {errors.nombre && touched.nombre ? (
                                     <div>{errors.nombre}</div>
                                 ) : null}

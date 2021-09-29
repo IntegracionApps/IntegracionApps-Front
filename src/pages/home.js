@@ -191,7 +191,7 @@ export default function Home() {
                                         <div className="card_header">
                                             <h2>{item.nombre}</h2>
                                             <p>{item.descrip}</p>
-                                            <p className="price">AR$ {item.price} x[{item.tipoUnidad}]</p>
+                                            <p className="price">$ {item.price} x[{item.tipoUnidad}]</p>
                                             <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                                                 <button className="btn" onClick={() => handleAddItem(item)}>Agregar a carrito</button>
                                             </div>

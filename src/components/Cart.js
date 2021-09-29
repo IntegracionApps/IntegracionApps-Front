@@ -101,29 +101,29 @@ export default function Cart({ cart, where }) {
                                         <TableCell>{item.descrip}</TableCell>
                                         {/*acá iría lo que es botones para ADD o SUBTRACT item qtty*/}
                                         <TableCell align="right">{item.quantity} [{item.quantity > 1 ?  item.tipoUnidad+"s" : item.tipoUnidad}]</TableCell>
-                                        <TableCell align="right">AR$ {item.price}</TableCell>
-                                        <TableCell align="right">AR$ {getImporte(item.quantity, item.price).toFixed(2)}</TableCell>
+                                        <TableCell align="right">$ {item.price}</TableCell>
+                                        <TableCell align="right">$ {getImporte(item.quantity, item.price).toFixed(2)}</TableCell>
                                     </TableRow>
                                 )
                             })}
                             <TableRow>
                                 <TableCell rowSpan={4} colSpan={1} />
                                 <TableCell style={{ fontWeight: "bolder" }}>Subtotal</TableCell>
-                                <TableCell colSpan={2} align="right">AR$ {cartTotal.toFixed(2)}</TableCell>
+                                <TableCell colSpan={2} align="right">$ {cartTotal.toFixed(2)}</TableCell>
                             </TableRow>
-                            <TableRow>
+                            {/* <TableRow>
                                 <TableCell style={{ padding: "0 16px 0 16px", fontWeight: "bolder" }}>Añadir Descuento: </TableCell>
                                 <TableCell colSpan={2} align="right" style={{ padding: "0 16px 0 16px" }}>
                                     <TextField fullWidth id="discount" label="Ingrese un cupón de descuento." />
                                 </TableCell>
-                            </TableRow>
+                            </TableRow> */}
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Cargos por envío a domicilio:</TableCell>
-                                <TableCell align="right">AR$ 00,0</TableCell>
+                                <TableCell colSpan={2} align="right">$ 00,0</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
-                                <TableCell colSpan={2} align="right">AR$ {getTotal().toFixed(2)}</TableCell>
+                                <TableCell colSpan={2} align="right">$ {cartTotal.toFixed(2)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
