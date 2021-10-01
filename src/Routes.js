@@ -13,6 +13,7 @@ import ControlStock from "./pages/control_stock.js";
 import Empleados from "./pages/empleados.js";
 import Login from "./pages/login.js"
 import Register from "./pages/register.js";
+import MiPerfil from "./pages/perfil.js";
 
 //
 
@@ -26,6 +27,7 @@ export default function Routes() {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/Home" component={Home} />
+                    <Route exact path="/Perfil" component={MiPerfil} />
                     <Route exact path="/HomeAdmin" component={HomeAdmin} />
                     <Route exact path="/Shopping_cart" component={Shopping_Cart} />
                     <Route exact path="/Empleados" component={Empleados} />
