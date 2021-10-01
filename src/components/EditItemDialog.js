@@ -97,42 +97,49 @@ export default function EditItemDialog(props) {
                         {({ errors, touched }) => (
                             <Form>
 
+                                <label for="fname" >Nombre:</label>
                                 <Field placeholder="Nombre" id="nombre" name="nombre" className='input-field' />
-                                {errors.nombre && touched.nombre ? (
+                                 {errors.nombre && touched.nombre ? (
                                     <div>{errors.nombre}</div>
                                 ) : null}
 
+                                <label for="fname">Descripción:</label>
                                 <Field placeholder="Descripción" id="descrip" name="descrip" className='input-field' />
                                 {errors.descrip && touched.descrip ? (
                                     <div>{errors.descrip}</div>
                                 ) : null}
 
+                                <label for="Categoría">Categoría:</label>
                                 <Field placeholder="Categoría" id="categoria" name="categoria" className='input-field' />
                                 {errors.categoria && touched.categoria ? (
                                     <div>{errors.categoria}</div>
                                 ) : null}
 
+                                <label for="Categoría">Tipo de Unidad:</label>
                                 <Field placeholder="Tipo de Unidad" id="tipoUnidad" name="tipoUnidad" className='input-field' />
                                 {errors.tipoUnidad && touched.tipoUnidad ? (
                                     <div>{errors.tipoUnidad}</div>
                                 ) : null}
 
+                                <label for="Categoría">Precio Unitario:</label>
                                 <Field placeholder="Precio Unitario" id="price" name="price" className='input-field' />
                                 {errors.price && touched.price ? (
                                     <div>{errors.price}</div>
                                 ) : null}
 
+                                <label for="Categoría">Stock:</label>
                                 <Field placeholder="Stock" id="stock" name="stock" className='input-field' />
                                 {errors.stock && touched.stock ? (
                                     <div>{errors.stock}</div>
                                 ) : null}
 
+                                <label for="Categoría">Punto de Reposición:</label>
                                 <Field placeholder="Punto de Reposición" id="puntoRepo" name="puntoRepo" className='input-field' />
                                 {errors.puntoRepo && touched.puntoRepo ? (
                                     <div>{errors.puntoRepo}</div>
                                 ) : null}
 
-                                <button type="submit">Submit</button>
+                                {/*<button type="submit">Submit</button>*/}
                             </Form>
                         )}
 
