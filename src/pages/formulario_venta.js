@@ -1,4 +1,4 @@
-import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@material-ui/core";
+import { FormControl, FormHelperText, Input, InputLabel, makeStyles, MenuItem, Select, TextField, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Checkbox } from "@material-ui/core";
 import axios from "axios";
 import { Field, Form, useFormik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -30,7 +30,7 @@ const validationSchema = yup.object({
 
     direccion: yup
         .string()
-        //.matches(/^[A-Za-z]$/,'Ingrese únicamente letras')
+        .matches(/^[A-Za-z]+ /, 'Ingrese únicamente letras')
         .required('¡Este campo es obligatorio!'),
 
     altura: yup
@@ -73,13 +73,13 @@ const validationSchema = yup.object({
 export default function NuevaVenta(props) {
     const history = useHistory();
     const [receive, setReceive] = useState(props.location.state.toSend);
-   
+
     const user = JSON.parse(window.localStorage.getItem("user"));
-    console.log(receive);
+    // console.log(receive);
     console.log(user);
     const [successOpen, setSuccessOpen] = useState(false)
 
-    if(user.ubicacion.piso.length === 0){
+    if (user.ubicacion.piso.length === 0) {
         user.ubicacion.piso = '-';
     }
 
@@ -135,7 +135,7 @@ export default function NuevaVenta(props) {
     });
 
     // const classes = useStyles();
-    // var refresh = false;
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
 
@@ -147,9 +147,9 @@ export default function NuevaVenta(props) {
                 console.log(err);
             })
 
-        // refresh = true;
+        setRefresh(false);
         // console.log(formik.values);
-    }, [])
+    }, [refresh])
 
 
     function handleGoTo() {
@@ -160,10 +160,27 @@ export default function NuevaVenta(props) {
     return (
         <div>
             <Header />
-            <h1>Nueva Venta</h1>
+            <h1>Nuevo Envío a Domicilio</h1>
             <div className="content">
                 <div>
                     <form onSubmit={formik.handleSubmit} className="form">
+                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                            <Checkbox onChange={(event) => {
+                                console.log(event.target.checked);
+                                if (event.target.checked === true) {
+                                    formik.setFieldValue("direccion", "");
+                                    formik.setFieldValue("altura", "");
+                                    formik.setFieldValue("piso", "");
+                                }
+                                if (event.target.checked === false) {
+                                    formik.setFieldValue("direccion", user.ubicacion.direccion);
+                                    formik.setFieldValue("altura", user.ubicacion.altura);
+                                    formik.setFieldValue("piso", user.ubicacion.piso);
+                                }
+                                setRefresh(true);
+                            }} />
+                            <h3>Quiero enviar mi compra a otra dirección</h3>
+                        </div>
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
 
                             <TextField
