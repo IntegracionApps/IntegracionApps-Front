@@ -90,7 +90,7 @@ export default function RegistroVentas() {
         }
         setRefresh(false);
 
-    }, [])
+    }, [refresh])
 
 
     function handleCheckCodes() {
@@ -127,9 +127,24 @@ export default function RegistroVentas() {
                                 disabled: rowData.estado === "Pagado",
                                 tooltip: 'Marcar Pagado',
                                 onClick: (event, rowData) => {
-                                    console.log(rowData);
-                                    setCheckPurchaseCode(true);
                                     setCompareCode(rowData._id);
+                                    if (rowData.medioPago === "Efectivo") {
+                                        axios.post('http://localhost:5000/Sales/confirm', {
+                                            id: compareCode,
+                                        })
+                                            .then((res) => {
+                                                alert(res.status + ": " + res.statusText);
+                                                setCheckPurchaseCode(false);
+                                                setRefresh(true);
+                                            })
+                                            .catch((err) => {
+                                                alert(err);
+                                            });
+                                    }
+                                    else {
+                                        console.log(rowData);
+                                        setCheckPurchaseCode(true);
+                                    }
                                     // const dataUpdate = [...ventas];
                                     // const index = rowData.id;
                                     // dataUpdate[index].estado = "Pagado";

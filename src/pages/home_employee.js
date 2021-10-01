@@ -17,8 +17,8 @@ let columns = [
 
 export default function HomeEmpleado() {
     const [ventas, setVentas] = useState([]);
-    
-    const [refresh, setRefresh]=useState(false);
+
+    const [refresh, setRefresh] = useState(false);
 
     const [checkPurchaseCode, setCheckPurchaseCode] = useState(false);
     const [purchaseCode, setPurchaseCode] = useState('');
@@ -37,7 +37,7 @@ export default function HomeEmpleado() {
                 // handle error
                 console.log(error);
             });
-            setRefresh(false);
+        setRefresh(false);
     }, [refresh])
 
 
@@ -49,14 +49,14 @@ export default function HomeEmpleado() {
             axios.post('http://localhost:5000/Sales/confirm', {
                 id: compareCode,
             })
-            .then((res) => {
-                alert(res.status +": "+res.statusText);
-                setCheckPurchaseCode(false);
-                setRefresh(true);
-            })
-            .catch((err)=>{
-                alert(err);
-            })
+                .then((res) => {
+                    alert(res.status + ": " + res.statusText);
+                    setCheckPurchaseCode(false);
+                    setRefresh(true);
+                })
+                .catch((err) => {
+                    alert(err);
+                })
         };
     }
 
@@ -74,9 +74,25 @@ export default function HomeEmpleado() {
                         disabled: rowData.estado === "Pagado",
                         tooltip: 'Marcar Pagado',
                         onClick: (event, rowData) => {
-                            setCheckPurchaseCode(true);
-                            console.log(rowData);
                             setCompareCode(rowData._id);
+                            if (rowData.medioPago === "Efectivo") {
+                                axios.post('http://localhost:5000/Sales/confirm', {
+                                    id: compareCode,
+                                })
+                                    .then((res) => {
+                                        alert(res.status + ": " + res.statusText);
+                                        setCheckPurchaseCode(false);
+                                        setRefresh(true);
+                                    })
+                                    .catch((err) => {
+                                        alert(err);
+                                    });
+                            }
+                            else {
+
+                                setCheckPurchaseCode(true);
+                                console.log(rowData);
+                            }
                             // if (match === true) {
                             //     setDataUpdate([...ventas]);
                             //     const index = rowData.id;
