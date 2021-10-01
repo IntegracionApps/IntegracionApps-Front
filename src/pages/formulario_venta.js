@@ -76,23 +76,23 @@ export default function NuevaVenta(props) {
 
     const user = JSON.parse(window.localStorage.getItem("user"));
     // console.log(receive);
-    console.log(user);
+    // console.log(user);
     const [successOpen, setSuccessOpen] = useState(false)
-
+    const [purchaseCode, setPurchaseCode]=useState('')
     if (user.ubicacion.piso.length === 0) {
         user.ubicacion.piso = '-';
     }
 
     const formik = useFormik({
         initialValues: {
-            nombre: '',
-            apellido: '',
-            direccion: '',
-            altura: '',
-            piso: '',
-            dni: '',
-            email: '',
-            telefono: '',
+            nombre: user.nombre,
+            apellido: user.apellido,
+            direccion: user.ubicacion.direccion,
+            altura: user.ubicacion.altura,
+            piso: user.ubicacion.piso,
+            dni: user.dni,
+            email: user.email,
+            telefono: user.telefono,
             fechaEmision: new Date(),
             items: receive.items,
             subTotal: receive.subtotal,
@@ -105,6 +105,7 @@ export default function NuevaVenta(props) {
             otros1: 'IVA RESPONSABLE INSCRIPTO',
             otros2: 'A RESPONSABLE FINAL',
             sucursal: null,
+            codigoCompra: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -123,13 +124,22 @@ export default function NuevaVenta(props) {
             })
                 .then(function (response) {
                     console.log(response.status + " " + response.statusText);
+                    console.log(response.data);
                     if (response.status >= 200) {
-                        setSuccessOpen(true);
+                        // setSuccessOpen(true);
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+                axios.get("http://localhost:5000/obtenerCodigo")
+                .then((res) => {
+                    console.log(typeof(res.data));
+                    console.log(res.data);
+                    setPurchaseCode(res.data);
+                    console.log(purchaseCode);
+                    setSuccessOpen(true);
+                })
 
         },
     });
@@ -155,12 +165,12 @@ export default function NuevaVenta(props) {
     function handleGoTo() {
         localStorage.setItem("finished", true);
         history.push('/Home');
-}
+    }
 
     return (
         <div>
             <Header />
-            <h1 style={{marginBottom: "40px", marginTop: "30px"}}>Nueva venta a retirar en sucursal</h1>
+            <h1 style={{ marginBottom: "40px", marginTop: "30px" }}>Nueva venta a retirar en sucursal</h1>
             <div className="content">
                 <div>
                     <form onSubmit={formik.handleSubmit} className="form">
@@ -224,7 +234,6 @@ export default function NuevaVenta(props) {
                                 onChange={formik.handleChange}
                                 className={"root"}
                                 variant="outlined"
-                                type="number"
                                 error={formik.touched.altura && Boolean(formik.errors.altura)}
                                 helperText={formik.touched.altura && formik.errors.altura}
                             />
@@ -236,7 +245,6 @@ export default function NuevaVenta(props) {
                                 onChange={formik.handleChange}
                                 className={"root"}
                                 variant="outlined"
-                                type="number"
                                 error={formik.touched.piso && Boolean(formik.errors.piso)}
                                 helperText={formik.touched.piso && formik.errors.piso}
                             />
@@ -264,7 +272,6 @@ export default function NuevaVenta(props) {
                                 onChange={formik.handleChange}
                                 className={"root"}
                                 variant="outlined"
-                                type="number"
                                 error={formik.touched.dni && Boolean(formik.errors.dni)}
                                 helperText={formik.touched.dni && formik.errors.dni}
                             />
@@ -308,24 +315,25 @@ export default function NuevaVenta(props) {
                                     error={formik.touched.pagoRealizado && Boolean(formik.errors.pagoRealizado)}
                                     helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
                                 />
-                                <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
                             </div>
                         }
+                        <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
 
-                        <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", height: "50px" , marginTop: "7.5%", borderRadius: "50px" }}>Confirmar Compra</Button>
-                        <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", height: "50px", marginTop: "7.5%" , marginBottom: "20px", borderRadius: "50px"}}>Volver</Button>
+                        <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", height: "50px", marginTop: "7.5%", borderRadius: "50px" }}>Confirmar Compra</Button>
+                        <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", height: "50px", marginTop: "7.5%", marginBottom: "20px", borderRadius: "50px" }}>Volver</Button>
                     </form>
                 </div>
             </div>
-            <Dialog open={successOpen} onClose={() => {setSuccessOpen(false)}}>
-                    <DialogTitle>¡Éxito!</DialogTitle>
-                    <DialogContent>
-                        <Typography>La operación se realizó con éxito</Typography>
-                        <Typography>¡Gracias por elegirnos!</Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => {handleGoTo()}}>Al Menú Principal</Button>
-                    </DialogActions>
+            <Dialog open={successOpen} onClose={() => { setSuccessOpen(false) }}>
+                <DialogTitle>¡Éxito!</DialogTitle>
+                <DialogContent>
+                    <Typography>¡La operación se realizó con éxito!</Typography>
+                    <Typography>Tu código de compra es: '{purchaseCode}'</Typography>
+                    <Typography>¡Gracias por elegirnos!</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => { handleGoTo() }}>Al Menú Principal</Button>
+                </DialogActions>
             </Dialog>
         </div >
     )
