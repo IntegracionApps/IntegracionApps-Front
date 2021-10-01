@@ -104,7 +104,6 @@ export default function HomeAdmin() {
                     } */}
                 </div>
                 <div className="container_home">
-                    <p>HOME ADMIN</p>
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
                         {product_data.map((item, willDelete) => {
                             return (

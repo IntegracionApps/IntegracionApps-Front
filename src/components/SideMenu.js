@@ -72,6 +72,11 @@ export default function SideMenu(props) {
                     name: 'Historial de Ventas',
                     path: "/RegistroVentas",
                 },
+                
+                {
+                    name: 'Mi Perfil',
+                    path: "/Perfil",
+                },
 
                 {
                     name: 'Cerrar Sesión',
@@ -130,6 +135,12 @@ export default function SideMenu(props) {
             setDrawerToggle(false);
             history.push({
                 pathname: '/Empleados',
+            })
+        }
+        else if (text === "/Perfil") {
+            setDrawerToggle(false);
+            history.push({
+                pathname: '/Perfil',
             })
         }
     }

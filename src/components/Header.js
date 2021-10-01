@@ -11,8 +11,8 @@ import "../styles/SearchBar.css";
 
 
 export default function Header(props) {
-    const { onSearchBarChange, searchValue  } = props;
-
+    const { onSearchBarChange, searchValue } = props;
+    const user = JSON.parse(window.localStorage.getItem("user"));
 
     return (
         <div className="navbar">
@@ -22,6 +22,9 @@ export default function Header(props) {
             </div>
             <div className="titulo">
                 <h1>El Changuito</h1>
+                <div>
+                    ¡Hola, {user.rol} {user.nombre} {user.apellido}!
+                </div>
             </div>
 
             <div className="search-box">

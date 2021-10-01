@@ -120,7 +120,7 @@ export default function Home() {
             }
         }
         addItem(item);
-        console.log(getItem(item.id));
+        // console.log(getItem(item.id));
         if (!filterFlag) setOpen(true);
     }
 

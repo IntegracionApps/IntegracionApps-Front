@@ -137,8 +137,6 @@ export default function EditItemDialog(props) {
                         )}
 
                     </Formik>
-
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancelar</Button>
