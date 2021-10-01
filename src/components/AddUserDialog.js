@@ -67,23 +67,35 @@ const validationSchema = yup.object({
         .matches(/\w*[a-z]\w*/, "La contraseña debe tener al menos 1 minúscula")
         .matches(/\w*[A-Z]\w*/, "La contraseña debe tener al menos 1 mayúscula")
         .matches(/\d/, "La contraseña debe tener al menos 1 número")
-        .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
+        .matches(/[#$%*_=+@]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = + @)")
         .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('La contraseña es obligatoria'),
 
 });
 
 export default function DialogAdd(props) {
-    const { open, onClose } = props;
+    const { open, onClose, onSuccess } = props;
 
-    const formRef= useRef();
+    const formRef = useRef();
 
     const handleSubmit = () => {
         if (formRef.current) {
-          formRef.current.handleSubmit()
+            formRef.current.handleSubmit()
         }
-      }
-      
+    }
+
+    const validateConfirmPassword = (pass, value) => {
+
+        let error = "";
+        if(value === "") error = "¡Este campo es requerido!";
+        if (pass && value) {
+            if (pass !== value) {
+                error = "Las contraseñas no coinciden";
+            }
+        }
+        return error;
+    };
+
 
     const classes = useStyles();
 
@@ -103,9 +115,10 @@ export default function DialogAdd(props) {
                             altura: '',
                             piso: '',
                             telefono: '',
-                            password: '',
                             rol: '',
                             salario: '',
+                            password: '',
+                            confirmPassword: '',
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
@@ -114,7 +127,7 @@ export default function DialogAdd(props) {
                                 cliente: values,
                             })
                                 .then((res) => {
-                                    alert(res.data + " " + res.status + ": " + res.statusText);
+                                    onSuccess();
                                 })
                                 .catch((err) => {
                                     alert(JSON.stringify(err));
@@ -123,7 +136,7 @@ export default function DialogAdd(props) {
 
                         innerRef={formRef}
                     >
-                        {({ errors, touched }) => (
+                        {({ values, errors, touched }) => (
                             <Form>
                                 <Field placeholder="DNI" id="dni" name="dni" className='input-field' />
                                 {errors.dni && touched.dni ? (
@@ -170,20 +183,31 @@ export default function DialogAdd(props) {
                                     <div>{errors.telefono}</div>
                                 ) : null}
 
-                                <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
-                                {errors.password && touched.password ? (
-                                    <div>{errors.password}</div>
-                                ) : null}
-                               
+
                                 <Field placeholder="Rol" id="rol" name="rol" className='input-field' />
                                 {errors.rol && touched.rol ? (
                                     <div>{errors.rol}</div>
                                 ) : null}
-                               
+
                                 <Field placeholder="Salario" id="salario" name="salario" className='input-field' />
                                 {errors.salario && touched.salario ? (
                                     <div>{errors.salario}</div>
                                 ) : null}
+
+                                <Field type="password" placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                {errors.password && touched.password ? (
+                                    <div>{errors.password}</div>
+                                ) : null}
+
+                                <Field type="password" placeholder="Confirmar Contraseña" name="confirmPassword" className='input-field' validate={value =>
+                                    validateConfirmPassword(values.password, value)
+                                } />
+
+                                {errors.confirmPassword && touched.confirmPassword ?
+                                    (<div>{errors.confirmPassword}</div>)
+                                    :
+                                    null
+                                }
 
 
                                 {/* <button type="submit">Submit</button> */}

@@ -1,11 +1,9 @@
-import { Button } from "@material-ui/core";
-import Lock from "@material-ui/icons/Lock";
-import Mail from "@material-ui/icons/Mail";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@material-ui/core";
 import axios from "axios";
-import * as yup from 'yup';
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import * as yup from 'yup';
 import "../styles/Login.css";
 
 const Number = /^[0-9]+$/;
@@ -64,7 +62,7 @@ const validationSchema = yup.object({
         .matches(/\w*[a-z]\w*/, "La contraseña debe tener al menos 1 minúscula")
         .matches(/\w*[A-Z]\w*/, "La contraseña debe tener al menos 1 mayúscula")
         .matches(/\d/, "La contraseña debe tener al menos 1 número")
-        .matches(/[#$%*_=+]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = +)")
+        .matches(/[#$%*_=+@]/, "La contraseña debe tener al menos 1 símbolo (# $ % * _ = + @)")
         .min(8, ({ min }) => `La contraseña debe ser de al menos ${min} caracteres`)
         .required('La contraseña es obligatoria'),
 
@@ -72,6 +70,25 @@ const validationSchema = yup.object({
 
 const Register = () => {
     const history = useHistory();
+
+    const [successRegister, setSuccessRegister] = useState(false);
+
+    function handleGoTo() {
+        history.push("/")
+    }
+
+    const validateConfirmPassword = (pass, value) => {
+
+        let error = "";
+        if(value === "") error = "¡Este campo es requerido!"
+        if (pass && value) {
+            if (pass !== value) {
+                error = "Las contraseñas no coinciden";
+            }
+        }
+        return error;
+    };
+
 
     return (
         <body>
@@ -89,6 +106,7 @@ const Register = () => {
                             piso: '',
                             telefono: '',
                             password: '',
+                            confirmPassword: '',
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
@@ -97,14 +115,15 @@ const Register = () => {
                                 cliente: values,
                             })
                                 .then((res) => {
-                                    alert(res.data + " " + res.status + ": " + res.statusText);
+                                    console.log(res.data + " " + res.status + ": " + res.statusText);
+                                    setSuccessRegister(true);
                                 })
                                 .catch((err) => {
                                     alert(JSON.stringify(err));
                                 })
                         }}
                     >
-                        {({ errors, touched }) => (
+                        {({ values, errors, touched }) => (
                             <Form>
                                 <div className="inputContainer">
                                     <Field placeholder="DNI" id="dni" name="dni" className='input-field' />
@@ -152,12 +171,23 @@ const Register = () => {
                                         <div className="erroresCampos">{errors.telefono}</div>
                                     ) : null}
 
-                                    <Field placeholder="Contraseña" id="password" name="password" className='input-field' />
+                                    <Field type="password" placeholder="Contraseña" id="password" name="password" className='input-field' />
                                     {errors.password && touched.password ? (
                                         <div className="erroresCampos">{errors.password}</div>
                                     ) : null}
+
+                                    <Field type="password" placeholder="Confirmar Contraseña" name="confirmPassword" className='input-field' validate={value =>
+                                        validateConfirmPassword(values.password, value)
+                                    } />
+
+                                    {errors.confirmPassword && touched.confirmPassword ?
+                                        (<div className="erroresCampos">{errors.confirmPassword}</div>)
+                                        :
+                                        null
+                                    }
+
                                 </div>
-                                
+
 
 
                                 <button className="btnLogin solid" type="submit">Submit</button>
@@ -167,6 +197,21 @@ const Register = () => {
                     </Formik>
 
                     <Button className="btnVolver" onClick={() => { history.goBack() }}>Volver</Button>
+
+                    <Dialog open={successRegister} onClose={() => { setSuccessRegister(false) }}>
+                        <DialogTitle>¡Éxito!</DialogTitle>
+                        <DialogContent>
+                            <Typography>Su registración fue realizada con éxito</Typography>
+                            <Typography>¡Bienvenido!</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => {
+                                setSuccessRegister(false);
+                                handleGoTo();
+                            }}>Al Menú Principal</Button>
+                        </DialogActions>
+                    </Dialog>
+
                 </div>
             </div>
         </body>
