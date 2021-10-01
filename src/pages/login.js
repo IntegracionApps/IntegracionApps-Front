@@ -110,7 +110,7 @@ const Login = () => {
                                                 }
                                                 if (res.data.rol === "Empleado") {
                                                     window.localStorage.setItem("rol", 1);
-                                                    history.push("/Home");
+                                                    history.push("/HomeEmployee");
                                                 }
                                                 if (res.data.rol === "Cliente") {
                                                     console.log(JSON.parse(window.localStorage.getItem("user")));

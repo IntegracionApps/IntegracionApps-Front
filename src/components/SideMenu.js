@@ -13,23 +13,13 @@ export default function SideMenu(props) {
     const [drawerToggle, setDrawerToggle] = useState(false);
 
     const history = useHistory();
-    // console.log(roleValue + " "+ typeof(roleValue));
     switch (parseInt(window.localStorage.getItem("rol"))) {
+
         case 0:
             side_menu_buttons = [
                 {
                     name: 'Principal',
                     path: "/",
-                },
-
-                {
-                    name: 'Registro de Ventas',
-                    path: "/RegistroVentas",
-                },
-
-                {
-                    name: 'Control de Stock',
-                    path: "/Stock",
                 },
 
                 {
@@ -51,8 +41,20 @@ export default function SideMenu(props) {
                 },
 
                 {
-                    name: 'Registro de Ventas',
-                    path: "/RegistroVentas",
+                    name: 'Productos',
+                    path: "/HomeAdmin",
+                },
+
+
+                {
+                    name: 'Control de Stock',
+                    path: "/Stock",
+                },
+
+
+                {
+                    name: 'Mi Perfil',
+                    path: "/Perfil",
                 },
 
                 {
@@ -72,7 +74,7 @@ export default function SideMenu(props) {
                     name: 'Historial de Ventas',
                     path: "/RegistroVentas",
                 },
-                
+
                 {
                     name: 'Mi Perfil',
                     path: "/Perfil",
@@ -99,7 +101,7 @@ export default function SideMenu(props) {
                     break;
                 case 1:
                     history.push({
-                        pathname: '/HomeAdmin',
+                        pathname: '/HomeEmployee',
                     });
                     break;
                 case 2:
@@ -143,6 +145,14 @@ export default function SideMenu(props) {
                 pathname: '/Perfil',
             })
         }
+
+        else if (text === "/HomeAdmin") {
+            setDrawerToggle(false);
+            history.push({
+                pathname: '/HomeAdmin',
+            })
+        }
+
     }
 
 
