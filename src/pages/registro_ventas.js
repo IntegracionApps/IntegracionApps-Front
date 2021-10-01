@@ -9,19 +9,17 @@ import Header from "../components/Header";
 
 const columns = [
     { title: "N° de Venta", field: "id", editable: "never" },
+    { title: "DNI del comprador", field: "cliente.dni", editable: "never" },
     { title: "Cantidad de ítems vendidos", field: "items.length", editable: "never", render: rowData => <div>{rowData.items.length} {rowData.items.length > 1 ? "ítems Vendidos" : "ítem vendido"}</div> },
-    {
-        title: "Total de la Venta", field: "total", render: rowData => <div>$ {rowData.total.toFixed(2)}</div>
-    },
+    { title: "Total de la Venta", field: "total", render: rowData => <div>$ {rowData.total.toFixed(2)}</div> },
     { title: "Medio de Pago", field: "medioPago" },
-    { title: "Estado", field: "estado" },
+    { title: "Estado", field: "estado", defaultSort: "asc" },
 
 ]
 
 
 export default function RegistroVentas() {
     const [ventas, setVentas] = useState([]);
-
     useEffect(() => {
 
         let salesSelect = null;
@@ -40,8 +38,8 @@ export default function RegistroVentas() {
                     });
                 break;
             case 2:
-                salesSelect = window.localStorage.getItem("dni");
-                axios.get("http://localhost:5000/Sales/get/" + salesSelect)
+                salesSelect = JSON.parse(window.localStorage.getItem("user"));
+                axios.get("http://localhost:5000/Sales/get/" + salesSelect.dni)
                     .then(function (response) {
                         // handle success
                         // console.log(response);
@@ -66,13 +64,24 @@ export default function RegistroVentas() {
                     data={ventas}
 
                     actions={[
-                        {
-                          icon: 'check',
-                          tooltip: 'Marcar Pagado',
-                          onClick: (event, rowData) => alert("Se ha pagado la venta:  " + JSON.stringify(rowData))
-                        }
-                      ]}
-                
+                        rowData => ({
+                            icon: 'check',
+                            disabled: rowData.estado === "Pagado",
+                            tooltip: 'Marcar Pagado',
+                            onClick: (event, rowData) => {
+                                console.log(rowData);
+                                // const dataUpdate = [...ventas];
+                                // const index = rowData.id;
+                                // dataUpdate[index].estado = "Pagado";
+                                // setVentas([...dataUpdate]);
+
+                                // console.log(dataUpdate[index]);
+
+                                alert("Se ha pagado la venta:  " + JSON.stringify(rowData));
+                            }
+                        }),
+                    ]}
+
                     options={{
                         actionsColumnIndex: -1
                     }}
@@ -117,7 +126,7 @@ export default function RegistroVentas() {
                                         <Table size="small" aria-label="purchases">
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell>Descripción</TableCell>
+                                                    {/* {/<TableCell>Descripción</TableCell> */}
                                                     <TableCell >Precio Unitario</TableCell>
                                                     <TableCell>Cantidad</TableCell>
                                                     <TableCell >Importe</TableCell>
@@ -312,7 +321,7 @@ export default function RegistroVentas() {
 
             }
 
-            <Link to="/Home">Volver a la tienda</Link>
+            <Link to="/HomeAdmin">Volver a la tienda</Link>
         </div>
     )
 }
