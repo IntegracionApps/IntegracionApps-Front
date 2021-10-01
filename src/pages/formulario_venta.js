@@ -78,7 +78,7 @@ export default function NuevaVenta(props) {
     // console.log(receive);
     // console.log(user);
     const [successOpen, setSuccessOpen] = useState(false)
-    const [purchaseCode, setPurchaseCode]=useState('')
+    const [purchaseCode, setPurchaseCode] = useState('')
     if (user.ubicacion.piso.length === 0) {
         user.ubicacion.piso = '-';
     }
@@ -132,9 +132,9 @@ export default function NuevaVenta(props) {
                 .catch(function (error) {
                     console.log(error);
                 });
-                axios.get("http://localhost:5000/obtenerCodigo")
+            axios.get("http://localhost:5000/obtenerCodigo")
                 .then((res) => {
-                    console.log(typeof(res.data));
+                    console.log(typeof (res.data));
                     console.log(res.data);
                     setPurchaseCode(res.data);
                     console.log(purchaseCode);
@@ -328,7 +328,11 @@ export default function NuevaVenta(props) {
                 <DialogTitle>¡Éxito!</DialogTitle>
                 <DialogContent>
                     <Typography>¡La operación se realizó con éxito!</Typography>
-                    <Typography>Tu código de compra es: '{purchaseCode}'</Typography>
+                    {formik.values.medioPago !== "Efectivo" ?
+                        < Typography > Tu código de compra es: '{purchaseCode}'</Typography>
+                        :
+                        null
+                    }
                     <Typography>¡Gracias por elegirnos!</Typography>
                 </DialogContent>
                 <DialogActions>
