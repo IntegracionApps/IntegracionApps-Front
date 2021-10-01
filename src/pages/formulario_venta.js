@@ -85,14 +85,14 @@ export default function NuevaVenta(props) {
 
     const formik = useFormik({
         initialValues: {
-            nombre: user.nombre,
-            apellido: user.apellido,
-            direccion: user.ubicacion.direccion,
-            altura: user.ubicacion.altura,
-            piso: user.ubicacion.piso,
-            dni: user.dni,
-            email: user.email,
-            telefono: user.telefono,
+            nombre: '',
+            apellido: '',
+            direccion: '',
+            altura: '',
+            piso: '',
+            dni: '',
+            email: '',
+            telefono: '',
             fechaEmision: new Date(),
             items: receive.items,
             subTotal: receive.subtotal,
@@ -155,12 +155,12 @@ export default function NuevaVenta(props) {
     function handleGoTo() {
         localStorage.setItem("finished", true);
         history.push('/Home');
-    }
+}
 
     return (
         <div>
             <Header />
-            <h1>Nuevo Envío a Domicilio</h1>
+            <h1 style={{marginBottom: "40px", marginTop: "30px"}}>Nueva venta a retirar en sucursal</h1>
             <div className="content">
                 <div>
                     <form onSubmit={formik.handleSubmit} className="form">
@@ -189,6 +189,7 @@ export default function NuevaVenta(props) {
                                 value={formik.values.nombre}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                variant="outlined"
                                 error={formik.touched.nombre && Boolean(formik.errors.nombre)}
                                 helperText={formik.touched.nombre && formik.errors.nombre}
                             />
@@ -198,6 +199,7 @@ export default function NuevaVenta(props) {
                                 value={formik.values.apellido}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                variant="outlined"
                                 error={formik.touched.apellido && Boolean(formik.errors.apellido)}
                                 helperText={formik.touched.apellido && formik.errors.apellido}
                             />
@@ -209,6 +211,7 @@ export default function NuevaVenta(props) {
                             value={formik.values.direccion}
                             onChange={formik.handleChange}
                             className={"root"}
+                            variant="outlined"
                             error={formik.touched.direccion && Boolean(formik.errors.direccion)}
                             helperText={formik.touched.direccion && formik.errors.direccion}
                         />
@@ -220,6 +223,8 @@ export default function NuevaVenta(props) {
                                 value={formik.values.altura}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                variant="outlined"
+                                type="number"
                                 error={formik.touched.altura && Boolean(formik.errors.altura)}
                                 helperText={formik.touched.altura && formik.errors.altura}
                             />
@@ -230,6 +235,8 @@ export default function NuevaVenta(props) {
                                 value={formik.values.piso}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                variant="outlined"
+                                type="number"
                                 error={formik.touched.piso && Boolean(formik.errors.piso)}
                                 helperText={formik.touched.piso && formik.errors.piso}
                             />
@@ -243,6 +250,7 @@ export default function NuevaVenta(props) {
                             value={formik.values.email}
                             onChange={formik.handleChange}
                             className={"root"}
+                            variant="outlined"
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
                         />
@@ -255,6 +263,8 @@ export default function NuevaVenta(props) {
                                 value={formik.values.dni}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                variant="outlined"
+                                type="number"
                                 error={formik.touched.dni && Boolean(formik.errors.dni)}
                                 helperText={formik.touched.dni && formik.errors.dni}
                             />
@@ -266,21 +276,27 @@ export default function NuevaVenta(props) {
                                 value={formik.values.telefono}
                                 onChange={formik.handleChange}
                                 className={"root"}
+                                /* style={{backgroundColor: "lightgreen"}} */
+                                variant="outlined"
                                 error={formik.touched.telefono && Boolean(formik.errors.telefono)}
                                 helperText={formik.touched.telefono && formik.errors.telefono}
                             />
                         </div>
 
-                        <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
-                            <option value=''>Seleccione un medio de pago</option>
-                            {/* <option value="Efectivo">Efectivo</option> */}
-                            <option value="Crédito">Crédito</option>
-                            <option value="Débito">Débito</option>
-                        </select>
+                        <div className="custom-select">
+
+                            <select id="medioPago" value={formik.values.medioPago} label="Seleccione un medio de pago *" onChange={formik.handleChange} >
+                                <option value=''>Seleccione un medio de pago</option>
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Crédito">Crédito</option>
+                                <option value="Débito">Débito</option>
+                            </select>
+                            <span className="custom-arrow"></span>
+
+                        </div>
                         {formik.errors.medioPago && <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>}
 
-                        <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
-                        {/* {formik.values.medioPago != "Efectivo" ? null :
+                        {formik.values.medioPago != "Efectivo" ? null :
                             <div>
                                 <TextField
                                     fullWidth
@@ -288,26 +304,28 @@ export default function NuevaVenta(props) {
                                     label="¿Cuánto efectivo se entregó?"
                                     value={formik.values.pagoRealizado}
                                     onChange={formik.handleChange}
+                                    variant="outlined"
                                     error={formik.touched.pagoRealizado && Boolean(formik.errors.pagoRealizado)}
                                     helperText={formik.touched.pagoRealizado && formik.errors.pagoRealizado}
                                 />
+                                <Typography>Monto a pagar: {formik.values.total.toFixed(2)}</Typography>
                             </div>
-                        } */}
+                        }
 
-                        <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Confirmar Compra</Button>
-                        <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", marginTop: "7.5%" }}>Volver</Button>
+                        <Button type="submit" style={{ backgroundColor: "lightgreen", color: "black", width: "auto", height: "50px" , marginTop: "7.5%", borderRadius: "50px" }}>Confirmar Compra</Button>
+                        <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", height: "50px", marginTop: "7.5%" , marginBottom: "20px", borderRadius: "50px"}}>Volver</Button>
                     </form>
                 </div>
             </div>
-            <Dialog open={successOpen} onClose={() => { setSuccessOpen(false) }}>
-                <DialogTitle>¡Éxito!</DialogTitle>
-                <DialogContent>
-                    <Typography>La operación se realizó con éxito</Typography>
-                    <Typography>¡Gracias por elegirnos!</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => { handleGoTo() }}>Al Menú Principal</Button>
-                </DialogActions>
+            <Dialog open={successOpen} onClose={() => {setSuccessOpen(false)}}>
+                    <DialogTitle>¡Éxito!</DialogTitle>
+                    <DialogContent>
+                        <Typography>La operación se realizó con éxito</Typography>
+                        <Typography>¡Gracias por elegirnos!</Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {handleGoTo()}}>Al Menú Principal</Button>
+                    </DialogActions>
             </Dialog>
         </div >
     )
