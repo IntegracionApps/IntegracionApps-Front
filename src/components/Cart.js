@@ -117,10 +117,10 @@ export default function Cart({ cart, where }) {
                                     <TextField fullWidth id="discount" label="Ingrese un cupón de descuento." />
                                 </TableCell>
                             </TableRow> */}
-                            {/* <TableRow>
+                            <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Cargos por envío a domicilio:</TableCell>
                                 <TableCell colSpan={2} align="right">$ 00,0</TableCell>
-                            </TableRow> */}
+                            </TableRow>
                             <TableRow>
                                 <TableCell style={{ fontWeight: "bolder" }}>Total</TableCell>
                                 <TableCell colSpan={2} align="right">$ {cartTotal.toFixed(2)}</TableCell>
