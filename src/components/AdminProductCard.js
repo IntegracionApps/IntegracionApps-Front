@@ -13,15 +13,15 @@ export default function AdminProductCard(props) {
         <div className="card_header">
             {willDelete ?
                 <React.Fragment>
-                    <h2>¿Estás seguro que quieres eliminar el siguiente producto?</h2>
+                    <h2 style={{fontSize: "19px" ,fontWeight: "200", marginBottom: "8px"}}>¿Estás seguro que quieres eliminar el siguiente producto?</h2>
                     <h3>{item.descrip}</h3>
-                    <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                        <button className="btn" onClick={() => {
+                    <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
+                        <button style={{width: "40%", marginLeft: "5%"}} className="btn" onClick={() => {
                             handleRemoveItem();
                             // setWillDelete(false);
                             refresh();
-                        }}>Sí, ELIMINAR</button>
-                        <button className="btn" onClick={() => { setWillDelete(false); }}>No, CANCELAR</button>
+                        }}>ELIMINAR</button>
+                        <button style={{width: "40%", marginRight: "5%"}} className="btn" onClick={() => { setWillDelete(false); }}>CANCELAR</button>
                     </div>
 
                 </React.Fragment>
@@ -33,7 +33,7 @@ export default function AdminProductCard(props) {
                     <p className="price">$ {item.price} x [ {item.tipoUnidad} ]</p>
                     <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
 
-                        <button className="btn" onClick={() => { setEditOpen(true); }}>Editar Producto</button>
+                        <button className="btnAdmin" onClick={() => { setEditOpen(true); }}>Editar Producto</button>
                         <DeleteIcon fontSize="large" color="secondary" onClick={() => {
                             setWillDelete(true);
                         }} />

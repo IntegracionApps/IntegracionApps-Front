@@ -101,7 +101,7 @@ export default function DialogAdd(props) {
 
     return (
         <React.Fragment>
-            <Dialog onClose={onClose} open={open}>
+            <Dialog onClose={onClose} open={open} fullWidth>
                 <DialogTitle>Nuevo Empleado</DialogTitle>
                 <DialogContent dividers>
                     <Formik

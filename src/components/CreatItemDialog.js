@@ -55,7 +55,7 @@ export default function CreateItemDialog(props) {
 
     return (
         <React.Fragment>
-            <Dialog onClose={handleClose} open={open}>
+            <Dialog onClose={handleClose} open={open} fullWidth>
                 <DialogTitle>Nuevo Producto</DialogTitle>
                 <DialogContent dividers>
                     <Formik

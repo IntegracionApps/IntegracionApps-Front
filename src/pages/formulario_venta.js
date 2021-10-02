@@ -170,7 +170,7 @@ export default function NuevaVenta(props) {
     return (
         <div>
             <Header />
-            <h1 style={{ marginBottom: "40px", marginTop: "30px" }}>Nuevo envío a domicilio</h1>
+            <h1 style={{ marginBottom: "40px", marginTop: "30px", fontFamily: "Calibri"}}>Nuevo envío a domicilio</h1>
             <div className="content">
                 <div>
                     <form onSubmit={formik.handleSubmit} className="form">
