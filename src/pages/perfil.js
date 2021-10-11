@@ -225,7 +225,7 @@ export default function MiPerfil(props) {
                             />
                         </div>
 
-                        <TextField
+                        {/* <TextField
                             name="telefono"
                             label="Teléfono *"
                             disabled={!willEdit}
@@ -235,7 +235,7 @@ export default function MiPerfil(props) {
                             error={formik.touched.telefono && Boolean(formik.errors.telefono)}
                             helperText={formik.touched.telefono && formik.errors.telefono}
                         />
-
+ */}
 
                         {willEdit ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

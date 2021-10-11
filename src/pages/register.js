@@ -110,7 +110,7 @@ const Register = () => {
                         }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            console.log("IN");
+                            // console.log("IN");
                             axios.post('http://localhost:5000/Users/add/client', {
                                 cliente: values,
                             })

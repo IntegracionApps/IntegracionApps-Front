@@ -152,7 +152,7 @@ const Login = () => {
                                 </div>
 
 
-                                <button className="btnLogin solid" type="submit">Submit</button>
+                                <button className="btnLogin solid" type="submit">Iniciar Sesión</button>
                                 <Button class="btnLogin solid" onClick={() => { history.push('/Register') }}>Registrarse</Button>
                             </Form>
                         )}
