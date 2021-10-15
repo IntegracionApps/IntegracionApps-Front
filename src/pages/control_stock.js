@@ -109,7 +109,7 @@ export default function ControlStock() {
                                     {item.descrip}
                                 </Alert>
                             }
-                            <Divider />
+                            {/* <Divider /> */}
                         </div>
                     )
                 })}
