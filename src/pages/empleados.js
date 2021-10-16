@@ -9,9 +9,9 @@ import Header from "../components/Header";
 export default function Empleados() {
     const [data, setData] = useState([]);
     const [visible, setVisible] = useState(false);
-    
+
     const [successRegister, setSuccessRegister] = useState(false);
-    
+
     useEffect(() => {
         const axios = require('axios');
         axios.get("http://localhost:5000/Users/get/all")
@@ -49,8 +49,9 @@ export default function Empleados() {
     }
 
     const columns = [
-        { title: "Nombre", field: "nombre", editable: "never" },
-        { title: "Apellido", field: "apellido", editable: "never" },
+        { title: "DNI", field: "dni", editable: "never" },
+        { title: "Nombre", field: "nombre" },
+        { title: "Apellido", field: "apellido" },
         { title: "Rol", field: "rol", defaultSort: "asc" },
         { title: "Mail", field: "email" },
         { title: "Dirección", field: "ubicacion.direccion" },
@@ -96,6 +97,30 @@ export default function Empleados() {
                         isFreeAction: true,
                         onClick: () => setVisible(true),
                     },
+
+                    {
+                        icon: () => <AttachMoney />,
+                        tooltip: "Pagar TODOS los sueldos",
+                        isFreeAction: true,
+                        onClick: (event) => {
+                            console.log(typeof (data));
+                            let salarios = [];
+                            data.forEach(empleado => {
+                                let sendSalarios = [];
+                                console.log(typeof(empleado));
+                                console.log(empleado.CBU);
+                                sendSalarios.push(empleado.id);
+                                sendSalarios.push(empleado.CBU);
+                                sendSalarios.push(empleado.salario);
+                                console.log(sendSalarios);
+                                salarios.push(sendSalarios);
+                            });
+                            alert(JSON.stringify(salarios));
+                            //Call a endpoint de pago de sueldos
+                            //axios.post()
+                        },
+                    },
+
                     rowData => ({
                         icon: () => <AttachMoney />,
                         tooltip: "Pagar Empleado",
@@ -104,7 +129,9 @@ export default function Empleados() {
 
                 ]}
                 options={{
-                    actionsColumnIndex: -1
+                    actionsColumnIndex: -1,
+                    pageSize: 11,
+                    pageSizeOptions: [11,15,20]
                 }}
 
 
@@ -212,7 +239,7 @@ export default function Empleados() {
 
             />
             {/* <ListaEmpleados employee_data={data} visible={visible} /> */}
-            < DialogAdd open={visible} onClose={() => { setVisible(false) }} onSuccess={() => {setSuccessRegister(true)}} />
+            < DialogAdd open={visible} onClose={() => { setVisible(false) }} onSuccess={() => { setSuccessRegister(true) }} />
 
             <Dialog open={successRegister} onClose={() => { setSuccessRegister(false) }}>
                 <DialogTitle>¡Éxito!</DialogTitle>
