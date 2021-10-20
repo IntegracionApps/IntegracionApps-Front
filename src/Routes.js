@@ -28,14 +28,14 @@ export default function Routes() {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/Home" component={Home} />
+                    <Route exact path="/Shopping_cart" component={Shopping_Cart} />
+                    <Route exact path="/NuevaVenta" component={NuevaVenta} />
                     <Route exact path="/Perfil" component={MiPerfil} />
                     <Route exact path="/HomeAdmin" component={HomeAdmin} />
-                    <Route exact path="/HomeEmployee" component={HomeEmpleado} />
-                    <Route exact path="/Shopping_cart" component={Shopping_Cart} />
                     <Route exact path="/Empleados" component={Empleados} />
+                    <Route exact path="/HomeEmployee" component={HomeEmpleado} />
                     <Route exact path="/Stock" component={ControlStock} />
                     <Route exact path="/RegistroVentas" component={RegistroVentas} />
-                    <Route exact path="/NuevaVenta" component={NuevaVenta} />
                 </CartProvider>
             </Switch>
         </Router>
