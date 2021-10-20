@@ -50,7 +50,7 @@ export default function Cart({ cart, where }) {
     }
 
     function getTotal() {
-        return cartTotal + (cartTotal * -0.07);
+        return cartTotal;
     }
 
     function confirmSale() {
