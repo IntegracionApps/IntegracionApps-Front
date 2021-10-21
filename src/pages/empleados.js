@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Dialog, DialogTitle, DialogContent, Typography, DialogActions, Button } from "@material-ui/core";
 import { AttachMoney } from "@material-ui/icons";
 import axios from "axios";
@@ -14,7 +15,7 @@ export default function Empleados() {
 
     useEffect(() => {
         const axios = require('axios');
-        axios.get("http://localhost:5000/Users/get/all")
+        axios.get(urlWebServices.getEmployees)
             .then(function (response) {
                 console.log(response.status + " " + response.statusText);
                 if (response.status >= 200)
@@ -36,7 +37,7 @@ export default function Empleados() {
     function handleDelete(empleado) {
         console.log(empleado.id);
         if (window.confirm("¿Seguro que quiere borrar a " + empleado.nombre + " " + empleado.apellido + "?")) {
-            axios.delete('http://localhost:5000/Users/delete/' + empleado.id)
+            axios.delete(urlWebServices.deleteEmployee + empleado.id)
                 .then(function (response) {
                     console.log(response.status + " " + response.statusText);
                     if (response.status >= 200) alert("¡Borrado exitoso!")
@@ -145,7 +146,7 @@ export default function Empleados() {
                                 setData([...dataUpdate]);
 
                                 console.log(dataUpdate[index]);
-                                axios.post("http://localhost:5000/Users/edit/employee", {
+                                axios.post(urlWebServices.editEmployee, {
                                     empleado: dataUpdate[index],
                                 })
                                     .then((res) => {
@@ -168,7 +169,7 @@ export default function Empleados() {
                                 console.log(typeof (oldData.id));
                                 dataDelete.splice(index, 1);
                                 setData([...dataDelete]);
-                                axios.post("http://localhost:5000/Users/delete/" + oldData.id)
+                                axios.post(urlWebServices.deleteEmployee + oldData.id)
                                     .then((res) => {
                                         console.log(res.data);
                                         console.log(res.status + ": " + res.statusText);

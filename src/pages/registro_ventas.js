@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import axios from "axios";
@@ -50,7 +51,7 @@ export default function RegistroVentas() {
         switch (parseInt(window.localStorage.getItem("rol"))) {
             case 0:
                 salesSelect = 0
-                axios.get("http://localhost:5000/Sales/get/" + salesSelect)
+                axios.get(urlWebServices.getSales + salesSelect)
                     .then(function (response) {
                         // handle success
                         // console.log(response);
@@ -63,7 +64,7 @@ export default function RegistroVentas() {
                 break;
             case 1:
                 salesSelect = 0
-                axios.get("http://localhost:5000/Sales/get/" + salesSelect)
+                axios.get(urlWebServices.getSales + salesSelect)
                     .then(function (response) {
                         // handle success
                         // console.log(response);
@@ -77,11 +78,12 @@ export default function RegistroVentas() {
 
             case 2:
                 salesSelect = JSON.parse(window.localStorage.getItem("user"));
-                axios.get("http://localhost:5000/Sales/get/" + salesSelect.dni)
+                axios.get(urlWebServices.getSales + salesSelect.dni)
                     .then(function (response) {
                         // handle success
                         // console.log(response);
                         setVentas(response.data);
+                        console.log(ventas);
                     })
                     .catch(function (error) {
                         // handle error
@@ -98,7 +100,7 @@ export default function RegistroVentas() {
         console.log(compareCode);
         if (purchaseCode.match(compareCode)) {
             console.log("YES");
-            axios.post('http://localhost:5000/Sales/confirm', {
+            axios.post(urlWebServices.confirmSale, {
                 id: compareCode,
             })
                 .then((res) => {

@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import axios from "axios";
@@ -32,7 +33,7 @@ export default function HomeAdmin() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5000/Products/get/withStock')
+        axios.get(urlWebServices.getProductsWithStock)
             .then(function (response) {
                 // console.log(response);
                 setData(response.data);
@@ -58,7 +59,7 @@ export default function HomeAdmin() {
         // console.log(toRemove);
         // console.log(product_data);
         // console.log(item.id);
-        axios.post('http://localhost:5000/Products/delete/' + item.id)
+        axios.post(urlWebServices.deleteProduct + item.id)
             .then((res) => {
                 alert((res.data));
             })

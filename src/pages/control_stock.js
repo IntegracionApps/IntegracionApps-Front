@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { ButtonGroup, Divider, IconButton, Typography } from "@material-ui/core";
 import { Alert } from '@material-ui/lab';
 import { Add, Remove } from "@material-ui/icons";
@@ -12,7 +13,7 @@ export default function ControlStock() {
     const [product_data, setData] = useState([]);
     const [refresh, setRefresh] = useState(false)
     useEffect(() => {
-        axios.get('http://localhost:5000/Products/get/all')
+        axios.get(urlWebServices.getAllProducts)
             .then(function (response) {
                 // console.log(response);
                 setData(response.data);
@@ -28,7 +29,7 @@ export default function ControlStock() {
     function handleUpdate(item, num) {
         // console.log(item);
         let newQuantity = item.stock + num;
-        axios.post("http://localhost:5000/Products/update/" + item.id, {
+        axios.post(urlWebServices.updateStock + item.id, {
             newQuantity: newQuantity
         })
             .then((res) => { console.log(res.statusText) });

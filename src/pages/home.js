@@ -1,3 +1,4 @@
+import urlWebServices from '../webServices.js'
 import { Badge, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, Popover, Typography } from "@material-ui/core";
 import { Add, Remove, ShoppingCart } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
@@ -47,9 +48,9 @@ function AddedItemDialog(props) {
 }
 
 
-export default function Home() {
+export default function Home(props) {
     // console.log(product_data);
-
+    console.log(props);
     const [product_data, setData] = useState([]);
     const [products_copy, setProductsCopy] = useState([]);
     const [searchValue, setSearchValue] = useState("");
@@ -76,7 +77,8 @@ export default function Home() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5000/Products/get/withStock')
+
+        axios.get(urlWebServices.getProductsWithStock)
             .then(function (response) {
                 // console.log(response);
                 setData(response.data);

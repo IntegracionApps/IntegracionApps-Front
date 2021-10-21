@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@material-ui/core";
 import axios from "axios";
 import { useFormik } from 'formik';
@@ -88,7 +89,7 @@ export default function MiPerfil(props) {
         },
         // validationSchema: validationSchema,
         onSubmit: (values) => {
-            axios.post("http://localhost:5000/Users/edit/client", {
+            axios.post(urlWebServices.editClient, {
                 cliente: values,
             })
                 .then(function (response) {

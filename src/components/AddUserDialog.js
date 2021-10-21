@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Typography, Button, Input, MenuItem, Select, InputLabel, FormControl, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
@@ -123,7 +124,7 @@ export default function DialogAdd(props) {
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
                             console.log("IN");
-                            axios.post('http://localhost:5000/Users/add/employee', {
+                            axios.post(urlWebServices.createEmployee, {
                                 cliente: values,
                             })
                                 .then((res) => {

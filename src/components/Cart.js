@@ -9,12 +9,8 @@ import "../styles/Cart.css";
 
 export default function Cart({ cart, where }) {
     const history = useHistory();
-    useEffect(() => {
-        setItems(cart);
-        console.log(cart);
-    }, []);
-
-
+    
+    
     const { isEmpty,
         totalUniqueItems,
         items,
@@ -25,6 +21,11 @@ export default function Cart({ cart, where }) {
         addItem,
         removeItem,
     } = useCart();
+    
+    useEffect(() => {
+        setItems(cart);
+        console.log(cart);
+    }, []);
 
     const [toSend, setToSend] = useState({
         items: items,

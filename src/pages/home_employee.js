@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@material-ui/core";
 import axios from "axios";
 import MaterialTable from "material-table";
@@ -27,7 +28,7 @@ export default function HomeEmpleado() {
     const [dataUpdate, setDataUpdate] = useState([]);
     useEffect(() => {
 
-        axios.get("http://localhost:5000/Sales/get/" + 0)
+        axios.get(urlWebServices.getSales + 0)
             .then(function (response) {
                 // handle success
                 // console.log(response);

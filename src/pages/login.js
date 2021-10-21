@@ -1,3 +1,4 @@
+import urlWebServices from '../webServices.js'
 import { Button } from "@material-ui/core";
 import Lock from "@material-ui/icons/Lock";
 import Mail from "@material-ui/icons/Mail";
@@ -95,7 +96,7 @@ const Login = () => {
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
                             // console.log(values.password);
-                            axios.post('http://localhost:5000/Users/get/', {
+                            axios.post(urlWebServices.logInUser, {
                                 cliente: values,
                             })
                                 .then((res) => {

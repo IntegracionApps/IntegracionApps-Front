@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import React, { Component } from "react"
 // import employee_data from "../data/employee_data"
 import MaterialTable from "material-table"
@@ -23,7 +24,7 @@ function ListaEmpleados(props) {
     function handleDelete(empleado){
         console.log(empleado.id);
         if(window.confirm("¿Seguro que quiere borrar a "+ empleado.nombre +" "+ empleado.apellido +"?")){
-            axios.delete('http://localhost:5000/Users/delete/' + empleado.id)
+            axios.delete(urlWebServices.deleteEmployee + empleado.id)
             .then( function (response){
                 console.log(response.status + " " + response.statusText);
                 if (response.status >= 200) alert("¡Borrado exitoso!")

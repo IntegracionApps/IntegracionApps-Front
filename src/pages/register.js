@@ -1,3 +1,5 @@
+import urlWebServices from "../webServices";
+
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@material-ui/core";
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
@@ -111,7 +113,7 @@ const Register = () => {
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
                             // console.log("IN");
-                            axios.post('http://localhost:5000/Users/add/client', {
+                            axios.post(urlWebServices.createUser, {
                                 cliente: values,
                             })
                                 .then((res) => {

@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import axios from "axios";
 import * as yup from 'yup'
@@ -71,7 +72,7 @@ export default function CreateItemDialog(props) {
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
                             console.log("IN");
-                            axios.post('http://localhost:5000/Products/add/', {
+                            axios.post(urlWebServices.createProduct, {
                                 producto: values,
                             })
                                 .then((res) => {

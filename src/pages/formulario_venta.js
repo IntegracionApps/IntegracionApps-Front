@@ -1,3 +1,4 @@
+import urlWebServices from "../webServices";
 import {
   Button,
   Checkbox,
@@ -99,7 +100,7 @@ export default function NuevaVenta(props) {
   const [receive, setReceive] = useState(props.location.state.toSend);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
-  // console.log(receive);
+  console.log(receive);
   // console.log(user);
   const [successOpen, setSuccessOpen] = useState(false);
   const [purchaseCode, setPurchaseCode] = useState("");
@@ -149,27 +150,27 @@ export default function NuevaVenta(props) {
       }
 
       console.log(JSON.stringify(values, null, 2));
-      // axios
-      //   .post("http://localhost:5000/add", {
-      //     values: values,
-      //   })
-      //   .then(function (response) {
-      //     console.log(response.status + " " + response.statusText);
-      //     console.log(response.data);
-      //     if (response.status >= 200) {
-      //       // setSuccessOpen(true);
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-      // axios.get("http://localhost:5000/obtenerCodigo").then((res) => {
-      //   console.log(typeof res.data);
-      //   console.log(res.data);
-      //   setPurchaseCode(res.data);
-      //   console.log(purchaseCode);
-      //   setSuccessOpen(true);
-      // });
+      axios
+        .post(urlWebServices.createSale, {
+          values: values,
+        })
+        .then(function (response) {
+          console.log(response.status + " " + response.statusText);
+          console.log(response.data);
+          if (response.status >= 200) {
+            // setSuccessOpen(true);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      axios.get(urlWebServices.getSaleCode).then((res) => {
+        console.log(typeof res.data);
+        console.log(res.data);
+        setPurchaseCode(res.data);
+        console.log(purchaseCode);
+        setSuccessOpen(true);
+      });
     },
   });
 
@@ -178,7 +179,7 @@ export default function NuevaVenta(props) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/Markets/get/all")
+      .get(urlWebServices.getMarkets)
       .then((res) => {
         formik.values.sucursal = res.data;
       })
