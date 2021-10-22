@@ -29,7 +29,7 @@ export default function AdminProductCard(props) {
                 :
                 <React.Fragment>
                     <h2>{item.nombre}</h2>
-                    <p>{item.descrip}</p>
+                    <p style={{height: "30px"}}>{item.descrip}</p>
                     <p className="price">$ {item.price} x [ {item.tipoUnidad} ]</p>
                     <div style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
 

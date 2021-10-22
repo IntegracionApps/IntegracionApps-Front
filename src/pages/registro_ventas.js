@@ -177,15 +177,15 @@ export default function RegistroVentas() {
                                                 backgroundColor: '#43A047',
                                             }}
                                         >
-                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
-                                                <Typography variant="h6" gutterBottom style={{ marginRight: "2.5%" }}>
+                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start", marginTop: "15px"}}>
+                                                <Typography variant="h6" gutterBottom style={{ marginRight: "1%" }}>
                                                     {row.sucursal.nombre}
                                                 </Typography>
-                                                <Typography variant="h6" gutterBottom >
+                                                <Typography variant="h4" gutterBottom >
                                                     Franquicia : {row.sucursal.direccion}
                                                 </Typography>
                                             </div>
-                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
+                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start", marginLeft: "20px" }}>
                                                 <Typography variant="h6" gutterBottom style={{ marginRight: "2.5%" }}>
                                                     Fecha de Venta : {new Date(row.fechaEmision).toLocaleString()}
                                                 </Typography>
@@ -193,7 +193,7 @@ export default function RegistroVentas() {
                                                     Cliente : {row.cliente.nombre} {row.cliente.apellido}
                                                 </Typography>
                                             </div>
-                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start" }}>
+                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "start",  marginLeft: "20px" }}>
                                                 <Typography variant="h6" gutterBottom style={{ marginRight: "2.5%" }}>
                                                     {row.otros1}
                                                 </Typography>
