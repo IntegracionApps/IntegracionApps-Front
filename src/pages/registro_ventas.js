@@ -131,7 +131,7 @@ export default function RegistroVentas() {
                                 onClick: (event, rowData) => {
                                     setCompareCode(rowData._id);
                                     if (rowData.medioPago === "Efectivo") {
-                                        axios.post('http://localhost:5000/Sales/confirm', {
+                                        axios.post(urlWebServices.confirmSale, {
                                             id: compareCode,
                                         })
                                             .then((res) => {
@@ -284,7 +284,7 @@ export default function RegistroVentas() {
                                 className={"root"}
                                 id="email"
                                 name="email"
-                                label="Ingrese el Código de Compra para pagar con tarjeta."
+                                label="Código de Compra"
                                 value={purchaseCode}
                                 onChange={(event) => setPurchaseCode(event.target.value)}
                                 className={"root"}

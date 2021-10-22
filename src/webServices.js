@@ -19,7 +19,7 @@ const urlWebServices ={
     createEmployee: urlApi+'Users/add/employee',
     createUser: urlApi+'Users/add/user',
     getAllProducts: urlApi+'Products/get/all',
-
+    // confirmSale: urlApi+'Sales/confirm/',
 }
 
 
