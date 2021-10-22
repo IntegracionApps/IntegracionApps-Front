@@ -150,13 +150,31 @@ export default function NuevaVenta(props) {
       }
 
       console.log(JSON.stringify(values, null, 2));
+
+      //INTEGRACIÓN TARJETA DE CRÉDITO A
+      axios
+        .post("https://viernes-ia.herokuapp.com/addConsumo", {
+          numero: 204189017,
+          documento: 40769036,
+          codseg: 489,
+          precio: 280,
+          descripcion: "Pack Cristal del Lago x6",
+          fechaven: "2023-04",
+        })
+        .then(function (response) {
+          console.log(response.status + " " + response.statusText);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      //
       axios
         .post(urlWebServices.createSale, {
           values: values,
         })
         .then(function (response) {
-          console.log(response.status + " " + response.statusText);
-          console.log(response.data);
+          // console.log(response.status + " " + response.statusText);
+          // console.log(response.data);
           if (response.status >= 200) {
             // setSuccessOpen(true);
           }
@@ -165,10 +183,10 @@ export default function NuevaVenta(props) {
           console.log(error);
         });
       axios.get(urlWebServices.getSaleCode).then((res) => {
-        console.log(typeof res.data);
-        console.log(res.data);
+        // console.log(typeof res.data);
+        // console.log(res.data);
         setPurchaseCode(res.data);
-        console.log(purchaseCode);
+        // console.log(purchaseCode);
         setSuccessOpen(true);
       });
     },
