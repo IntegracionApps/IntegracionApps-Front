@@ -129,18 +129,33 @@ export default function Empleados() {
               console.log(typeof data);
               let salarios = [];
               data.forEach((empleado) => {
-                let sendSalarios = [];
-                console.log(typeof empleado);
-                console.log(empleado.CBU);
-                sendSalarios.push(empleado.id);
-                sendSalarios.push(empleado.CBU);
-                sendSalarios.push(empleado.salario);
-                console.log(sendSalarios);
+                let sendSalarios = {
+                  cbu: empleado.CBU,
+                  importe: empleado.salario,
+                  codigo: (Math.floor(Math.random() * 10000) + 10000)
+                    .toString()
+                    .substring(1),
+                  fechaPago: new Date().toLocaleDateString(),
+                  pagado: "0",
+                  cbuEmpresa: "946677571110330000000",
+                  descripcion: "Sueldo Octubre",
+                };
+                // console.log(JSON.parse(sendSalarios));
                 salarios.push(sendSalarios);
               });
-              alert(JSON.stringify(salarios));
+              console.log(salarios);
               //Call a endpoint de pago de sueldos
-              //axios.post()
+              axios
+                .post("https://iabackend.herokuapp.com/api/users/altasueldoM", {
+                  salarios,
+                })
+                .then((res) => {
+                  console.log(res.status + ": " + res.statusText);
+                  alert(res.data);
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
             },
           },
 
@@ -149,10 +164,10 @@ export default function Empleados() {
             tooltip: "Pagar Empleado",
             onClick: (event, rowData) => {
               alert(JSON.stringify(rowData));
-            //   console.log(new Date().toLocaleDateString())
+              //   console.log(new Date().toLocaleDateString())
               // alert("Se le han pagado $" + rowData.salario + " al empleado " + rowData.nombre + " " + rowData.apellido)
               axios
-                .post("https://iabackend.herokuapp.com/endpoints/altasueldo", {
+                .post("https://iabackend.herokuapp.com/api/users/altasueldoM", {
                   cbu: rowData.CBU,
                   importe: rowData.salario,
                   codigo: "1111",
