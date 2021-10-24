@@ -17,7 +17,7 @@ const urlWebServices ={
     deleteEmployee: urlApi+'Users/delete/',
     editEmployee: urlApi+'Users/edit/employee',
     createEmployee: urlApi+'Users/add/employee',
-    createUser: urlApi+'Users/add/user',
+    createUser: urlApi+'Users/add/client',
     getAllProducts: urlApi+'Products/get/all',
     // confirmSale: urlApi+'Sales/confirm/',
 }
