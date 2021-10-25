@@ -2,24 +2,25 @@ const urlApi = "https://integrapps09-back.herokuapp.com/";
 
 const urlWebServices ={
     logInUser: urlApi+'Users/get/',
+    getEmployees: urlApi+'Users/get/all',
+    editClient: urlApi+'Users/edit/client',
+    deleteEmployee: urlApi+'Users/delete/',
+    editEmployee: urlApi+'Users/edit/employee',
+    createUser: urlApi+'Users/add/client',
+    createEmployee: urlApi+'Users/add/employee',
+    
     getProductsWithStock: urlApi+'Products/get/withStock',
     createSale: urlApi+'add',
     getMarkets: urlApi+'Markets/get/all',
     getSaleCode: urlApi+'obtenerCodigo',
-    getSales: urlApi+'Sales/get/',
-    confirmSale: urlApi+'Sales/confirm',
-    editClient: urlApi+'Users/edit/client',
     deleteProduct: urlApi+'Products/delete/',
     updateProduct: urlApi+'Products/update',
     updateStock: urlApi+'Products/update/',
     createProduct: urlApi+'Products/add/',
-    getEmployees: urlApi+'Users/get/all',
-    deleteEmployee: urlApi+'Users/delete/',
-    editEmployee: urlApi+'Users/edit/employee',
-    createEmployee: urlApi+'Users/add/employee',
-    createUser: urlApi+'Users/add/client',
     getAllProducts: urlApi+'Products/get/all',
     // confirmSale: urlApi+'Sales/confirm/',
+    getSales: urlApi+'Sales/get/',
+    confirmSale: urlApi+'Sales/confirm',
 }
 
 

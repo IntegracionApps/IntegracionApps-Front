@@ -18,6 +18,8 @@ export default function Empleados() {
   const [data, setData] = useState([]);
   const [visible, setVisible] = useState(false);
 
+  const [refresh, setRefresh] = useState(false);
+
   const [successRegister, setSuccessRegister] = useState(false);
 
   useEffect(() => {
@@ -34,7 +36,8 @@ export default function Empleados() {
       .then(function () {
         console.log("default");
       });
-  }, []);
+      setRefresh(false);
+  }, [refresh]);
 
   const handleClose = () => {
     setVisible(false);
@@ -294,6 +297,7 @@ export default function Empleados() {
         }}
         onSuccess={() => {
           setSuccessRegister(true);
+          setRefresh(true);
         }}
       />
 
