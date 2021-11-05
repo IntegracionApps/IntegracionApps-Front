@@ -413,6 +413,8 @@ export default function NuevaVenta(props) {
 
             {formik.values.medioPago != "Crédito" ? null : (
               <>
+
+                <div style={{ paddingTop: "20px"}}>
                 <TextField
                   fullWidth
                   name="numero_tarjeta"
@@ -429,6 +431,9 @@ export default function NuevaVenta(props) {
                     formik.errors.numero_tarjeta
                   }
                 />
+                </div>
+
+                <div style={{ paddingTop: "20px"}}>
                 <TextField
                   fullWidth
                   name="nombre_titular"
@@ -445,13 +450,19 @@ export default function NuevaVenta(props) {
                     formik.errors.nombre_titular
                   }
                 />
+                </div>
+
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "start",
+                    paddingTop: "20px",
+                    paddingBottom: "20px"
                   }}
                 >
+
+                  <div style={{paddingRight: "10px", width: "100%"}}>
                   <TextField
                     fullWidth
                     name="fecha_vencimiento"
@@ -468,7 +479,10 @@ export default function NuevaVenta(props) {
                       formik.errors.fecha_vencimiento
                     }
                   />
+                  </div>
 
+
+                  <div style={{paddingLeft: "10px", width: "100%"}}>
                   <TextField
                     fullWidth
                     name="codigo_seguridad"
@@ -485,6 +499,8 @@ export default function NuevaVenta(props) {
                       formik.errors.codigo_seguridad
                     }
                   />
+
+                  </div>
                 </div>
               </>
             )}
