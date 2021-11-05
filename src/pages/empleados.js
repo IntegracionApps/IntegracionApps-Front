@@ -166,22 +166,22 @@ export default function Empleados() {
             icon: () => <AttachMoney />,
             tooltip: "Pagar Empleado",
             onClick: (event, rowData) => {
-              alert(JSON.stringify(rowData));
+              // alert(JSON.stringify(rowData));
               //   console.log(new Date().toLocaleDateString())
               // alert("Se le han pagado $" + rowData.salario + " al empleado " + rowData.nombre + " " + rowData.apellido)
               axios
                 .post("https://iabackend.herokuapp.com/api/users/altasueldoM", {
                   cbu: rowData.CBU,
                   importe: rowData.salario,
-                  codigo: "1111",
+                  codigo: (Math.floor(Math.random() * 10000) + 10000).toString().substring(1),
                   fechaPago: new Date().toLocaleDateString(),
                   pagado: "0",
                   cbuEmpresa: "946677571110330000000",
-                  descripcion: "Sueldo Octubre",
+                  descripcion: "Sueldo "+ new Date().toLocaleString('default', {month: 'long'}),
                 })
                 .then((res) => {
                   console.log(res.status + ": " + res.statusText);
-                  alert(res.data);
+                  alert(res.data.message +"\nEl código para el pago de su servicio es: "+res.data.createdSueldo);
                 })
                 .catch((err) => {
                   console.error(err);
