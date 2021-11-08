@@ -91,7 +91,7 @@ export default function Empleados() {
       )
     ) {
       axios
-        .delete("http://localhost:5000/Users/delete/" + empleado.id)
+        .delete(urlWebServices.deleteEmployee + empleado.id)
         .then(function (response) {
           console.log(response.status + " " + response.statusText);
           if (response.status >= 200) alert("¡Borrado exitoso!");
@@ -129,8 +129,9 @@ export default function Empleados() {
             tooltip: "Pagar TODOS los sueldos",
             isFreeAction: true,
             onClick: (event) => {
-              console.log(typeof data);
-              let salarios = [];
+              // console.log(typeof data);
+              let salarios = new Array();
+              console.log(data);
               data.forEach((empleado) => {
                 let sendSalarios = {
                   cbu: empleado.CBU,
@@ -141,17 +142,16 @@ export default function Empleados() {
                   fechaPago: new Date().toLocaleDateString(),
                   pagado: "0",
                   cbuEmpresa: "946677571110330000000",
-                  descripcion: "Sueldo Octubre",
+                  descripcion: "Sueldo "+new Date().toLocaleString('default', {month: 'long'}),
                 };
-                // console.log(JSON.parse(sendSalarios));
-                salarios.push(sendSalarios);
+                console.log(JSON.stringify(sendSalarios));
+                salarios.push(sendSalarios)
               });
               console.log(salarios);
+              let toSend=JSON.stringify(salarios);
               //Call a endpoint de pago de sueldos
               axios
-                .post("https://iabackend.herokuapp.com/api/users/altasueldoM", {
-                  salarios,
-                })
+                .post("https://iabackend.herokuapp.com/api/users/altasueldoM", salarios)
                 .then((res) => {
                   console.log(res.status + ": " + res.statusText);
                   alert(res.data);
