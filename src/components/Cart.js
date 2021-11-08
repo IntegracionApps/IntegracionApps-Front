@@ -28,7 +28,7 @@ export default function Cart({ cart, where }) {
     }, []);
 
     const [toSend, setToSend] = useState({
-        items: items,
+        items: cart,
         importe: [],
         subtotal: cartTotal,
         total: getTotal(),
