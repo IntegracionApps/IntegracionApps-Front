@@ -80,11 +80,9 @@ const validationSchema = yup.object({
 
   pagoRealizado: yup.string().matches(Number, "Ingrese únicamente números"),
 
-  numero_tarjeta: yup
-    .string()
-    .matches(Number, "Ingrese únicamente números")
-    .min(16, "El número ingresado es muy corto")
-    .max(16, "El número ingresado es muy largo"),
+  numero_tarjeta: yup.string().matches(Number, "Ingrese únicamente números"),
+  // .min(16, "El número ingresado es muy corto")
+  // .max(16, "El número ingresado es muy largo"),
 
   nombre_titular: yup
     .string()
@@ -100,10 +98,11 @@ export default function NuevaVenta(props) {
   const [receive, setReceive] = useState(props.location.state.toSend);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
-  console.log(receive);
+  // console.log(receive);
   // console.log(user);
   const [successOpen, setSuccessOpen] = useState(false);
   const [purchaseCode, setPurchaseCode] = useState("");
+  const [flagPaymentOK, setFlagPayment] = useState(false);
   if (user.ubicacion.piso.length === 0) {
     user.ubicacion.piso = "-";
   }
@@ -123,7 +122,7 @@ export default function NuevaVenta(props) {
       subTotal: receive.subtotal,
       total: receive.total,
       descuentoTotal: receive.subtotal - receive.total,
-      medioPago: "",
+      medioPago: 0,
       pagoRealizado: "",
       vuelto: null,
       estado: "Emitido",
@@ -138,57 +137,101 @@ export default function NuevaVenta(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("in");
-      if (values.medioPago == "Crédito" || values.medioPago == "Débito") {
-        console.log("IN");
+      if (values.medioPago >= "2" || values.medioPago <= "4") {
+        console.log("CARD");
         values.pagoRealizado = values.total;
         values.vuelto = 0;
         // estado_pago_tarjeta = "Creado";
       }
-      if (values.medioPago == "Efectivo") {
+      if (values.medioPago == "1") {
+        console.log("CASH");
         values.vuelto = values.pagoRealizado - receive.total;
       }
 
-      console.log(JSON.stringify(values, null, 2));
-
       //INTEGRACIÓN TARJETA DE CRÉDITO A
+      var url = "";
+      var parametros = {};
+      var res = {};
+      switch (parseInt(values.medioPago)) {
+        case 2:
+          console.log("CARD");
+          values.pagoRealizado = values.total;
+          values.vuelto = 0;
+          url = "https://viernes-ia.herokuapp.com/addConsumo";
+          parametros = {
+            numero: values.numero_tarjeta,
+            cuit: "20-40769036-7",
+            codseg: values.codigo_seguridad,
+            fechaven: values.fecha_vencimiento,
+            // precio: values.total,
+            precio: values.total,
+            descripcion:
+              "Compra 'El Changuito', día " + new Date().toLocaleDateString(),
+          };
+          console.log(url);
+          console.log(parametros);
+          break;
+        case 3:
+          console.log("CARD");
+          values.pagoRealizado = values.total;
+          values.vuelto = 0;
+          console.log(values.sucursal.cuit);
+          console.log(values.sucursal.CUIT);
+          url =
+            "https://ia-grupo4-backend.herokuapp.com/api/users/agregarMovimiento";
+          parametros = {
+            dnicuilUsuario: user.dni,
+            cuitNegocio: 30590360763,
+            numerotarjeta: values.numero_tarjeta,
+            monto: values.total,
+            codigoseguridad: values.codigo_seguridad,
+          };
+          console.log(url);
+          console.log(parametros);
+          break;
+      }
       axios
-        .post("https://viernes-ia.herokuapp.com/addConsumo", {
-          numero: 204189017,
-          documento: 40769036,
-          codseg: 489,
-          precio: 280,
-          descripcion: "Pack Cristal del Lago x6",
-          fechaven: "2023-04",
-        })
+        .post(url, parametros)
         .then(function (response) {
-          console.log(response.status + " " + response.statusText);
+          alert(
+            response.status +
+              " " +
+              response.statusText +
+              "\n" +
+              response.data.message
+          );
+          res = response.data;
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch(function (err) {
+          alert(err);
         });
-      //
-      axios
-        .post(urlWebServices.createSale, {
-          values: values,
-        })
-        .then(function (response) {
-          // console.log(response.status + " " + response.statusText);
-          // console.log(response.data);
-          if (response.status >= 200) {
-            // setSuccessOpen(true);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      axios.get(urlWebServices.getSaleCode).then((res) => {
-        // console.log(typeof res.data);
-        // console.log(res.data);
-        setPurchaseCode(res.data);
-        // console.log(purchaseCode);
-        setSuccessOpen(true);
-      });
+
+      console.log(res);
+      var market = null;
+      if (res.comprobante !== null) {
+        axios
+          .post(urlWebServices.createSale, {
+            values: values,
+          })
+          .then(function (response) {
+            console.log(response.status + " " + response.statusText);
+            console.log(response.data);
+            market = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          axios.get(urlWebServices.getSaleCode).then((res) => {
+            // console.log(typeof res.data);
+            // console.log(res.data);
+            setPurchaseCode(res.data);
+            // console.log(purchaseCode);
+            setSuccessOpen(true);
+          })
+          .catch(function (err){
+            console.log(err);
+          });
+      }
     },
   });
 
@@ -234,7 +277,7 @@ export default function NuevaVenta(props) {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "center",
               }}
             >
               <Checkbox
@@ -380,10 +423,11 @@ export default function NuevaVenta(props) {
                 label="Seleccione un medio de pago *"
                 onChange={formik.handleChange}
               >
-                <option value="">Seleccione un medio de pago</option>
-                <option value="Efectivo">Efectivo</option>
-                <option value="Crédito">Crédito</option>
-                <option value="Débito">Débito</option>
+                <option value={0}>Seleccione un medio de pago</option>
+                <option value={1}>Efectivo</option>
+                <option value={2}>Tarjeta de Crédito 'Entidad A'</option>
+                <option value={3}>Tarjeta de Crédito 'Entidad B'</option>
+                <option value={4}>Débito</option>
               </select>
               <span className="custom-arrow"></span>
             </div>
@@ -391,7 +435,7 @@ export default function NuevaVenta(props) {
               <div style={{ color: "#ff0000" }}>{formik.errors.medioPago}</div>
             )}
 
-            {formik.values.medioPago != "Efectivo" ? null : (
+            {formik.values.medioPago != 1 ? null : (
               <div>
                 <TextField
                   fullWidth
@@ -411,45 +455,45 @@ export default function NuevaVenta(props) {
               </div>
             )}
 
-            {formik.values.medioPago != "Crédito" ? null : (
+            {formik.values.medioPago != 2 &&
+            formik.values.medioPago != 3 ? null : (
               <>
-
-                <div style={{ paddingTop: "20px"}}>
-                <TextField
-                  fullWidth
-                  name="numero_tarjeta"
-                  label="Número de Tarjeta"
-                  value={formik.values.numero_tarjeta}
-                  onChange={formik.handleChange}
-                  variant="outlined"
-                  error={
-                    formik.touched.numero_tarjeta &&
-                    Boolean(formik.errors.numero_tarjeta)
-                  }
-                  helperText={
-                    formik.touched.numero_tarjeta &&
-                    formik.errors.numero_tarjeta
-                  }
-                />
+                <div style={{ paddingTop: "20px" }}>
+                  <TextField
+                    fullWidth
+                    name="numero_tarjeta"
+                    label="Número de Tarjeta"
+                    value={formik.values.numero_tarjeta}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    error={
+                      formik.touched.numero_tarjeta &&
+                      Boolean(formik.errors.numero_tarjeta)
+                    }
+                    helperText={
+                      formik.touched.numero_tarjeta &&
+                      formik.errors.numero_tarjeta
+                    }
+                  />
                 </div>
 
-                <div style={{ paddingTop: "20px"}}>
-                <TextField
-                  fullWidth
-                  name="nombre_titular"
-                  label="Nombre y Apellido del Titular"
-                  value={formik.values.nombre_titular}
-                  onChange={formik.handleChange}
-                  variant="outlined"
-                  error={
-                    formik.touched.nombre_titular &&
-                    Boolean(formik.errors.nombre_titular)
-                  }
-                  helperText={
-                    formik.touched.nombre_titular &&
-                    formik.errors.nombre_titular
-                  }
-                />
+                <div style={{ paddingTop: "20px" }}>
+                  <TextField
+                    fullWidth
+                    name="nombre_titular"
+                    label="Nombre y Apellido del Titular"
+                    value={formik.values.nombre_titular}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    error={
+                      formik.touched.nombre_titular &&
+                      Boolean(formik.errors.nombre_titular)
+                    }
+                    helperText={
+                      formik.touched.nombre_titular &&
+                      formik.errors.nombre_titular
+                    }
+                  />
                 </div>
 
                 <div
@@ -458,48 +502,46 @@ export default function NuevaVenta(props) {
                     flexDirection: "row",
                     justifyContent: "start",
                     paddingTop: "20px",
-                    paddingBottom: "20px"
+                    paddingBottom: "20px",
                   }}
                 >
-
-                  <div style={{paddingRight: "10px", width: "100%"}}>
-                  <TextField
-                    fullWidth
-                    name="fecha_vencimiento"
-                    label="Fecha de Vencimiento"
-                    value={formik.values.fecha_vencimiento}
-                    onChange={formik.handleChange}
-                    variant="outlined"
-                    error={
-                      formik.touched.fecha_vencimiento &&
-                      Boolean(formik.errors.fecha_vencimiento)
-                    }
-                    helperText={
-                      formik.touched.fecha_vencimiento &&
-                      formik.errors.fecha_vencimiento
-                    }
-                  />
+                  <div style={{ paddingRight: "10px", width: "100%" }}>
+                    <TextField
+                      fullWidth
+                      name="fecha_vencimiento"
+                      label="Fecha de Vencimiento"
+                      value={formik.values.fecha_vencimiento}
+                      onChange={formik.handleChange}
+                      variant="outlined"
+                      error={
+                        formik.touched.fecha_vencimiento &&
+                        Boolean(formik.errors.fecha_vencimiento)
+                      }
+                      helperText={
+                        formik.touched.fecha_vencimiento &&
+                        formik.errors.fecha_vencimiento
+                      }
+                    />
                   </div>
 
-
-                  <div style={{paddingLeft: "10px", width: "100%"}}>
-                  <TextField
-                    fullWidth
-                    name="codigo_seguridad"
-                    label="Código de Seguridad"
-                    value={formik.values.codigo_seguridad}
-                    onChange={formik.handleChange}
-                    variant="outlined"
-                    error={
-                      formik.touched.codigo_seguridad &&
-                      Boolean(formik.errors.codigo_seguridad)
-                    }
-                    helperText={
-                      formik.touched.codigo_seguridad &&
-                      formik.errors.codigo_seguridad
-                    }
-                  />
-
+                  <div style={{ paddingLeft: "10px", width: "100%" }}>
+                    <TextField
+                      fullWidth
+                      type="password"
+                      name="codigo_seguridad"
+                      label="Código de Seguridad"
+                      value={formik.values.codigo_seguridad}
+                      onChange={formik.handleChange}
+                      variant="outlined"
+                      error={
+                        formik.touched.codigo_seguridad &&
+                        Boolean(formik.errors.codigo_seguridad)
+                      }
+                      helperText={
+                        formik.touched.codigo_seguridad &&
+                        formik.errors.codigo_seguridad
+                      }
+                    />
                   </div>
                 </div>
               </>
