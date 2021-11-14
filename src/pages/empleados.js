@@ -167,7 +167,6 @@ export default function Empleados() {
             tooltip: "Pagar Empleado",
             onClick: (event, rowData) => {
               // alert(JSON.stringify(rowData));
-                console.log(typeof(new Date().toLocaleDateString()))
               // alert("Se le han pagado $" + rowData.salario + " al empleado " + rowData.nombre + " " + rowData.apellido)
               axios
                 .post(" https://bff-banking-app.herokuapp.com/alta-sueldos/", {

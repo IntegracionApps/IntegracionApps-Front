@@ -108,11 +108,11 @@ export default function HomeAdmin() {
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
                         {product_data.map((item, willDelete) => {
                             return (
-                                <>
+                                <React.Fragment>
                                     <div className="card" key={item.id}>
                                         <AdminProductCard item={item} handleRemoveItem={() => handleRemoveItem(item)} refresh={() => setRefresh(true)} />
                                     </div>
-                                </>
+                                </React.Fragment>
                             )
                         }
                         )}

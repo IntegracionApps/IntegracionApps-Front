@@ -1,7 +1,7 @@
 import { Button, Divider, Drawer, List, ListItem, ListItemText } from '@material-ui/core';
 import { Menu, SystemUpdate } from "@material-ui/icons";
 import axios from 'axios';
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router';
 import "../styles/SideMenu.css";
 

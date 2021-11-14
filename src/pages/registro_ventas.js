@@ -118,7 +118,7 @@ export default function RegistroVentas() {
             <Header />
             {window.localStorage.getItem("rol") === "0" ?
                 //VISTA ADMIN
-                <>
+                <React.Fragment>
                     <MaterialTable title="Registro de Ventas"
                         columns={columns}
                         data={ventas}
@@ -298,7 +298,7 @@ export default function RegistroVentas() {
                             }}>Confirmar Pago</Button>
                         </DialogActions>
                     </Dialog>
-                </>
+                </React.Fragment>
                 :
                 //VISTA CLIENTE
                 <MaterialTable title="Registro de Ventas"

@@ -244,9 +244,9 @@ export default function MiPerfil(props) {
                                 <Button onClick={() => { setWillEdit(false); }} style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Cancelar edición</Button>
                             </div>
                             :
-                            <>
+                            <React.Fragment>
                                 <Button onClick={() => { setWillEdit(true); }} style={{ backgroundColor: "lightgreen", color: "black", width: "auto", marginTop: "7.5%" }}>Editar mis Datos</Button>
-                            </>
+                            </React.Fragment>
                         }
                         <Button onClick={() => { history.goBack() }} style={{ backgroundColor: "lightsalmon", color: "black", width: "auto", marginTop: "7.5%" }}>Al Catálogo de Productos</Button>
 

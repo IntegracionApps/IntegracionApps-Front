@@ -457,7 +457,7 @@ export default function NuevaVenta(props) {
 
             {formik.values.medioPago != 2 &&
             formik.values.medioPago != 3 ? null : (
-              <>
+              <React.Fragment>
                 <div style={{ paddingTop: "20px" }}>
                   <TextField
                     fullWidth
@@ -544,7 +544,7 @@ export default function NuevaVenta(props) {
                     />
                   </div>
                 </div>
-              </>
+              </React.Fragment>
             )}
 
             <Typography>
