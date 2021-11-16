@@ -1,4 +1,3 @@
-import urlWebServices from "../webServices";
 import {
   Button,
   Checkbox,
@@ -10,12 +9,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import { Field, Form, Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import * as yup from "yup";
 import Header from "../components/Header";
 import "../styles/Formulario.css";
+import urlWebServices from "../webServices";
 
 // const useStyles = makeStyles({
 //     input: {
@@ -58,6 +58,19 @@ const validationSchema = yup.object({
 
   piso: yup.string().optional(),
 
+  codigoPostal: yup
+    .string()
+    .matches(Number, "Ingrese únicamente números")
+    .required("¡Este campo es obligatorio!"),
+
+  ciudad: yup
+    .string()
+    .matches(
+      /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/,
+      "Ingrese únicamente letras"
+    )
+    .required("¡Este campo es obligatorio!"),
+
   dni: yup
     .string()
     .matches(Number, "Ingrese únicamente números")
@@ -98,11 +111,12 @@ export default function NuevaVenta(props) {
   const [receive, setReceive] = useState(props.location.state.toSend);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
-  // console.log(receive);
+  console.log(receive);
   // console.log(user);
   const [successOpen, setSuccessOpen] = useState(false);
   const [purchaseCode, setPurchaseCode] = useState("");
-  const [flagPaymentOK, setFlagPayment] = useState(false);
+  const [codigo_trackeo, setCodigoTrackeo] = useState("");
+
   if (user.ubicacion.piso.length === 0) {
     user.ubicacion.piso = "-";
   }
@@ -114,6 +128,8 @@ export default function NuevaVenta(props) {
       direccion: user.ubicacion.direccion,
       altura: user.ubicacion.altura,
       piso: user.ubicacion.piso,
+      codigoPostal: "",
+      ciudad: "",
       dni: user.dni,
       email: user.email,
       telefono: user.telefono,
@@ -137,24 +153,81 @@ export default function NuevaVenta(props) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (values.medioPago >= "2" || values.medioPago <= "4") {
-        console.log("CARD");
-        values.pagoRealizado = values.total;
-        values.vuelto = 0;
-        // estado_pago_tarjeta = "Creado";
-      }
-      if (values.medioPago == "1") {
-        console.log("CASH");
-        values.vuelto = values.pagoRealizado - receive.total;
-      }
-
-      //INTEGRACIÓN TARJETA DE CRÉDITO A
       var url = "";
       var parametros = {};
-      var res = {};
+      let comprobante = {};
+      let responseEnvío = {};
+      let resultadoCreate = {};
+      let saleCode = {};
+
       switch (parseInt(values.medioPago)) {
+        // PAGO EN EFECTIVO OK
+        case 1:
+          values.vuelto = values.pagoRealizado - receive.total;
+          axios
+            .post(
+              "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
+              {
+                direccion:
+                  values.direccion + " " + values.altura + " " + values.piso,
+                cp: values.codigoPostal,
+                ciudad: values.ciudad,
+              }
+            )
+            .then((result) => {
+              responseEnvío = result;
+              console.log("result envío: ", responseEnvío);
+              setCodigoTrackeo(result.data.codigo_trackeo);
+              console.log(codigo_trackeo);
+              return axios.post(
+                urlWebServices.createSale,
+                {
+                  values: values,
+                },
+                {
+                  mode: "cors",
+                  headers: {
+                    "Access-control-Allow-Origin": true,
+                  },
+                }
+              );
+            })
+            .then((result) => {
+              resultadoCreate = result;
+              console.log("result crear compra: ", resultadoCreate);
+              return axios.get(urlWebServices.getSaleCode, {
+                mode: "cors",
+                headers: {
+                  "Access-control-Allow-Origin": true,
+                },
+              });
+            })
+            .then((result) => {
+              saleCode = result;
+              console.log("result get codigo: ", saleCode);
+            })
+            .finally(() => {
+              console.log(responseEnvío);
+              console.log(resultadoCreate);
+              console.log(saleCode);
+
+              if (
+                responseEnvío.status === 200 &&
+                resultadoCreate.status === 200 &&
+                saleCode.status === 200
+              ) {
+                setPurchaseCode(saleCode.data);
+                setSuccessOpen(true);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+          break;
+        //--
+
+        // PAGO CON TARJETA A OK
         case 2:
-          console.log("CARD");
           values.pagoRealizado = values.total;
           values.vuelto = 0;
           url = "https://viernes-ia.herokuapp.com/addConsumo";
@@ -168,11 +241,75 @@ export default function NuevaVenta(props) {
             descripcion:
               "Compra 'El Changuito', día " + new Date().toLocaleDateString(),
           };
-          console.log(url);
-          console.log(parametros);
+          axios
+            .post(url, parametros)
+            .then((result) => {
+              comprobante = result;
+              console.log("result pago tarjeta: ", comprobante);
+              return axios.post(
+                "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
+                {
+                  direccion:
+                    values.direccion + " " + values.altura + " " + values.piso,
+                  cp: values.codigoPostal,
+                  ciudad: values.ciudad,
+                }
+              );
+            })
+            .then((result) => {
+              responseEnvío = result;
+              console.log("result envío: ", responseEnvío);
+              setCodigoTrackeo(result.data.codigo_trackeo);
+              console.log(codigo_trackeo);
+              return axios.post(urlWebServices.createSale,
+                {values: values,},
+                {
+                  mode: "cors",
+                  headers: {
+                    "Access-control-Allow-Origin": true,
+                  },
+                }
+              );
+            })
+            .then((result) => {
+              resultadoCreate = result;
+              console.log("result crear compra: ", resultadoCreate);
+              return axios.get(urlWebServices.getSaleCode,            
+                {
+                mode: "cors",
+                headers: {
+                  'Access-control-Allow-Origin': true,
+                },
+              });
+            })
+            .then((result) => {
+              saleCode = result;
+              console.log("result get codigo: ", saleCode);
+            })
+            .finally(() => {
+              console.log(comprobante);
+              console.log(responseEnvío);
+              console.log(resultadoCreate);
+              console.log(saleCode);
+
+              if (
+                (comprobante.status >= 200 && comprobante.status <= 299) &&
+                (responseEnvío.status >= 200 && responseEnvío.status <= 299) &&
+                (resultadoCreate.status >= 200 && resultadoCreate.status <= 299) &&
+                (saleCode.status >= 200 && saleCode.status <= 299) 
+              ) {
+                setPurchaseCode(saleCode.data);
+                setSuccessOpen(true);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
           break;
+        //--
+
+        // PAGO CON TARJETA B
         case 3:
-          console.log("CARD");
           values.pagoRealizado = values.total;
           values.vuelto = 0;
           console.log(values.sucursal.cuit);
@@ -186,52 +323,222 @@ export default function NuevaVenta(props) {
             monto: values.total,
             codigoseguridad: values.codigo_seguridad,
           };
-          console.log(url);
-          console.log(parametros);
+          axios
+            .post(url, parametros)
+            .then((result) => {
+              comprobante = result;
+              console.log("result pago tarjeta: ", comprobante);
+              return axios.post(
+                "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
+                {
+                  direccion:
+                    values.direccion + " " + values.altura + " " + values.piso,
+                  cp: values.codigoPostal,
+                  ciudad: values.ciudad,
+                }
+              );
+            })
+            .then((result) => {
+              responseEnvío = result;
+              console.log("result envío: ", responseEnvío);
+              setCodigoTrackeo(result.data.codigo_trackeo);
+              console.log(codigo_trackeo);
+              return axios.post(urlWebServices.createSale, {
+                values: values,
+              },
+              {
+                mode: "cors",
+                headers: {
+                  'Access-control-Allow-Origin': true,
+                },
+              });
+            })
+            .then((result) => {
+              resultadoCreate = result;
+              console.log("result crear compra: ", resultadoCreate);
+              return axios.get(urlWebServices.getSaleCode,
+                {
+                  mode: "cors",
+                  headers: {
+                    'Access-control-Allow-Origin': true,
+                  },
+                });
+            })
+            .then((result) => {
+              saleCode = result;
+              console.log("result get codigo: ", saleCode);
+            })
+            .finally(() => {
+              console.log(comprobante);
+              console.log(responseEnvío);
+              console.log(resultadoCreate);
+              console.log(saleCode);
+
+              if (
+                (comprobante.status >= 200 && comprobante.status <= 299) &&
+                (responseEnvío.status >= 200 && responseEnvío.status <= 299) &&
+                (resultadoCreate.status >= 200 && resultadoCreate.status <= 299) &&
+                (saleCode.status >= 200 && saleCode.status <= 299) 
+              ) {
+                setPurchaseCode(saleCode.data);
+                setSuccessOpen(true);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+          break;
+        //--
+        // PAGO CON DÉBITO
+        case 4:
+          values.vuelto = values.pagoRealizado - receive.total;
+          axios
+            .post(
+              "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
+              {
+                direccion:
+                  values.direccion + " " + values.altura + " " + values.piso,
+                cp: values.codigoPostal,
+                ciudad: values.ciudad,
+              }
+            )
+            .then((result) => {
+              responseEnvío = result;
+              console.log("result envío: ", responseEnvío);
+              setCodigoTrackeo(result.data.codigo_trackeo);
+              console.log(codigo_trackeo);
+              return axios.post(urlWebServices.createSale, {
+                values: values,
+              },
+              {
+                mode: "cors",
+                headers: {
+                  'Access-control-Allow-Origin': true,
+                },
+              });
+            })
+            .then((result) => {
+              resultadoCreate = result;
+              console.log("result crear compra: ", resultadoCreate);
+              return axios.get(urlWebServices.getSaleCode,
+                {
+                  mode: "cors",
+                  headers: {
+                    'Access-control-Allow-Origin': true,
+                  },
+                });
+            })
+            .then((result) => {
+              saleCode = result;
+              console.log("result get codigo: ", saleCode);
+            })
+            .finally(() => {
+              console.log(responseEnvío);
+              console.log(resultadoCreate);
+              console.log(saleCode);
+
+              if (
+                responseEnvío.status === 200 &&
+                resultadoCreate.status === 200 &&
+                saleCode.status === 200
+              ) {
+                setPurchaseCode(saleCode.data);
+                setSuccessOpen(true);
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+
           break;
       }
-      axios
-        .post(url, parametros)
-        .then(function (response) {
-          alert(
-            response.status +
-              " " +
-              response.statusText +
-              "\n" +
-              response.data.message
-          );
-          res = response.data;
-        })
-        .catch(function (err) {
-          alert(err);
-        });
 
-      console.log(res);
-      var market = null;
-      if (res.comprobante !== null) {
-        axios
-          .post(urlWebServices.createSale, {
-            values: values,
-          })
-          .then(function (response) {
-            console.log(response.status + " " + response.statusText);
-            console.log(response.data);
-            market = response.data;
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-          axios.get(urlWebServices.getSaleCode).then((res) => {
-            // console.log(typeof res.data);
-            // console.log(res.data);
-            setPurchaseCode(res.data);
-            // console.log(purchaseCode);
-            setSuccessOpen(true);
-          })
-          .catch(function (err){
-            console.log(err);
-          });
-      }
+      let promesas = new Array();
+
+      // Promise.all([
+      //   axios.post(url, parametros).catch(function (err) {
+      //     setSuccessOpen(false);
+      //     console.log(err);
+      //   }),
+      //   axios
+      //     .post(
+      //       "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
+      //       {
+      //         direccion:
+      //           values.direccion + " " + values.altura + " " + values.piso,
+      //         cp: values.codigoPostal,
+      //         ciudad: values.ciudad,
+      //       }
+      //     )
+      //     .catch(function (err) {
+      //       setSuccessOpen(false);
+      //       console.log(err);
+      //     }),
+      //   axios
+      //     .post(urlWebServices.createSale, {
+      //       values: values,
+      //     })
+      //     .catch(function (err) {
+      //       setSuccessOpen(false);
+      //       console.log(err);
+      //     }),
+      //   axios.get(urlWebServices.getSaleCode).catch(function (err) {
+      //     setSuccessOpen(false);
+      //     console.log(err);
+      //   }),
+      // ])
+      //   .then(function (responses) {
+      //     comprobante = responses[0];
+      //     setResponseEnvío(responses[1]);
+      //     resultadoCreate = responses[2];
+      //     saleCode = responses[3];
+      //   })
+      //   .finally(function () {
+      //     console.log(comprobante);
+      //     console.log(responseEnvío);
+      //     console.log(resultadoCreate);
+      //     console.log(saleCode);
+
+      //     if (
+      //       comprobante.status === 200 &&
+      //       responseEnvío.status === 200 &&
+      //       resultadoCreate === 200 &&
+      //       saleCode === 200
+      //     ) {
+      //       setPurchaseCode(saleCode.data);
+      //       setSuccessOpen(true);
+      //     }
+      //   })
+      //   .catch(function (err) {
+      //     setSuccessOpen(false);
+      //     console.log(err);
+      //   });
+      // if (comprobante !== null && responseEnvío !== null) {
+      //   axios
+      //     .post(urlWebServices.createSale, {
+      //       values: values,
+      //     })
+      //     .then(function (response) {
+      //       console.log(response.status + " " + response.statusText);
+      //       console.log(response.data);
+      //       market = response.data;
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error);
+      //     });
+      //   axios
+      //     .get(urlWebServices.getSaleCode)
+      //     .then((res) => {
+      //       // console.log(typeof res.data);
+      //       // console.log(res.data);
+      //       setPurchaseCode(res.data);
+      //       // console.log(purchaseCode);
+      //       setSuccessOpen(true);
+      //     })
+      //     .catch(function (err) {
+      //       console.log(err);
+      //     });
+      // }
     },
   });
 
@@ -367,6 +674,41 @@ export default function NuevaVenta(props) {
                 variant="outlined"
                 error={formik.touched.piso && Boolean(formik.errors.piso)}
                 helperText={formik.touched.piso && formik.errors.piso}
+              />
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextField
+                name="codigoPostal"
+                label="Código Postal *"
+                value={formik.values.codigoPostal}
+                onChange={formik.handleChange}
+                className={"root"}
+                variant="outlined"
+                error={
+                  formik.touched.codigoPostal &&
+                  Boolean(formik.errors.codigoPostal)
+                }
+                helperText={
+                  formik.touched.codigoPostal && formik.errors.codigoPostal
+                }
+              />
+
+              <TextField
+                name="ciudad"
+                label="Ciudad *"
+                value={formik.values.ciudad}
+                onChange={formik.handleChange}
+                className={"root"}
+                variant="outlined"
+                error={formik.touched.ciudad && Boolean(formik.errors.ciudad)}
+                helperText={formik.touched.ciudad && formik.errors.ciudad}
               />
             </div>
 
@@ -548,7 +890,7 @@ export default function NuevaVenta(props) {
             )}
 
             <Typography>
-              Monto a pagar: $ {formik.values.total.toFixed(2)}
+              Monto a pagar: $ {formik.values.total}
             </Typography>
 
             <Button
@@ -585,15 +927,22 @@ export default function NuevaVenta(props) {
       </div>
       <Dialog
         open={successOpen}
-        onClose={() => {
-          setSuccessOpen(false);
+        onClose={(event, reason) => {
+          if (reason !== "backdropClick") setSuccessOpen(false);
         }}
       >
         <DialogTitle>¡Éxito!</DialogTitle>
         <DialogContent>
           <Typography>¡La operación se realizó con éxito!</Typography>
           {formik.values.medioPago !== "Efectivo" ? (
-            <Typography> Tu código de compra es: '{purchaseCode}'</Typography>
+            <React.Fragment>
+              <Typography> Tu código de compra es: '{purchaseCode}'</Typography>
+              <Typography>
+                Si querés ver el estado de tu envío, usá el código de trackeo '
+                {codigo_trackeo}'
+              </Typography>
+              <Typography> en la página *inserte página del Correo*</Typography>
+            </React.Fragment>
           ) : null}
           <Typography>¡Gracias por elegirnos!</Typography>
         </DialogContent>
