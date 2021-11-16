@@ -50,7 +50,7 @@ function AddedItemDialog(props) {
 
 export default function Home(props) {
     // console.log(product_data);
-    console.log(props);
+    // console.log(props);
     const [product_data, setData] = useState([]);
     const [products_copy, setProductsCopy] = useState([]);
     const [searchValue, setSearchValue] = useState("");

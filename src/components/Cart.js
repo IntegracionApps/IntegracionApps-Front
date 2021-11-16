@@ -25,13 +25,14 @@ export default function Cart({ cart, where }) {
     useEffect(() => {
         setItems(cart);
         console.log(cart);
+        console.log(cartTotal);
     }, []);
 
     const [toSend, setToSend] = useState({
-        items: cart,
+        items: items,
         importe: [],
         subtotal: cartTotal,
-        total: getTotal(),
+        total: getTotal().toFixed(2),
     })
 
     const aux = [];
@@ -51,7 +52,11 @@ export default function Cart({ cart, where }) {
     }
 
     function getTotal() {
-        return cartTotal;
+        var res = 0;
+        items.forEach(item => {
+            res = res + (item.quantity * item.price);
+        });
+        return res;
     }
 
     function confirmSale() {
