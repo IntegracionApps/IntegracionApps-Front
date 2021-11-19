@@ -154,6 +154,7 @@ export default function NuevaVenta(props) {
       nombre_titular: "",
       fecha_vencimiento: "",
       codigo_seguridad: "",
+      codigo_trackeo: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -187,6 +188,7 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
               setStep("Creando la compra...");
 
@@ -224,9 +226,12 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                responseEnvío.status === 200 &&
-                resultadoCreate.status === 200 &&
-                saleCode.status === 200
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
                 setIsFinished(true);
@@ -276,6 +281,7 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
               setStep("Cerrando la compra...");
               return axios.post(
@@ -368,6 +374,7 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
               setStep("Cerrando la compra...");
               return axios.post(
@@ -443,6 +450,7 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
               setStep("Cerrando la compra...");
               return axios.post(
@@ -479,9 +487,12 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                responseEnvío.status === 200 &&
-                resultadoCreate.status === 200 &&
-                saleCode.status === 200
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
                 setIsFinished(true);
