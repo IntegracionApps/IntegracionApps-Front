@@ -9,31 +9,49 @@ import "../styles/Cart.css";
 
 export default function Cart({ cart, where }) {
     const history = useHistory();
+    const [toSend, setToSend] = useState({
+        items: [],
+        importe: [],
+        subtotal: 0,
+        total: "",
+    })
+
     
-    
-    const { isEmpty,
-        totalUniqueItems,
+    const { 
+        isEmpty,
         items,
-        totalItems,
         cartTotal,
         setItems,
-        updateItemQuantity,
-        addItem,
-        removeItem,
     } = useCart();
     
     useEffect(() => {
         setItems(cart);
+        let res = 0;
+        console.log(items);
+        cart.forEach(item => {
+            res = res + (item.quantity * item.price);
+        });
+        console.log(res);
+        setToSend({
+            items: cart,
+            // importe: [],
+            subtotal: res.toFixed(2),
+            total: res.toFixed(2),    
+        })
         console.log(cart);
         console.log(cartTotal);
     }, []);
+    
+    // function getTotal() {
+    //     var res = 0;
+    //     console.log(items);
+    //     items.forEach(item => {
+    //         res = res + (item.quantity * item.price);
+    //     });
+    //     console.log(res);
+    //     return res;
+    // }
 
-    const [toSend, setToSend] = useState({
-        items: items,
-        importe: [],
-        subtotal: cartTotal,
-        total: getTotal().toFixed(2),
-    })
 
     const aux = [];
 
@@ -51,19 +69,8 @@ export default function Cart({ cart, where }) {
         return res;
     }
 
-    function getTotal() {
-        var res = 0;
-        items.forEach(item => {
-            res = res + (item.quantity * item.price);
-        });
-        return res;
-    }
 
     function confirmSale() {
-        setToSend((toSend) => ({
-            ...toSend,
-            importe: aux,
-        }));
 
         console.log(toSend);
         history.push({
