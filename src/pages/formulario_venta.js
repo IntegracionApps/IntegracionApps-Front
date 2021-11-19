@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import axios from "axios";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -117,6 +118,7 @@ export default function NuevaVenta(props) {
 
   const [step, setStep] = useState("");
   const [isFinished, setIsFinished] = useState(false);
+  const [gotError,setError] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [purchaseCode, setPurchaseCode] = useState("");
   const [codigo_trackeo, setCodigoTrackeo] = useState("");
@@ -239,6 +241,7 @@ export default function NuevaVenta(props) {
             })
             .catch((err) => {
               console.error(err);
+              setError(err);
             });
           break;
         //--
@@ -332,6 +335,7 @@ export default function NuevaVenta(props) {
             })
             .catch((err) => {
               console.error(err);
+              setError(err);
             });
           break;
         //--
@@ -427,6 +431,7 @@ export default function NuevaVenta(props) {
             })
             .catch((err) => {
               console.error(err);
+              setError(err);
             });
           break;
         //--
@@ -500,6 +505,7 @@ export default function NuevaVenta(props) {
             })
             .catch((err) => {
               console.error(err);
+              setError(err);
             });
 
           break;
@@ -897,6 +903,7 @@ export default function NuevaVenta(props) {
         >
           <DialogTitle>Procesando compra...</DialogTitle>
           <DialogContent>
+            <React.Fragment>
             <div
               style={{
                 display: "flex",
@@ -909,6 +916,22 @@ export default function NuevaVenta(props) {
               <Typography>{step}</Typography>
               <CircularProgress />
             </div>
+            {gotError && 
+            <Alert severity="error"
+            action={
+              <Button color="primary" size="small" onClick={() => {
+                setSuccessOpen(false);
+                history.goBack();
+              }}>
+                VOLVER
+              </Button>
+            }
+          >
+              <AlertTitle>{gotError.response.status}: {gotError.message}</AlertTitle>
+              Parece ser que hubo un problema en esta etapa. Volvamos al resumen de tu carrito e intentemos de vuelta en un rato.
+              </Alert>
+            }
+            </React.Fragment>
           </DialogContent>
         </Dialog>
       ) : (
@@ -930,12 +953,7 @@ export default function NuevaVenta(props) {
                     Tu código de compra es: '{purchaseCode}'
                   </Typography>
                   <Typography>
-                    Si querés ver el estado de tu envío, usá el código de
-                    trackeo '{codigo_trackeo}'
-                  </Typography>
-                  <Typography>
-                    {" "}
-                    en la página *inserte página del Correo*
+                    Si querés ver el estado de tu envío, buscá tu Historial de Compras
                   </Typography>
                 </React.Fragment>
               ) : null}
