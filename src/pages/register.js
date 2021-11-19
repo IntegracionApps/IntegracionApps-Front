@@ -14,17 +14,26 @@ const validationSchema = yup.object({
 
     nombre: yup
         .string()
-        .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
+        .matches(
+            /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/,
+            "Ingrese únicamente letras"
+          )
         .required('¡Este campo es obligatorio!'),
 
     apellido: yup
         .string()
-        .matches(/^[a-zA-Z\s]*$/, 'Ingrese únicamente letras')
+        .matches(
+            /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/,
+            "Ingrese únicamente letras"
+          )
         .required('¡Este campo es obligatorio!'),
 
     direccion: yup
         .string()
-        //.matches(/^[A-Za-z]$/,'Ingrese únicamente letras')
+        .matches(
+            /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/,
+            "Ingrese únicamente letras"
+          )
         .required('¡Este campo es obligatorio!'),
 
     altura: yup
@@ -198,7 +207,7 @@ const Register = () => {
 
                     </Formik>
 
-                    <Button className="btnVolver" onClick={() => { history.goBack() }}>Volver</Button>
+                    <Button className="btnLogin solid" onClick={() => { history.goBack() }}>Volver</Button>
 
                     <Dialog open={successRegister} onClose={() => { setSuccessRegister(false) }}>
                         <DialogTitle>¡Éxito!</DialogTitle>
