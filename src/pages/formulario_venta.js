@@ -934,16 +934,13 @@ export default function NuevaVenta(props) {
         <DialogTitle>¡Éxito!</DialogTitle>
         <DialogContent>
           <Typography>¡La operación se realizó con éxito!</Typography>
-          {formik.values.medioPago !== "Efectivo" ? (
             <React.Fragment>
               <Typography> Tu código de compra es: '{purchaseCode}'</Typography>
               <Typography>
-                Si querés ver el estado de tu envío, usá el código de trackeo '
-                {codigo_trackeo}'
+                Si querés ver el estado de tu envío, buscá en tu Historial el código de trackeo
+                '{codigo_trackeo}'
               </Typography>
-              <Typography> en la página *inserte página del Correo*</Typography>
             </React.Fragment>
-          ) : null}
           <Typography>¡Gracias por elegirnos!</Typography>
         </DialogContent>
         <DialogActions>
