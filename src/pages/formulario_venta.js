@@ -1,6 +1,7 @@
 import {
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -111,8 +112,11 @@ export default function NuevaVenta(props) {
   const [receive, setReceive] = useState(props.location.state.toSend);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
-  console.log(receive);
+  // console.log(receive);
   // console.log(user);
+
+  const [step, setStep] = useState("");
+  const [isFinished, setIsFinished] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [purchaseCode, setPurchaseCode] = useState("");
   const [codigo_trackeo, setCodigoTrackeo] = useState("");
@@ -150,6 +154,7 @@ export default function NuevaVenta(props) {
       nombre_titular: "",
       fecha_vencimiento: "",
       codigo_seguridad: "",
+      codigo_trackeo: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -160,10 +165,15 @@ export default function NuevaVenta(props) {
       let resultadoCreate = {};
       let saleCode = {};
 
+      // setSuccessOpen(true);
+
       switch (parseInt(values.medioPago)) {
         // PAGO EN EFECTIVO OK
         case 1:
           values.vuelto = values.pagoRealizado - receive.total;
+          setStep("Creando el envío...");
+          console.log(step);
+          setSuccessOpen(true);
           axios
             .post(
               "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
@@ -178,7 +188,10 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
+              setStep("Creando la compra...");
+
               return axios.post(
                 urlWebServices.createSale,
                 {
@@ -195,6 +208,7 @@ export default function NuevaVenta(props) {
             .then((result) => {
               resultadoCreate = result;
               console.log("result crear compra: ", resultadoCreate);
+              setStep("Juntando todos los resultados...");
               return axios.get(urlWebServices.getSaleCode, {
                 mode: "cors",
                 headers: {
@@ -212,12 +226,15 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                responseEnvío.status === 200 &&
-                resultadoCreate.status === 200 &&
-                saleCode.status === 200
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
-                setSuccessOpen(true);
+                setIsFinished(true);
               }
             })
             .catch((err) => {
@@ -230,6 +247,9 @@ export default function NuevaVenta(props) {
         case 2:
           values.pagoRealizado = values.total;
           values.vuelto = 0;
+          setStep("Procesando el pago con Tarjeta de Crédito...");
+          console.log(step);
+          setSuccessOpen(true);
           url = "https://viernes-ia.herokuapp.com/addConsumo";
           parametros = {
             numero: values.numero_tarjeta,
@@ -246,6 +266,7 @@ export default function NuevaVenta(props) {
             .then((result) => {
               comprobante = result;
               console.log("result pago tarjeta: ", comprobante);
+              setStep("Generando el envío a domicilio...");
               return axios.post(
                 "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
                 {
@@ -260,9 +281,12 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
-              return axios.post(urlWebServices.createSale,
-                {values: values,},
+              setStep("Cerrando la compra...");
+              return axios.post(
+                urlWebServices.createSale,
+                { values: values },
                 {
                   mode: "cors",
                   headers: {
@@ -274,11 +298,11 @@ export default function NuevaVenta(props) {
             .then((result) => {
               resultadoCreate = result;
               console.log("result crear compra: ", resultadoCreate);
-              return axios.get(urlWebServices.getSaleCode,            
-                {
+              setStep("Juntando resultados...");
+              return axios.get(urlWebServices.getSaleCode, {
                 mode: "cors",
                 headers: {
-                  'Access-control-Allow-Origin': true,
+                  "Access-control-Allow-Origin": true,
                 },
               });
             })
@@ -293,13 +317,17 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                (comprobante.status >= 200 && comprobante.status <= 299) &&
-                (responseEnvío.status >= 200 && responseEnvío.status <= 299) &&
-                (resultadoCreate.status >= 200 && resultadoCreate.status <= 299) &&
-                (saleCode.status >= 200 && saleCode.status <= 299) 
+                comprobante.status >= 200 &&
+                comprobante.status <= 299 &&
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
-                setSuccessOpen(true);
+                setIsFinished(true);
               }
             })
             .catch((err) => {
@@ -314,6 +342,9 @@ export default function NuevaVenta(props) {
           values.vuelto = 0;
           console.log(values.sucursal.cuit);
           console.log(values.sucursal.CUIT);
+          setStep("Procesando el pago con Tarjeta de Crédito...");
+          console.log(step);
+          setSuccessOpen(true);
           url =
             "https://ia-grupo4-backend.herokuapp.com/api/users/agregarMovimiento";
           parametros = {
@@ -328,6 +359,7 @@ export default function NuevaVenta(props) {
             .then((result) => {
               comprobante = result;
               console.log("result pago tarjeta: ", comprobante);
+              setStep("Generando el envío a domicilio...");
               return axios.post(
                 "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
                 {
@@ -342,27 +374,32 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
-              return axios.post(urlWebServices.createSale, {
-                values: values,
-              },
-              {
-                mode: "cors",
-                headers: {
-                  'Access-control-Allow-Origin': true,
+              setStep("Cerrando la compra...");
+              return axios.post(
+                urlWebServices.createSale,
+                {
+                  values: values,
                 },
-              });
+                {
+                  mode: "cors",
+                  headers: {
+                    "Access-control-Allow-Origin": true,
+                  },
+                }
+              );
             })
             .then((result) => {
               resultadoCreate = result;
               console.log("result crear compra: ", resultadoCreate);
-              return axios.get(urlWebServices.getSaleCode,
-                {
-                  mode: "cors",
-                  headers: {
-                    'Access-control-Allow-Origin': true,
-                  },
-                });
+              setStep("Juntando resultados...");
+              return axios.get(urlWebServices.getSaleCode, {
+                mode: "cors",
+                headers: {
+                  "Access-control-Allow-Origin": true,
+                },
+              });
             })
             .then((result) => {
               saleCode = result;
@@ -375,13 +412,17 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                (comprobante.status >= 200 && comprobante.status <= 299) &&
-                (responseEnvío.status >= 200 && responseEnvío.status <= 299) &&
-                (resultadoCreate.status >= 200 && resultadoCreate.status <= 299) &&
-                (saleCode.status >= 200 && saleCode.status <= 299) 
+                comprobante.status >= 200 &&
+                comprobante.status <= 299 &&
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
-                setSuccessOpen(true);
+                setIsFinished(true);
               }
             })
             .catch((err) => {
@@ -392,6 +433,9 @@ export default function NuevaVenta(props) {
         // PAGO CON DÉBITO
         case 4:
           values.vuelto = values.pagoRealizado - receive.total;
+          setStep("Generando el envío...");
+          console.log(step);
+          setStep("Generando el envío a domicilio...");
           axios
             .post(
               "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
@@ -406,27 +450,32 @@ export default function NuevaVenta(props) {
               responseEnvío = result;
               console.log("result envío: ", responseEnvío);
               setCodigoTrackeo(result.data.codigo_trackeo);
+              values.codigo_trackeo = result.data.codigo_trackeo;
               console.log(codigo_trackeo);
-              return axios.post(urlWebServices.createSale, {
-                values: values,
-              },
-              {
-                mode: "cors",
-                headers: {
-                  'Access-control-Allow-Origin': true,
+              setStep("Cerrando la compra...");
+              return axios.post(
+                urlWebServices.createSale,
+                {
+                  values: values,
                 },
-              });
+                {
+                  mode: "cors",
+                  headers: {
+                    "Access-control-Allow-Origin": true,
+                  },
+                }
+              );
             })
             .then((result) => {
               resultadoCreate = result;
               console.log("result crear compra: ", resultadoCreate);
-              return axios.get(urlWebServices.getSaleCode,
-                {
-                  mode: "cors",
-                  headers: {
-                    'Access-control-Allow-Origin': true,
-                  },
-                });
+              setStep("Juntando resultados...");
+              return axios.get(urlWebServices.getSaleCode, {
+                mode: "cors",
+                headers: {
+                  "Access-control-Allow-Origin": true,
+                },
+              });
             })
             .then((result) => {
               saleCode = result;
@@ -438,12 +487,15 @@ export default function NuevaVenta(props) {
               console.log(saleCode);
 
               if (
-                responseEnvío.status === 200 &&
-                resultadoCreate.status === 200 &&
-                saleCode.status === 200
+                responseEnvío.status >= 200 &&
+                responseEnvío.status <= 299 &&
+                resultadoCreate.status >= 200 &&
+                resultadoCreate.status <= 299 &&
+                saleCode.status >= 200 &&
+                saleCode.status <= 299
               ) {
                 setPurchaseCode(saleCode.data);
-                setSuccessOpen(true);
+                setIsFinished(true);
               }
             })
             .catch((err) => {
@@ -452,93 +504,6 @@ export default function NuevaVenta(props) {
 
           break;
       }
-
-      let promesas = new Array();
-
-      // Promise.all([
-      //   axios.post(url, parametros).catch(function (err) {
-      //     setSuccessOpen(false);
-      //     console.log(err);
-      //   }),
-      //   axios
-      //     .post(
-      //       "https://corre-intapl-backend.herokuapp.com/api/envios/crear/envioSupermercado",
-      //       {
-      //         direccion:
-      //           values.direccion + " " + values.altura + " " + values.piso,
-      //         cp: values.codigoPostal,
-      //         ciudad: values.ciudad,
-      //       }
-      //     )
-      //     .catch(function (err) {
-      //       setSuccessOpen(false);
-      //       console.log(err);
-      //     }),
-      //   axios
-      //     .post(urlWebServices.createSale, {
-      //       values: values,
-      //     })
-      //     .catch(function (err) {
-      //       setSuccessOpen(false);
-      //       console.log(err);
-      //     }),
-      //   axios.get(urlWebServices.getSaleCode).catch(function (err) {
-      //     setSuccessOpen(false);
-      //     console.log(err);
-      //   }),
-      // ])
-      //   .then(function (responses) {
-      //     comprobante = responses[0];
-      //     setResponseEnvío(responses[1]);
-      //     resultadoCreate = responses[2];
-      //     saleCode = responses[3];
-      //   })
-      //   .finally(function () {
-      //     console.log(comprobante);
-      //     console.log(responseEnvío);
-      //     console.log(resultadoCreate);
-      //     console.log(saleCode);
-
-      //     if (
-      //       comprobante.status === 200 &&
-      //       responseEnvío.status === 200 &&
-      //       resultadoCreate === 200 &&
-      //       saleCode === 200
-      //     ) {
-      //       setPurchaseCode(saleCode.data);
-      //       setSuccessOpen(true);
-      //     }
-      //   })
-      //   .catch(function (err) {
-      //     setSuccessOpen(false);
-      //     console.log(err);
-      //   });
-      // if (comprobante !== null && responseEnvío !== null) {
-      //   axios
-      //     .post(urlWebServices.createSale, {
-      //       values: values,
-      //     })
-      //     .then(function (response) {
-      //       console.log(response.status + " " + response.statusText);
-      //       console.log(response.data);
-      //       market = response.data;
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error);
-      //     });
-      //   axios
-      //     .get(urlWebServices.getSaleCode)
-      //     .then((res) => {
-      //       // console.log(typeof res.data);
-      //       // console.log(res.data);
-      //       setPurchaseCode(res.data);
-      //       // console.log(purchaseCode);
-      //       setSuccessOpen(true);
-      //     })
-      //     .catch(function (err) {
-      //       console.log(err);
-      //     });
-      // }
     },
   });
 
@@ -889,9 +854,7 @@ export default function NuevaVenta(props) {
               </React.Fragment>
             )}
 
-            <Typography>
-              Monto a pagar: $ {formik.values.total}
-            </Typography>
+            <Typography>Monto a pagar: $ {formik.values.total}</Typography>
 
             <Button
               type="submit"
@@ -925,37 +888,71 @@ export default function NuevaVenta(props) {
           </form>
         </div>
       </div>
-      <Dialog
-        open={successOpen}
-        onClose={(event, reason) => {
-          if (reason !== "backdropClick") setSuccessOpen(false);
-        }}
-      >
-        <DialogTitle>¡Éxito!</DialogTitle>
-        <DialogContent>
-          <Typography>¡La operación se realizó con éxito!</Typography>
-          {formik.values.medioPago !== "Efectivo" ? (
+      {!isFinished ? (
+        <Dialog
+          open={successOpen}
+          onClose={(event, reason) => {
+            if (reason !== "backdropClick") setSuccessOpen(false);
+          }}
+        >
+          <DialogTitle>Procesando compra...</DialogTitle>
+          <DialogContent>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent:"space-between",
+                alignItems: "center",
+                margin: "0% 0% 10% 0%",
+              }}
+            >
+              <Typography>{step}</Typography>
+              <CircularProgress />
+            </div>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Dialog
+          open={successOpen}
+          onClose={(event, reason) => {
+            if (reason !== "backdropClick") setSuccessOpen(false);
+          }}
+        >
+          <DialogTitle>¡Éxito!</DialogTitle>
+
+          <DialogContent>
             <React.Fragment>
-              <Typography> Tu código de compra es: '{purchaseCode}'</Typography>
-              <Typography>
-                Si querés ver el estado de tu envío, usá el código de trackeo '
-                {codigo_trackeo}'
-              </Typography>
-              <Typography> en la página *inserte página del Correo*</Typography>
+              <Typography>¡La operación se realizó con éxito!</Typography>
+              {formik.values.medioPago !== "Efectivo" ? (
+                <React.Fragment>
+                  <Typography>
+                    {" "}
+                    Tu código de compra es: '{purchaseCode}'
+                  </Typography>
+                  <Typography>
+                    Si querés ver el estado de tu envío, usá el código de
+                    trackeo '{codigo_trackeo}'
+                  </Typography>
+                  <Typography>
+                    {" "}
+                    en la página *inserte página del Correo*
+                  </Typography>
+                </React.Fragment>
+              ) : null}
+              <Typography>¡Gracias por elegirnos!</Typography>
             </React.Fragment>
-          ) : null}
-          <Typography>¡Gracias por elegirnos!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              handleGoTo();
-            }}
-          >
-            Al Menú Principal
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleGoTo();
+              }}
+            >
+              Al Menú Principal
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 }
