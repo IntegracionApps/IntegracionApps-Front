@@ -10,7 +10,7 @@ let columns = [
     { title: "N° de Venta", field: "id", editable: "never" },
     { title: "DNI del comprador", field: "cliente.dni", editable: "never" },
     { title: "Cantidad de ítems vendidos", field: "items.length", editable: "never", render: rowData => <div>{rowData.items.length} {rowData.items.length > 1 ? "ítems Vendidos" : "ítem vendido"}</div> },
-    { title: "Total de la Venta", field: "total", render: rowData => <div>$ {rowData.total.toFixed(2)}</div> },
+    { title: "Total de la Venta", field: "total", render: rowData => <div>$ {rowData.total}</div> },
     { title: "Medio de Pago", field: "medioPago" },
     { title: "Estado", field: "estado", defaultSort: "asc" },
 ];

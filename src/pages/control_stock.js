@@ -2,7 +2,7 @@ import urlWebServices from "../webServices";
 import { ButtonGroup, Divider, IconButton, Typography } from "@material-ui/core";
 import { Alert } from '@material-ui/lab';
 import { Add, Remove } from "@material-ui/icons";
-import { React, useEffect, useState } from "react";
+import  React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
@@ -15,7 +15,7 @@ export default function ControlStock() {
     useEffect(() => {
         axios.get(urlWebServices.getAllProducts)
             .then(function (response) {
-                // console.log(response);
+                console.log(response);
                 setData(response.data);
             })
             .catch(function (error) {
