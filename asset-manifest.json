@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/IntegracionApps-Front/static/css/main.7b177e06.chunk.css",
+    "main.js": "/IntegracionApps-Front/static/js/main.eae8b76c.chunk.js",
+    "main.js.map": "/IntegracionApps-Front/static/js/main.eae8b76c.chunk.js.map",
+    "runtime-main.js": "/IntegracionApps-Front/static/js/runtime-main.451a96d8.js",
+    "runtime-main.js.map": "/IntegracionApps-Front/static/js/runtime-main.451a96d8.js.map",
+    "static/js/2.f118dde9.chunk.js": "/IntegracionApps-Front/static/js/2.f118dde9.chunk.js",
+    "static/js/2.f118dde9.chunk.js.map": "/IntegracionApps-Front/static/js/2.f118dde9.chunk.js.map",
+    "static/js/3.fa831942.chunk.js": "/IntegracionApps-Front/static/js/3.fa831942.chunk.js",
+    "static/js/3.fa831942.chunk.js.map": "/IntegracionApps-Front/static/js/3.fa831942.chunk.js.map",
+    "static/js/4.b007f96b.chunk.js": "/IntegracionApps-Front/static/js/4.b007f96b.chunk.js",
+    "static/js/4.b007f96b.chunk.js.map": "/IntegracionApps-Front/static/js/4.b007f96b.chunk.js.map",
+    "static/js/5.b80e2681.chunk.js": "/IntegracionApps-Front/static/js/5.b80e2681.chunk.js",
+    "static/js/5.b80e2681.chunk.js.map": "/IntegracionApps-Front/static/js/5.b80e2681.chunk.js.map",
+    "static/js/6.fc50e14b.chunk.js": "/IntegracionApps-Front/static/js/6.fc50e14b.chunk.js",
+    "static/js/6.fc50e14b.chunk.js.map": "/IntegracionApps-Front/static/js/6.fc50e14b.chunk.js.map",
+    "index.html": "/IntegracionApps-Front/index.html",
+    "static/css/main.7b177e06.chunk.css.map": "/IntegracionApps-Front/static/css/main.7b177e06.chunk.css.map",
+    "static/js/2.f118dde9.chunk.js.LICENSE.txt": "/IntegracionApps-Front/static/js/2.f118dde9.chunk.js.LICENSE.txt",
+    "static/js/3.fa831942.chunk.js.LICENSE.txt": "/IntegracionApps-Front/static/js/3.fa831942.chunk.js.LICENSE.txt",
+    "static/js/4.b007f96b.chunk.js.LICENSE.txt": "/IntegracionApps-Front/static/js/4.b007f96b.chunk.js.LICENSE.txt",
+    "static/js/5.b80e2681.chunk.js.LICENSE.txt": "/IntegracionApps-Front/static/js/5.b80e2681.chunk.js.LICENSE.txt",
+    "static/media/Login.css": "/IntegracionApps-Front/static/media/mercado.497a3960.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.451a96d8.js",
+    "static/js/2.f118dde9.chunk.js",
+    "static/css/main.7b177e06.chunk.css",
+    "static/js/main.eae8b76c.chunk.js"
+  ]
+}
