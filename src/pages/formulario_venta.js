@@ -690,7 +690,6 @@ export default function NuevaVenta(props) {
               label="E-mail *"
               value={formik.values.email}
               onChange={formik.handleChange}
-              className={"root"}
               variant="outlined"
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
@@ -864,8 +863,9 @@ export default function NuevaVenta(props) {
 
             <Button
               type="submit"
+              disabled= "true"
               style={{
-                backgroundColor: "lightgreen",
+                backgroundColor: "lightgray",
                 color: "black",
                 width: "auto",
                 height: "50px",

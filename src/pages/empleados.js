@@ -128,6 +128,7 @@ export default function Empleados() {
             icon: () => <AttachMoney />,
             tooltip: "Pagar TODOS los sueldos",
             isFreeAction: true,
+            disabled: true,
             onClick: (event) => {
               let promises = new Array();
               data.forEach((empleado) => {
@@ -171,6 +172,7 @@ export default function Empleados() {
           (rowData) => ({
             icon: () => <AttachMoney />,
             tooltip: "Pagar Empleado",
+            disabled: true,
             onClick: (event, rowData) => {
               // alert(JSON.stringify(rowData));
               // alert("Se le han pagado $" + rowData.salario + " al empleado " + rowData.nombre + " " + rowData.apellido)
